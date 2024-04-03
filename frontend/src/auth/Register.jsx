@@ -86,19 +86,6 @@ const Register = () => {
                 </Select>
               </Form.Item>
 
-              <Form.Item 
-                label='Estado'
-                name='active'
-                rules={[{
-                  required: true,
-                  message: 'Por favor selecciona tu estado'
-                }]}>
-                <Select size='large' placeholder='Selecciona tu estado'>
-                  <Select.Option value='1'>Activo</Select.Option>
-                  <Select.Option value='0'>Inactivo</Select.Option>
-                </Select>
-              </Form.Item>
-
               {
                 error && (
                 <Alert 

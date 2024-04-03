@@ -31,9 +31,10 @@ body {
 }
 
 .auth-image {
-  width: 100%;
+  width: 85%;
   height: 100%;
   border-radius: 10px;
+  margin: auto;
 }
 
 .alert {
@@ -43,6 +44,7 @@ body {
 /* Profile-card */
 .profile-card {
   width: 500px;
+  text-align: center;
 }
 
 .avatar {
@@ -56,4 +58,35 @@ body {
 .profile-btn {
   margin-top: 1.3rem;
   width: 100%;
+}
+
+/* Home desgin */
+.header {
+  background: #fff;
+  text-align: center;
+}
+
+.content {
+  padding: 50px;
+}
+
+.content-container {
+  text-align: center;
+}
+
+.welcome-text {
+  margin-bottom: 20px;
+}
+
+.welcome-message {
+  margin-bottom: 40px;
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: center;
+}
+
+.button {
+  margin-right: 15px;
 }

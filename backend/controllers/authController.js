@@ -19,6 +19,7 @@ exports.signup = async(req, res, next) => {
         const newUser = await User.create({
             ...req.body,
             password: hashedPassword,
+            active: true
         })
 
         // Assing JWT (json web token) to user

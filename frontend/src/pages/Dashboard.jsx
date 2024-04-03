@@ -4,25 +4,43 @@ import { UserOutlined } from '@ant-design/icons';
 import { useAuth } from '../contexts/AuthContext.jsx';
 
 const Dashboard = () => {
-  const { userData, logout } = useAuth();
+  const { logout, userData } = useAuth();
+
+  console.log(userData, "Desde dashboard")
 
   const handleLogout = async () => {
-    await logout();
-  };
-
-  const gravatarUrl = `https://www.gravatar.com/avatar/${userData.emailHash}?s=150&d=identicon`;
+    await logout()
+  }
 
   return (
-    <Card className='profile-card'>
-      <Flex vertical gap='small' align='center'>
-        <Avatar size={150} src={gravatarUrl} icon={<UserOutlined />} className='avatar' />
-        <Typography.Title level={2} strong className='username'>
-          {userData.name}
+    <Card className="profile-card">
+      <Flex vertical gap="small" align="center">
+        <Avatar 
+          size={125} 
+          icon={<UserOutlined />}
+         />
+        <Typography.Title 
+          level={2} 
+          strong 
+          className="username">
+            {userData && userData.name}
         </Typography.Title>
-        <Typography.Text type='secondary'>Email: {userData.email}</Typography.Text>
-        <Typography.Text type='secondary'>Rol: {userData.role}</Typography.Text>
-        <Button size='large' type='primary' className='profile-btn' onClick={handleLogout}>
-          Cerrar sesión
+        <Typography.Text 
+          type="secondary" 
+          strong>
+            Email: {userData && userData.email}
+        </Typography.Text>
+        <Typography.Text 
+          type="secondary"
+          strong>
+            Rol: {userData && userData.role}
+        </Typography.Text>
+        <Button 
+          size="large" 
+          type="primary" 
+          className="profile-btn" 
+          onClick={handleLogout}>
+            Cerrar sesión
         </Button>
       </Flex>
     </Card>
