@@ -16,12 +16,15 @@ const useSignup = () => {
             setError(null)
             setLoading(true)
 
+            const userData = { ...values, active: true } //Test
+            console.log(userData);
+
             const res = await fetch(import.meta.env.VITE_APP_API_URL_SIGNUP, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(values)
+                body: JSON.stringify(userData)
             })
 
             const data = await res.json()

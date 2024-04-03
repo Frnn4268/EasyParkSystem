@@ -3,7 +3,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 import loginImage from '../assets/login_logo.jpg'
-import useLogin from '../hooks/useLogin'
+import useLogin from '../hooks/useLogin.jsx'
 const Login = () => {
 
   const { loading, error, loginUser } = useLogin()
@@ -79,7 +79,7 @@ const Login = () => {
               </Form.Item>
 
               <Form.Item>
-                <Link to='/'>
+                <Link to='/register'>
                   <Button size='large' className='btn'>
                   Crear cuenta
                   </Button>

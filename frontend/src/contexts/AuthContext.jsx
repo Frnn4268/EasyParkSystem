@@ -19,8 +19,9 @@ export const AuthProvider = ({ children }) => {
 
     const login = (newToken, newData) => {
         localStorage.setItem(
-            'user_data', 
-            JSON.stringify({ userToken: newToken, user: newData }))
+            "user_data", 
+            JSON.stringify({ userToken: newToken, user: newData }),
+            )
 
         setToken(newToken)
         setUserData(newData)
@@ -42,12 +43,10 @@ export const AuthProvider = ({ children }) => {
         userData
     }
 
-    return (
-        <AuthContext.Provider 
+    return <AuthContext.Provider 
             value = {authValues}>
             {children}
         </AuthContext.Provider>
-    )
 }
 
 export const useAuth = () => useContext(AuthContext)
