@@ -2,7 +2,7 @@ import { Card, Flex, Typography, Form, Input, Button, Alert, Spin, Select  } fro
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import registerImage from '../assets/register_logo.jpg'
+import registerImage from '../assets/register_logo1.jpg'
 import useSignup from '../hooks/useSingup'
 
 const Register = () => {
@@ -106,6 +106,14 @@ const Register = () => {
                     {loading ? <Spin /> : 'Crear cuenta'}
                 </Button>
               </Form.Item>
+
+              <Flex className="login-container">
+                <Form.Item>
+                  <Typography.Text>
+                    ¿Ya tienes una cuenta?
+                  </Typography.Text>
+                </Form.Item>
+              </Flex>
 
               <Form.Item>
                 <Link to='/login'>

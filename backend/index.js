@@ -18,7 +18,6 @@ app.use(express.json())
 app.use('/api/auth', authRoute)
 
 // Global error handler
-// Global error handler
 app.use((err, req, res, next) => {
     err.statusCode = err.statusCode || 500;
     err.status = err.status || 'error';
@@ -29,6 +28,7 @@ app.use((err, req, res, next) => {
     });
 });
 
+// Server 
 const PORT = process.env.PORT
 app.listen(process.env.PORT, () => {
   console.log(`Server running on port ${PORT}!`)
