@@ -2,7 +2,7 @@ import { Card, Flex, Typography, Form, Input, Button, Alert, Spin } from 'antd'
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import loginImage from '../assets/login_logo.jpg'
+import loginImage from '../assets/login_logo1.jpg'
 import useLogin from '../hooks/useLogin.jsx'
 const Login = () => {
 
@@ -33,7 +33,7 @@ const Login = () => {
             onFinish={handleLogin} 
             autoComplete='off'>
 
-              <Form.Item 
+              <Form.Item
                 label='Email' 
                 name='email' 
                 rules={[{
@@ -44,7 +44,7 @@ const Login = () => {
                   type: 'email',
                   message: 'Este no es un email válido',
                 }]}>
-                <Input size='large' placeholder='Ingresa tu email'/>
+                  <Input size='large' placeholder='Ingresa tu email'/>
               </Form.Item>
 
               <Form.Item 
@@ -54,7 +54,7 @@ const Login = () => {
                   required: true,
                   message: 'Por favor ingresa tu contraseña'
                 }]}>
-                <Input.Password size='large' placeholder='Ingresa tu contraseña'/>
+                  <Input.Password size='large' placeholder='Ingresa tu contraseña'/>
               </Form.Item>
 
               {
@@ -78,10 +78,19 @@ const Login = () => {
                 </Button>
               </Form.Item>
 
+              {/* Registro */}
+              <Flex className="register-container">
+                <Form.Item>
+                  <Typography.Text>
+                    ¿No tienes una cuenta?
+                  </Typography.Text>
+                </Form.Item>
+              </Flex>
+            
               <Form.Item>
                 <Link to='/register'>
                   <Button size='large' className='btn'>
-                  Crear cuenta
+                    Registrarse
                   </Button>
                 </Link>
               </Form.Item>
