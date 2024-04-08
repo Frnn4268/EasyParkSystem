@@ -3,6 +3,8 @@ import { Avatar, Button, Card, Flex, Typography, notification } from 'antd';
 // import { SmileOutlined } from '@ant-design/icons'; // Floating notification
 import { useAuth } from '../contexts/AuthContext.jsx';
 
+import '../css/Auth.css'
+
 import icon_1 from '../assets/icons/icon_1.png';
 import icon_2 from '../assets/icons/icon_2.png';
 import icon_3 from '../assets/icons/icon_3.png';
