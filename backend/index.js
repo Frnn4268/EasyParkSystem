@@ -9,13 +9,15 @@ const app = express()
 
 // Routes 
 const authRoute = require('./routes/authRoute')
+const contactRoute = require('./routes/contactRoute')
 
 // Middlewares
 app.use(cors())
 app.use(express.json())
 
 // Routes
-app.use('/api/auth', authRoute)
+app.use('/api/auth', authRoute) // Auth
+app.use('/api/contact', contactRoute) // Contact 
 
 // Global error handler
 app.use((err, req, res, next) => {
