@@ -28,9 +28,7 @@ const cardStyle = {
   width: 500,
   height: 'auto', 
   borderRadius: "20px", 
-  margin: 20,
-  marginBottom: 25,
-  marginTop: 10,
+  margin: '20px auto',
   overflow: 'hidden',
 }
 
@@ -77,7 +75,7 @@ const Home = () => {
           </Button>
         </Link>
       </Card>
-          <Title style={{ textAlign: 'center', margin: 30 }}>¿Qué novedades tenemos en EasyPark?</Title>
+          <Title style={{ textAlign: 'center', margin: '30px auto' }}>¿Qué novedades tenemos en EasyPark?</Title>
           <Row className='home-card' gutter={16}> 
             <Col span={8}>
               <Card
@@ -106,10 +104,9 @@ const Home = () => {
                 cover={<img alt="example" src={card_image3}  />}
               >
                 <Meta title="Recordatorio" description=" " />
-                EasyPark es un sistema de gestión de parqueo que busca optimizar tareas sencillas de tu día a día.
+                EasyPark es un sistema de gestión de parqueo que tiene como principal función optimizar tus tareas diarias.
               </Card>
             </Col>
-            
           </Row>
           <Carousel afterChange={onChange}>
             <div>
