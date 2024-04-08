@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+/* Home design */
+.home-header {
+    width: 100%;
+    font-weight: bold; 
+    padding: 0px;
+    margin: 0;
+}
+.home-header-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.home-header-button {
+    margin: 25px;
+    border-radius: 10px;
+    font-size: 14px;
+    height: 40px;
+}
+.home-content {
+    margin-top: 80px;
+    width: 100%;
+    padding: 0 50px;
+}
+.home-block-section {
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
+    width: 75%;
+}
+.home-welcome-text {
+    font-family: 'Poppins', sans-serif;
+    text-align: left;
+}
+.home-welcome-message {
+    margin: auto;
+    text-align: left;
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+}
+.home-buttons-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.home-button {
+    margin: 25px;
+    border-radius: 20px;
+    font-family: 'Poppins', sans-serif;
+    align-items: center;
+    font-size: 15px;
+    width: 150px;
+    height: 55px;
+    font-weight: bold;
+}
+.home-divider {
+    margin: 50px;
+    font-size: 100px;
+    line-height: 150px;
+}
+.layout {
+    min-height: 100vh;
+}
+.home-card {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    display: flex;
+}
+.logo-card {
+    width: 400px;
+    height: 400px;
+    margin-right: 20px;
+}
