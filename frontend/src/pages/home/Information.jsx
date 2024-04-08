@@ -29,7 +29,7 @@ const items = [
     },
     {
         key: '3',
-        label: 'Horario: ',
+        label: 'Horario de atención: ',
         children: 'Lunes a Domingo: 7:00 A.M. - 9:00 P.M.',
     },
     {
@@ -56,7 +56,7 @@ const Information = () => {
                         <Typography.Title level={3} strong className='title' style={{textAlign: 'center'}}>
                             Información
                         </Typography.Title>
-                        <Descriptions title="Información" items={items} />;
+                        <Descriptions title="Información sobre el lugar" items={items} />;
                     </Card>   
                 </Content>
             </Layout>
