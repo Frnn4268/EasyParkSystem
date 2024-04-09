@@ -21,7 +21,8 @@ const backgroundStyle = {
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   position: 'relative',
-  borderRadius: '100% 0 0 30%'
+  borderRadius: '100% 0 0 30%',
+  width: '100%'
 };
 
 const cardStyle = { 
@@ -75,7 +76,7 @@ const Home = () => {
           </Button>
         </Link>
       </Card>
-          <Title style={{ textAlign: 'center', margin: '30px auto' }}>¿Qué novedades tenemos en EasyPark?</Title>
+          <Title style={{ textAlign: 'center', margin: '35px 0 20px 0' }}>¿Qué novedades tenemos en EasyPark?</Title>
           <Row className='home-card' gutter={16}> 
             <Col span={8}>
               <Card
@@ -108,7 +109,7 @@ const Home = () => {
               </Card>
             </Col>
           </Row>
-          <Carousel afterChange={onChange}>
+          <Carousel afterChange={onChange} style={{ margin: '30px 0 0 0' }}>
             <div>
               <h3 style={contentStyle}>1</h3>
             </div>

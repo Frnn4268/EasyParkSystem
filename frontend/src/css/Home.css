@@ -59,10 +59,7 @@
 .home-divider {
     margin: 50px;
     font-size: 100px;
-    line-height: 150px;
-}
-.layout {
-    min-height: 100vh;
+    line-height: 200px;
 }
 .home-card {
     justify-content: center;

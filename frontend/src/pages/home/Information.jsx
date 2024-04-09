@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useRef} from 'react'
 import { Descriptions, Layout, Card, Typography } from 'antd';
 
 import MainMenu from './MainMenu'; 
@@ -43,8 +43,9 @@ const items = [
         children: 'Avenida Chipilapa 1-72, Jalapa 21001',
     },
   ];
-
 const Information = () => {
+    
+
     return (
         <>
             <Layout className="layout" style={backgroundStyle}>    
