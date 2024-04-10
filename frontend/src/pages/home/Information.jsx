@@ -1,5 +1,6 @@
-import React, {useRef} from 'react'
+import React, {useLayoutEffect, useRef} from 'react'
 import { Descriptions, Layout, Card, Typography } from 'antd';
+import { Map, Marker, NavigationControl } from 'mapbox-gl';
 
 import MainMenu from './MainMenu'; 
 
@@ -19,7 +20,7 @@ const backgroundStyle = {
 const items = [
     {
         key: '1',
-        label: 'Nombre: ',
+        label: 'Nombre',
         children: 'Restaurante y Pastelería Florencia',
     },
     {
@@ -29,12 +30,12 @@ const items = [
     },
     {
         key: '3',
-        label: 'Horario de atención: ',
+        label: 'Horario de atención',
         children: 'Lunes a Domingo: 7:00 A.M. - 9:00 P.M.',
     },
     {
         key: '4',
-        label: 'Departamento: ',
+        label: 'Departamento',
         children: 'Jalapa, Jalapa',
     },
     {
@@ -43,8 +44,53 @@ const items = [
         children: 'Avenida Chipilapa 1-72, Jalapa 21001',
     },
   ];
+  
 const Information = () => {
     
+    const mapDiv = useRef(null)
+
+    useLayoutEffect(() => {
+        const map = new Map({
+            container: mapDiv.current , // container ID
+            style: 'mapbox://styles/mapbox/streets-v12', // style URL
+            center: [-89.98599, 14.63415], // starting position [lng, lat]
+            zoom: 18, // starting zoom
+        });
+
+        // Marker
+        new Marker()
+            .setLngLat([-89.98599, 14.63415])
+            .addTo(map);
+
+        // Personaliza el estilo del mapa
+        map.on('load', () => {
+            map.addLayer({
+                id: 'example',
+                type: 'circle',
+                source: {
+                    type: 'geojson',
+                    data: {
+                        type: 'FeatureCollection',
+                        features: [{
+                            type: 'Feature',
+                            properties: {},
+                            geometry: {
+                                type: 'Point',
+                                coordinates: [-89.98599, 14.63415]
+                            }
+                        }]
+                    }
+                },
+                paint: {
+                    'circle-radius': 4,
+                    'circle-color': '#007cbf'
+                }
+            });
+        });
+
+        // Adding navigation control
+        map.addControl(new NavigationControl());
+    })
 
     return (
         <>
@@ -58,6 +104,16 @@ const Information = () => {
                             Información
                         </Typography.Title>
                         <Descriptions title="Información sobre el lugar" items={items} />;
+                        <div ref={mapDiv}
+                            style={{
+                                height: '400px',
+                                width: 'auto',
+                                position: 'sticky',
+                                top: 0,
+                                left: 0, 
+                                borderRadius: 15,
+                            }}
+                        />
                     </Card>   
                 </Content>
             </Layout>

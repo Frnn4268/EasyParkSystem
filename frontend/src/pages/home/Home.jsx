@@ -76,7 +76,7 @@ const Home = () => {
           </Button>
         </Link>
       </Card>
-          <Title style={{ textAlign: 'center', margin: '35px 0 20px 0' }}>¿Qué novedades tenemos en EasyPark?</Title>
+          <Title style={{ textAlign: 'center', margin: '35px 0 20px 0' }} className='home-newfeatures-text'>¿Qué novedades tenemos en EasyPark?</Title>
           <Row className='home-card' gutter={16}> 
             <Col span={8}>
               <Card
@@ -94,7 +94,7 @@ const Home = () => {
                 style={cardStyle}
                 cover={<img alt="example" src={card_image2}  />}
               >
-                <Meta title="Pago de Estacionamiento" description=" " />
+                <Meta title="Tiempo de Estacionamiento" description=" " />
                 EasyPark permite a los conductores ver por anticipado su tiempo de estacionamiento de manera conveniente a través del sitio web.
               </Card>
             </Col>
