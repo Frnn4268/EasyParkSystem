@@ -3,7 +3,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 import '../css/Auth.css'
-import form_card from '../assets/form_card2.png'
+import form_card from '../assets/home/form_card2.png'
 import registerImage from '../assets/register_logo1.jpg'
 
 import useSignup from '../hooks/useSingup'
@@ -161,17 +161,14 @@ const Register = () => {
                       <Form.Item>
                         <Typography.Text>
                           ¿Ya tienes una cuenta?
+                          <Link to='/login' style={{ margin: 5}}>
+                            <Typography.Link>
+                              Inicia sesión
+                            </Typography.Link>
+                          </Link>
                         </Typography.Text>
                       </Form.Item>
                     </Flex>
-
-                    <Form.Item>
-                      <Link to='/login'>
-                        <Button size='large' className='btn'>
-                          Iniciar sesión
-                        </Button>
-                      </Link>
-                    </Form.Item>
                 </Form>  
               </Flex>
 

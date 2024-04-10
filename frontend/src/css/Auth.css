@@ -15,6 +15,8 @@
 .form-container {
   width: 900px;
   position: relative;
+  margin: 15px;
+  box-shadow: 0 20px 10px rgba(0, 0, 0, 0.2);
 }
 .title {
   text-align: center;
@@ -31,7 +33,6 @@
   width: 100%;
   height: 100%;
   border-radius: 10px;
-  margin: auto;
 }
 .alert {
   margin-bottom: 1.5rem;
@@ -51,11 +52,4 @@
 .profile-btn {
   margin-top: 1.3rem;
   width: 100%;
-}
-
-/* Float buttons */
-.float-button {
-  position: 'fixed';
-  bottom: 50;
-  right: 50;
 }
