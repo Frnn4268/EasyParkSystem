@@ -29,7 +29,7 @@ const cardStyle = {
   width: 500,
   height: 'auto', 
   borderRadius: "20px", 
-  margin: '20px auto',
+  margin: '25px auto',
   overflow: 'hidden',
 }
 
@@ -76,7 +76,7 @@ const Home = () => {
           </Button>
         </Link>
       </Card>
-          <Title style={{ textAlign: 'center', margin: '35px 0 20px 0' }} className='home-newfeatures-text'>¿Qué novedades tenemos en EasyPark?</Title>
+          <Title className='title-middle-layout'>¿Qué novedades tenemos en EasyPark?</Title>
           <Row className='home-card' gutter={16}> 
             <Col span={8}>
               <Card

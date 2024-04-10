@@ -3,7 +3,7 @@ import { Card, Flex, Typography, Form, Input, Button, Alert, Spin, AutoComplete,
 import { Link } from 'react-router-dom'
 
 import '../css/Auth.css'
-import form_card from '../assets/form_card2.png'
+import form_card from '../assets/home/form_card2.png'
 import loginImage from '../assets/login_logo1.jpg'
 
 import useLogin from '../hooks/useLogin.jsx'
@@ -137,17 +137,14 @@ const Login = () => {
                       <Form.Item>
                         <Typography.Text>
                           ¿No tienes una cuenta?
+                          <Link to='/register' style={{ margin: 5}}>
+                            <Typography.Link>
+                              Registrate
+                            </Typography.Link>
+                          </Link>
                         </Typography.Text>
                       </Form.Item>
                     </Flex>
-                  
-                    <Form.Item>
-                      <Link to='/register'>
-                        <Button size='large' className='btn'>
-                          Registrarse
-                        </Button>
-                      </Link>
-                    </Form.Item>
                 </Form>  
               </Flex>
             </Flex>
