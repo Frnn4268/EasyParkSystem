@@ -13,7 +13,7 @@ import Login from './auth/Login';
 import { useAuth } from './contexts/AuthContext.jsx';
 
 // Dashboard
-import Dashboard from './pages/Dashboard';
+import Dashboard from './pages/dashboard/Dashboard.jsx';
 
 const App = () => {
   const { isAuthenticated } = useAuth();
