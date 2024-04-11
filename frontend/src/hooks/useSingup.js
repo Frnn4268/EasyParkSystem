@@ -16,8 +16,7 @@ const useSignup = () => {
             setError(null)
             setLoading(true)
 
-            const userData = { ...values, active: true } //Test
-            console.log(userData);
+            const userData = { ...values, active: true } 
 
             const res = await fetch(import.meta.env.VITE_APP_API_URL_SIGNUP, {
                 method: 'POST',

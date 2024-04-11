@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import { Avatar, Button, Card, Flex, Typography, notification } from 'antd';
-// import { SmileOutlined } from '@ant-design/icons'; // Floating notification
+import { Avatar, Button, Card, Flex, Typography } from 'antd';
 import { useAuth } from '../contexts/AuthContext.jsx';
 
 import '../css/Auth.css'
@@ -11,22 +10,7 @@ import icon_3 from '../assets/icons/icon_3.png';
 import icon_4 from '../assets/icons/icon_4.png';
 import icon_5 from '../assets/icons/icon_5.png';
 
-/* Float notification
-const openNotification = () => {
-  notification.open({
-    message: 'Notificación',
-    description: '¡Bienvenido a EasyPark!',
-    icon: <SmileOutlined style={{ color: '#108ee9' }} />,
-  });
-};  
-*/
-
 const Dashboard = () => {
-  /* Float notification
-    useEffect(() => {
-      openNotification();
-    }, []);
-  */
   const { logout, userData } = useAuth();
 
   const avatarImages = [icon_1, icon_2, icon_3, icon_4, icon_5];
