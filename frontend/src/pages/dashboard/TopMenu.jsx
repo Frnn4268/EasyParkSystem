@@ -26,7 +26,7 @@ const TopMenu = () => {
 
     return (
         <div style={{ position: 'fixed', width: '100%', zIndex: 1000 }}>
-            <Menu theme='dark' mode="horizontal" style={{ display: 'flex' }}>
+            <Menu theme='dark' mode="horizontal" style={{ display: 'flex' }} selectable={false}>
                 <Menu.Item key='1' >
                     <Typography.Text className='top-nav-text'>Easy Park</Typography.Text>
                 </Menu.Item>

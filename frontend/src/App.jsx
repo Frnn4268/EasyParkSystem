@@ -33,6 +33,9 @@ import VehiclesHistory from './pages/vehicle/VehiclesHistory.jsx'
 import Incomes from './pages/income/Incomes.jsx'
 import DailyIncome from './pages/income/DailyIncome.jsx'
 
+// Contact
+import ModuleContact from './pages/contact/ModuleContact.jsx'
+
 const App = () => {
   const { isAuthenticated } = useAuth();
 
@@ -107,6 +110,12 @@ const App = () => {
           path="/dailyincome"
           element={
             isAuthenticated ? <DailyIncome /> :  <Login />
+          }
+        />
+        <Route
+          path="/contact"
+          element={
+            isAuthenticated ? <ModuleContact /> :  <Login />
           }
         />
         <Route
