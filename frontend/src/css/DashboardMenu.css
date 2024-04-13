@@ -19,8 +19,9 @@
 }
 .top-nav-username {
     color: white;
-    margin-left: 5px;
+    margin-left: 10px;
     text-transform: capitalize;
+    margin-right: 25px;
 }
 .top-nav-text {
     font-family: 'Poppins', sans-serif;
@@ -38,8 +39,15 @@
     width: auto;
     border-radius: 15px;
     font-weight: bold;
+    margin-right: 15px;
+    margin-left: 25px;
 }
 .avatar {
     width: 50px; 
     height: 50px; 
+}
+.top-menu-divider {
+    background-color: rgba(255, 255, 255, 0.25);
+    height: 30px; 
+    margin: 0 20px; /* Margen horizontal */
 }

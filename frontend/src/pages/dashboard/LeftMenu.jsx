@@ -14,14 +14,14 @@ import {
     AreaChartOutlined 
     } from '@ant-design/icons';
 
-function getItem(label, key, icon, children, type, linkTo) {
+function getItem(label, key, icon, children, type, link) {
     return {
       key,
       icon,
       children,
       label,
       type,
-      linkTo,
+      link,
     };
 }
 
@@ -31,16 +31,15 @@ const items = [
     getItem('Usuarios', '3', <UserOutlined />, null, null, '/users'),
     getItem('Clientes', 'sub2', <UsergroupAddOutlined  />, [
         getItem('Ver Clientes', '4', null, null, null, '/customers'),
-        getItem('Clientes frecuentes', '5', null, null, null, '/usual-customers'), 
-        null
+        getItem('Clientes frecuentes', '5', null, null, null, '/usual_customers'), 
     ]),
     getItem('Vehículos', 'sub1', <CarOutlined  />, [
         getItem('Ver Vehículos', '6', null, null, null, '/vehicles'),
-        getItem('Historial de vehículos', '7', null, null, null, '/vehicles-history'), 
+        getItem('Historial de vehículos', '7', null, null, null, '/vehicleshistory'),
     ]),
     getItem('Ingresos', 'sub3', <AreaChartOutlined />, [
         getItem('Ver ingresos', '8', null, null, null, '/income'), 
-        getItem('Ingresos diarios', '9', null, null, null, '/daily-income'), 
+        getItem('Ingresos diarios', '9', null, null, null, '/dailyincome'),
     ]),
     getItem('Información', '10', <InfoCircleOutlined />, null, null, '/about'),
     getItem('Contacto', '11', <PhoneOutlined />, null, null, '/contact')
@@ -52,6 +51,8 @@ const LeftMenu = () => {
         setCollapsed(!collapsed);
     };
 
+    const buttonWidth = collapsed ? `${collapsed ? 80 : 200}px` : 'auto' ;
+
     return (
         <div className='left-menu-div'>
             <Button
@@ -59,12 +60,12 @@ const LeftMenu = () => {
                 onClick={toggleCollapsed}
                 style={{
                 borderRadius: 0,
+                width: buttonWidth
                 }}
             >
                 {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             </Button>
             <Menu 
-                defaultSelectedKeys={['1']}
                 defaultOpenKeys={items.map(item => item.key)}
                 mode="inline"
                 theme="dark"
@@ -73,9 +74,19 @@ const LeftMenu = () => {
                 className='left-menu'
             >
                 {items.map(item => (
-                    <Menu.Item key={item.key} icon={item.icon}>
-                        <Link to={item.linkTo}>{item.label}</Link>
-                    </Menu.Item>
+                    item.children ? (
+                        <Menu.SubMenu key={item.key} icon={item.icon} title={item.label}>
+                            {item.children.map(subItem => (
+                                <Menu.Item key={subItem.key} icon={subItem.icon}>
+                                    <Link to={subItem.link}>{subItem.label}</Link>
+                                </Menu.Item>
+                            ))}
+                        </Menu.SubMenu>
+                    ) : (
+                        <Menu.Item key={item.key} icon={item.icon}>
+                            <Link to={item.link}>{item.label}</Link>
+                        </Menu.Item>
+                    )
                 ))}
             </Menu>
         </div>
