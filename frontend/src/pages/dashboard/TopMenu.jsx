@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Menu, Avatar, Button, Popover, Typography, Input, Space } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
+import { Menu, Avatar, Button, Popover, Typography, Divider } from 'antd';
+import { UserOutlined, LogoutOutlined } from '@ant-design/icons';
+
 import { useAuth } from '../../contexts/AuthContext.jsx';
 
 import '../../css/DashboardMenu.css'
@@ -19,45 +20,26 @@ const TopMenu = () => {
     const randomAvatarIndex = Math.floor(Math.random() * avatarImages.length);
     const avatarSrc = avatarImages[randomAvatarIndex];
 
-    const [visible, setVisible] = useState(false);
-
-    const handlePopoverVisibleChange = (visible) => {
-        setVisible(visible);
-    };
-
     const handleLogout = async () => {
         await logout();
     };
 
     return (
         <div style={{ position: 'fixed', width: '100%', zIndex: 1000 }}>
-            <Menu theme='dark' mode="horizontal" style={{ display: 'flex' }}>
+            <Menu theme='dark' mode="horizontal" style={{ display: 'flex' }} selectable={false}>
                 <Menu.Item key='1' >
                     <Typography.Text className='top-nav-text'>Easy Park</Typography.Text>
                 </Menu.Item>
-                <Menu.Item key="2" style={{ marginLeft: 'auto' }}>
-                    <Popover
-                        content={
-                            <div>
-                                <Typography.Text>Email: {userData && userData.email}</Typography.Text>
-                                <br />
-                                <Typography.Text>Rol: {userData && userData.role}</Typography.Text>
-                            </div>
-                        }
-                        title='Usuario'
-                        trigger="hover"
-                        visible={visible}
-                        onVisibleChange={handlePopoverVisibleChange}
-                    >
-                        <Avatar src={avatarSrc} icon={<UserOutlined />} />
-                        <Typography.Text className='top-nav-username'>{userData && userData.name}</Typography.Text>
-                    </Popover>
-                </Menu.Item>
-                <Menu.Item key='3'>
-                    <Button size="large" type="primary" className="profile-btn" onClick={handleLogout}>
+                    <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}>
+                        <div>
+                            <Avatar src={avatarSrc} icon={<UserOutlined />} />
+                            <Typography.Text className='top-nav-username'>{userData && userData.name}</Typography.Text>
+                        </div>
+                    <Divider type="vertical" className="top-menu-divider" />
+                    <Button icon={<LogoutOutlined />} size="large" type="primary" className="profile-btn" onClick={handleLogout}>
                         Cerrar sesión
                     </Button>
-                </Menu.Item>
+                </div>
             </Menu>
         </div>
     );

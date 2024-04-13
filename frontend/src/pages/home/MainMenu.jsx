@@ -15,7 +15,7 @@ const MainMenu = () => {
   return (
     <div style={{ position: 'fixed', width: '100%', zIndex: 1000 }}>
       <Menu theme='dark' mode="horizontal" defaultSelectedKeys={['2']} style={{ display: 'flex' }}>
-        <Menu.Item className='login-menu-image' key="1" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Menu.Item className='login-menu-image' key="1" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: 35 }}>
           <img src={logo_home} style={{ width: 45, height: 35, display: 'flex', alignItems: 'center', justifyContent: 'center' }} alt="Logo" />
           <Link to="/" ></Link>
         </Menu.Item>
@@ -28,7 +28,7 @@ const MainMenu = () => {
         <Menu.Item key="4" icon={<PhoneOutlined />}>
           <Link to="/contact">Contacto</Link>
         </Menu.Item>
-        <Menu.Item key="5" icon={<UserOutlined />} style={{ marginLeft: 'auto' }}>
+        <Menu.Item key="5" icon={<UserOutlined />} style={{ marginLeft: 'auto', marginRight: 35 }}>
           <Popover content={popoverContent} title='EasyPark'>
             <Link to="/login">Iniciar sesión</Link>
           </Popover>
