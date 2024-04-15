@@ -2,11 +2,11 @@ import React from 'react'
 import { Card, Flex, Typography, Form, Input, Button, Alert, Spin, AutoComplete, FloatButton, Layout } from 'antd' 
 import { Link } from 'react-router-dom'
 
-import '../css/Auth.css'
-import form_card from '../assets/home/form_card2.png'
-import loginImage from '../assets/login_logo1.jpg'
+import '../../css/Auth.css'
+import form_card from '../../assets/home/form_card2.png'
+import loginImage from '../../assets/login_logo1.jpg'
 
-import useLogin from '../hooks/useLogin.jsx'
+import useLogin from '../../hooks/useLogin.jsx'
 
 import { HomeFilled, InfoCircleFilled } from '@ant-design/icons';
 

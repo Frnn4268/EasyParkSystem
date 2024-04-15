@@ -10,6 +10,11 @@ const app = express()
 // Routes 
 const authRoute = require('./routes/authRoute')
 const contactRoute = require('./routes/contactRoute')
+const userRoute = require('./routes/userRoute')
+const clientRoute = require('./routes/clientRoute')
+const parkingSpaceRoute = require('./routes/parkingSpaceRoute')
+const vehicleRoute = require('./routes/vehicleRoute')
+const incomeRoute = require('./routes/incomeRoute')
 
 // Middlewares
 app.use(cors())
@@ -17,7 +22,12 @@ app.use(express.json())
 
 // Routes
 app.use('/api/auth', authRoute) // Auth
-app.use('/api/contact', contactRoute) // Contact 
+app.use('/api/contact', contactRoute) // Contact
+app.use('/api/user', userRoute) // User
+app.use('/api/client', clientRoute) // Client
+app.use('/api/parking_space', parkingSpaceRoute) // Parking space
+app.use('/api/vehicle', vehicleRoute) // Vehicle
+app.use('/api/income', incomeRoute) // Income
 
 // Global error handler
 app.use((err, req, res, next) => {

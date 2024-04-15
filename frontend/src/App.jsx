@@ -8,8 +8,8 @@ import Information from './pages/home/Information.jsx';
 import Contact from './pages/home/Contact.jsx'; 
 
 // Auth
-import Register from './auth/Register';
-import Login from './auth/Login';
+import Register from './pages/auth/Register';
+import Login from './pages/auth/Login';
 import { useAuth } from './contexts/AuthContext.jsx';
 
 // Dashboard
@@ -62,7 +62,8 @@ const App = () => {
         />
         <Route
           path="/dashboard"
-          element={isAuthenticated ? <Dashboard /> : <Login />}
+          element={
+            isAuthenticated ? <Dashboard /> : <Login />}
         />
         <Route
           path="/park"
@@ -113,7 +114,7 @@ const App = () => {
           }
         />
         <Route
-          path="/contact"
+          path="/module_contact"
           element={
             isAuthenticated ? <ModuleContact /> :  <Login />
           }
