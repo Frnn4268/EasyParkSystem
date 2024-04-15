@@ -3,6 +3,7 @@ import { Layout } from 'antd';
 
 import TopMenu from '../dashboard/TopMenu.jsx';
 import LeftMenu from '../dashboard/LeftMenu.jsx';
+import Dashboard from '../dashboard/Dashboard.jsx';
 
 import '../../css/DashboardMenu.css'
 

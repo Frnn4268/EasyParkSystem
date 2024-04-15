@@ -2,11 +2,11 @@ import { Card, Flex, Typography, Form, Input, Button, Alert, Spin, Select, AutoC
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import '../css/Auth.css'
-import form_card from '../assets/home/form_card2.png'
-import registerImage from '../assets/register_logo1.jpg'
+import '../../css/Auth.css'
+import form_card from '../../assets/home/form_card2.png'
+import registerImage from '../../assets/register_logo1.jpg'
 
-import useSignup from '../hooks/useSingup'
+import useSignup from '../../hooks/useSingup'
 
 import { HomeFilled, InfoCircleFilled } from '@ant-design/icons';
 

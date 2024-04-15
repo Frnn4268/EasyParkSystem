@@ -1,43 +1,41 @@
-const mongoose = require('mongoose')
-const uniqueValidation = require('mongoose-unique-validation')
+const mongoose = require('mongoose');
 
-const userSchema = new mongoose.Schema({
-    name: {
+const vehicleSchema = new mongoose.Schema({
+    placa: {
         type: String,
-        required: true,
+        required: true
     },
-    email: {
+    tipo: {
         type: String,
-        unique: true,
-        required: true,
+        required: true
     },
-    role: {
-        type: String,
-        required: true,
-        enum: ['Empleado', 'Administrador']
+    fecha_hora_entrada: {
+        type: Date,
+        required: true
     },
-    password: {
-        type: String,
-        required: true,
+    fecha_hora_salida: {
+        type: Date,
+        default: null
     },
-    active: {
-        type: Boolean,
+    id_espacio_parqueo: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'ParkingSpace',
+        required: true
+    },
+    tiempo_estacionado: {
+        type: Date,
         required: true
     }
-})
+});
 
-userSchema.set('toJSON', {
+vehicleSchema.set('toJSON', {
     transform: (document, returnedObject) => {
-      returnedObject.id = returnedObject._id
-      delete returnedObject._id
-      delete returnedObject.__v
-  
-      delete returnedObject.passwordHash // Deleting the pass
+        returnedObject.id = returnedObject._id;
+        delete returnedObject._id;
+        delete returnedObject.__v;
     }
-  })
+});
 
-userSchema.plugin(uniqueValidation) 
+const Vehicle = mongoose.model('Vehicle', vehicleSchema);
 
-// User Model
-const User = mongoose.model('User', userSchema)
-module.exports = User
+module.exports = Vehicle;

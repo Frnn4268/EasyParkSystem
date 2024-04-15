@@ -42,7 +42,7 @@ const items = [
         getItem('Ingresos diarios', '9', null, null, null, '/dailyincome'),
     ]),
     getItem('Información', '10', <InfoCircleOutlined />, null, null, '/about'),
-    getItem('Contacto', '11', <PhoneOutlined />, null, null, '/contact')
+    getItem('Contacto', '11', <PhoneOutlined />, null, null, '/module_contact')
 ];
 
 const LeftMenu = () => {
