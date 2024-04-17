@@ -24,16 +24,25 @@ const TopMenu = () => {
         await logout();
     };
 
+    const popoverContent = (
+        <div>
+            <p><strong>Rol:</strong> {userData && userData.role}</p>
+            <p><strong>Correo:</strong> {userData && userData.email}</p>
+        </div>
+    );
+
     return (
         <div style={{ position: 'fixed', width: '100%', zIndex: 1000 }}>
             <Menu theme='dark' mode="horizontal" style={{ display: 'flex' }} selectable={false}>
                 <Menu.Item key='1' >
-                    <Typography.Text className='top-nav-text'>Easy Park</Typography.Text>
+                    <Typography.Text className='top-nav-text' >EasyPark</Typography.Text>
                 </Menu.Item>
                     <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}>
                         <div>
-                            <Avatar src={avatarSrc} icon={<UserOutlined />} />
-                            <Typography.Text className='top-nav-username'>{userData && userData.name}</Typography.Text>
+                            <Popover content={popoverContent}>
+                                <Avatar src={avatarSrc} icon={<UserOutlined />} />
+                                <Typography.Text className='top-nav-username'>{userData && userData.name}</Typography.Text>
+                            </Popover>
                         </div>
                     <Divider type="vertical" className="top-menu-divider" />
                     <Button icon={<LogoutOutlined />} size="large" type="primary" className="profile-btn" onClick={handleLogout}>

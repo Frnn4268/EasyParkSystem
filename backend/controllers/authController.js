@@ -11,7 +11,7 @@ exports.signup = async(req, res, next) => {
         const user = await User.findOne({email: req.body.email})
 
         if (user) {
-            return next(new createError('El usuario ya existe!', 400))
+            return next(new createError('El usuario ya existe', 400))
         }
 
         const hashedPassword = await bcrypt.hash(req.body.password, 12)
@@ -29,7 +29,7 @@ exports.signup = async(req, res, next) => {
 
         res.status(201).json({
             status: 'succes',
-            message: 'Usuario registrado exitosamente!',
+            message: 'Usuario registrado exitosamente',
             token,
         })
     } catch(error) {
@@ -44,12 +44,12 @@ exports.login = async(req, res, next) => {
 
         const user = await User.findOne({ email })
 
-        if(!user) return next(new createError('Usuario no encontrado!', 404))
+        if(!user) return next(new createError('Usuario no encontrado', 404))
 
         const isPasswordValid = await bcrypt.compare(password, user.password)
 
         if (!isPasswordValid) {
-            return next(new createError('Contraseña o email incorrecto!', 401))
+            return next(new createError('Contraseña o email incorrecto', 401))
         }
 
         // Assing JWT (json web token) to user
@@ -60,7 +60,7 @@ exports.login = async(req, res, next) => {
         res.status(200).json({
             status: 'succes',
             token,
-            message: 'Inicio de sesión exitoso!',
+            message: 'Inicio de sesión exitoso',
             user: {
                 _id: user._id,
                 name: user.name,
