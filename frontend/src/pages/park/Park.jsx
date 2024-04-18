@@ -38,7 +38,7 @@ const Park = () => {
                                 }}
                             >
                                 {[...Array(15)].map((_, index) => (
-                                    <Button key={index}>Botón {index + 1}</Button>
+                                    <Button key={index}>{index + 1}</Button>
                                 ))}
                             </div>
                             <div
@@ -49,7 +49,7 @@ const Park = () => {
                                 }}
                             >
                                 {[...Array(5)].map((_, index) => (
-                                    <Button key={index}>Botón {index + 1}</Button>
+                                    <Button key={index}>{index + 1}</Button>
                                 ))}
                             </div>
                         </div>
