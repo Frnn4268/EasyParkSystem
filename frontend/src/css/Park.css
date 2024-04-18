@@ -1,9 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 .park-spaces-container {
-    margin-left: 300px;
-    margin-top: 300px;
+    position: absolute;
+    margin-left: 370px;
     position: 'fixed'; 
     width: '100%';
     z-index: 1000;
+    top: 50%; 
+    transform: translateY(-50%); 
+}
+.center-right-container-parking {
+    position: absolute;
+    right: 0;
+    top: 55%; 
+    transform: translateY(-55%); 
+    padding: 15px;
 }
