@@ -31,7 +31,7 @@ body {
     padding: 0 50px;
 }
 .home-block-section {
-    margin: 30px auto;
+    margin: 70px auto;
     padding: 20px;
     border-radius: 20px;
     box-shadow: 0 20px 10px rgba(0, 0, 0, 0.1);
@@ -84,6 +84,6 @@ body {
 }
 .title-middle-layout {
     text-align: center;
-    margin: 35px 0 0 0;
+    margin: 70px auto;
     font-family: 'Poppins', sans-serif;
 }

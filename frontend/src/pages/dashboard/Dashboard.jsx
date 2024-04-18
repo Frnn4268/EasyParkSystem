@@ -27,38 +27,58 @@ const Dashboard = () => {
                         className='alert-layout'
                         message={
                             <Marquee pauseOnHover gradient={false}>
-                                Cantidad de espacios de parqueo disponibles: Cantidad de espacios de parqueo no disponibles:
+                                Bienvenido a Easy Park - Restaurante y Pastelería Florencia
                             </Marquee>
                         }
                     />
-                    <Row gutter={16}>
-                        <Col span={12}>
-                            <Card bordered={false}>
-                                <Statistic
-                                title="Active"
-                                value={11.28}
-                                precision={2}
-                                valueStyle={{
-                                    color: '#3f8600',
-                                }}
-                                suffix="%"
-                                />
-                            </Card>
-                        </Col>
-                        <Col span={12}>
-                            <Card bordered={false}>
-                                <Statistic
-                                title="Idle"
-                                value={9.3}
-                                precision={2}
-                                valueStyle={{
-                                    color: '#cf1322',
-                                }}
-                                suffix="%"
-                                />
-                            </Card>
-                        </Col>
-                    </Row>
+                    <div className="top-right-container">
+                        <Row gutter={20}>
+                            <Col span={40}>
+                                <Card bordered={false}>
+                                    <Statistic
+                                    title="Porcentaje de parqueo en uso"
+                                    value={100}
+                                    valueStyle={{
+                                        color: '#3f8600',
+                                    }}
+                                    suffix="%"
+                                    style={{ marginBottom: 20 }}
+                                    />
+                                    <Statistic
+                                    title="Porcentaje de parqueo en desuso"
+                                    value={100}
+                                    valueStyle={{
+                                        color: '#cf1322',
+                                    }}
+                                    suffix="%"
+                                    />
+                                </Card>
+                            </Col>
+                        </Row>
+                    </div>
+                    <div className="bottom-right-container">
+                        <Row gutter={20}>
+                            <Col span={40}>
+                                <Card bordered={false}>
+                                    <Statistic
+                                    title="Espacios de parqueo libres"
+                                    value={0}
+                                    valueStyle={{
+                                        color: '#3f8600',
+                                    }}
+                                    style={{ marginBottom: 20 }}
+                                    />
+                                    <Statistic
+                                    title="Espacios de parqueo ocupados"
+                                    value={0}
+                                    valueStyle={{
+                                        color: '#cf1322',
+                                    }}
+                                    />
+                                </Card>
+                            </Col>
+                        </Row>
+                    </div>
                 </Layout.Content>
             </Layout>
         </Layout>

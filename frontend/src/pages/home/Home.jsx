@@ -29,7 +29,7 @@ const cardStyle = {
   width: 500,
   height: 'auto', 
   borderRadius: "20px", 
-  margin: '25px auto',
+  margin: '50px auto',
   overflow: 'hidden',
 }
 
@@ -52,7 +52,7 @@ const Home = () => {
       <Header className='home-header'>
         <MainMenu />
       </Header>
-      <Content >
+      <Content>
       <Card className="home-block-section">
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div>
