@@ -49,7 +49,7 @@
 .top-menu-divider {
     background-color: rgba(255, 255, 255, 0.25);
     height: 30px; 
-    margin: 0 20px; /* Margen horizontal */
+    margin: 0 20px; 
 }
 .layout-content-dashboard {
     margin-left: 60px; 
