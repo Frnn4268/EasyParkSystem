@@ -6,7 +6,7 @@ const router = express.Router()
 // Vehicle route
 router.get('/', vehicleController.getAllVehicles)
 router.post('/', vehicleController.createVehicle)
-router.put('/', vehicleController.updateVehicle)
-router.delete('/', vehicleController.deleteVehicle)
+router.put('/:id', vehicleController.updateVehicle)
+router.delete('/:id', vehicleController.deleteVehicle)
 
 module.exports = router

@@ -6,7 +6,7 @@ const router = express.Router()
 // Income route
 router.get('/', incomeController.getAllIncomes)
 router.post('/', incomeController.createIncome)
-router.put('/', incomeController.updateIncome)
-router.delete('/', incomeController.deleteIncome)
+router.put('/:id', incomeController.updateIncome)
+router.delete('/:id', incomeController.deleteIncome)
 
 module.exports = router

@@ -6,7 +6,7 @@ const router = express.Router()
 // Contact route
 router.get('/', contactController.getAllContacts)
 router.post('/', contactController.createContact)
-router.put('/', contactController.updateContact)
-router.delete('/', contactController.deleteContact)
+router.put('/:id', contactController.updateContact)
+router.delete('/:id', contactController.deleteContact)
 
 module.exports = router

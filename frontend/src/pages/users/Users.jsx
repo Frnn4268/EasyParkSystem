@@ -124,7 +124,7 @@ const Users = () => {
             key: 'action',
             render: (_, record) => (
                 <Space size="middle">
-                    <Button type="primary" icon={<SyncOutlined />} onClick={() => handleUpdate(record)}>Actualizar</Button>
+                    <Button type="primary" icon={<SyncOutlined />} onClick={() => handleUpdate(record)}>Editar</Button>
                     <Button danger icon={<DeleteOutlined />} onClick={() => handleDelete(record.id)}>Eliminar</Button>
                 </Space>
             ),
