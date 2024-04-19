@@ -33,8 +33,9 @@ import VehiclesHistory from './pages/vehicle/VehiclesHistory.jsx'
 import Incomes from './pages/income/Incomes.jsx'
 import DailyIncome from './pages/income/DailyIncome.jsx'
 
-// Contact
-import ModuleContact from './pages/contact/ModuleContact.jsx'
+// Components
+import ContactComponent from './../components/ContactComponent.jsx'
+import InformationComponent from './../components/InformationComponent.jsx'
 
 const App = () => {
   const { isAuthenticated } = useAuth();
@@ -116,7 +117,13 @@ const App = () => {
         <Route
           path="/module_contact"
           element={
-            isAuthenticated ? <ModuleContact /> :  <Login />
+            isAuthenticated ? <ContactComponent /> :  <Login />
+          }
+        />
+        <Route
+          path="/module_about"
+          element={
+            isAuthenticated ? <InformationComponent /> :  <Login />
           }
         />
         <Route

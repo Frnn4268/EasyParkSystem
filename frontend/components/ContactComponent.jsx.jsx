@@ -2,16 +2,16 @@ import { useEffect, useState } from 'react';
 import { Layout, Table, Tag, Typography, Button, Space, Modal, Form, Input, Drawer } from 'antd';
 import { DeleteOutlined, SyncOutlined } from '@ant-design/icons';
 
-import TopMenu from '../dashboard/TopMenu.jsx';
-import LeftMenu from '../dashboard/LeftMenu.jsx';
+import TopMenu from '../src/pages/dashboard/TopMenu.jsx';
+import LeftMenu from '../src/pages/dashboard/LeftMenu.jsx';
 
-import '../../css/DashboardMenu.css';
-import '../../css/ModuleContact.css';
+import '../src/css/DashboardMenu.css';
+import '../src/css/ContactComponent.css';
 
 const { Header } = Layout;
 const { confirm } = Modal;
 
-const ModuleContact = () => {
+const ContactComponent = () => {
     const [contacts, setContacts] = useState([]);
     const [drawerVisible, setDrawerVisible] = useState(false);
     const [selectedContact, setSelectedContact] = useState(null);
@@ -189,4 +189,4 @@ const ModuleContact = () => {
     );
 };
 
-export default ModuleContact;
+export default ContactComponent;
