@@ -76,7 +76,7 @@ const Park = () => {
     const renderDrawerContent = () => {
         return (
             <Drawer
-                title={`Button ${buttonNumber}`}
+                title={`Espacio de parqueo ${buttonNumber}`}
                 width={610}
                 onClose={onCloseDrawer}
                 visible={openDrawer}

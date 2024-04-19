@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Layout, Table, Tag, Typography, Button, Space, Modal, Form, Input } from 'antd';
-import { DeleteOutlined, SyncOutlined  } from '@ant-design/icons';
+import { Layout, Table, Tag, Typography, Button, Space, Modal, Form, Input, Drawer } from 'antd';
+import { DeleteOutlined, SyncOutlined } from '@ant-design/icons';
 
 import TopMenu from '../dashboard/TopMenu.jsx';
 import LeftMenu from '../dashboard/LeftMenu.jsx';
@@ -13,7 +13,7 @@ const { confirm } = Modal;
 
 const ModuleContact = () => {
     const [contacts, setContacts] = useState([]);
-    const [modalVisible, setModalVisible] = useState(false);
+    const [drawerVisible, setDrawerVisible] = useState(false);
     const [selectedContact, setSelectedContact] = useState(null);
     const [form] = Form.useForm();
 
@@ -25,7 +25,7 @@ const ModuleContact = () => {
                     const data = await response.json();
                     setContacts(data.data);
                 } else {
-                    console.error('Error al obtener los contactos');
+                    console.error('Error getting contacts');
                 }
             } catch (error) {
                 console.error(error);
@@ -48,36 +48,69 @@ const ModuleContact = () => {
             okType: 'danger',
             cancelText: 'Cancelar',
             onOk() {
-                // Lógica para eliminar el contacto
-                const updatedContacts = contacts.filter(contact => contact.id !== id);
-                setContacts(updatedContacts);
+                fetch(`${import.meta.env.VITE_APP_API_URL_CONTACT}/${id}`, {
+                    method: 'DELETE',
+                })
+                .then(response => {
+                    if (response.ok) {
+                        const updatedContacts = contacts.filter(contact => contact.id !== id);
+                        setContacts(updatedContacts);
+                    } else {
+                        console.error('Error to delete contact');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error processing request:', error);
+                });
             },
             onCancel() {
-                console.log('Cancelado');
+                console.log('Canceled');
             },
         });
     };
 
     const handleUpdate = (contact) => {
         setSelectedContact(contact);
-        setModalVisible(true);
         form.setFieldsValue({
             name: contact.name,
             email: contact.email,
             message: contact.message,
         });
+        setDrawerVisible(true);
     };
 
-    const onFinish = (values) => {
-        const updatedContacts = contacts.map(contact => {
-            if (contact.id === selectedContact.id) {
-                return { ...contact, ...values };
+    const onFinish = async (values) => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_CONTACT}/${selectedContact.id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(values),
+            });
+            if (response.ok) {
+                // Actualizar el contacto en el estado
+                const updatedContact = await response.json();
+                const updatedContacts = contacts.map(contact =>
+                    contact.id === updatedContact.id ? updatedContact : contact
+                );
+                setContacts(updatedContacts);
+                setDrawerVisible(false);
+    
+                const updatedResponse = await fetch(import.meta.env.VITE_APP_API_URL_CONTACT);
+                if (updatedResponse.ok) {
+                    const updatedData = await updatedResponse.json();
+                    setContacts(updatedData.data);
+                } else {
+                    console.error('Error getting updated contacts');
+                }
+            } else {
+                console.error('Error updating contact');
             }
-            return contact;
-        });
-        setContacts(updatedContacts);
-        setModalVisible(false);
-    };
+        } catch (error) {
+            console.error('Error processing request:', error);
+        }
+    };    
 
     const columns = [
         {
@@ -108,7 +141,7 @@ const ModuleContact = () => {
             key: 'action',
             render: (_, record) => (
                 <Space size="middle">
-                    <Button type="primary" icon={<SyncOutlined />} onClick={() => handleUpdate(record)}>Actualizar</Button>
+                    <Button type="primary" icon={<SyncOutlined />} onClick={() => handleUpdate(record)}>Editar</Button>
                     <Button danger icon={<DeleteOutlined />} onClick={() => handleDelete(record.id)}>Eliminar</Button>
                 </Space>
             ),
@@ -131,11 +164,11 @@ const ModuleContact = () => {
                     <Table dataSource={contacts} columns={columns} rowKey="_id" />
                 </Layout.Content>
             </Layout>
-            <Modal
-                title="Actualizar contacto"
-                visible={modalVisible}
-                onCancel={() => setModalVisible(false)}
-                footer={null}
+            <Drawer
+                title="Editar contacto"
+                width={500}
+                onClose={() => setDrawerVisible(false)}
+                visible={drawerVisible}
             >
                 <Form form={form} onFinish={onFinish}>
                     <Form.Item label="Nombre" name="name">
@@ -151,7 +184,7 @@ const ModuleContact = () => {
                         <Button type="primary" htmlType="submit" style={{ textAlign: 'center' }}>Guardar cambios</Button>
                     </Form.Item>
                 </Form>
-            </Modal>
+            </Drawer>
         </Layout>
     );
 };
