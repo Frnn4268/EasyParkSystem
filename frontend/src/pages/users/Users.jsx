@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Layout, Table, Tag, Typography, Button, Space, Modal, Form, Input, Switch  } from 'antd';
+import { Layout, Table, Tag, Typography, Button, Space, Modal, Form, Input, Switch, Drawer } from 'antd';
 import { DeleteOutlined, SyncOutlined } from '@ant-design/icons';
 
 import TopMenu from '../dashboard/TopMenu.jsx';
@@ -13,31 +13,31 @@ const { confirm } = Modal;
 
 const Users = () => {
     const [users, setUsers] = useState([]);
-    const [modalVisible, setModalVisible] = useState(false);
+    const [drawerVisible, setDrawerVisible] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
     const [form] = Form.useForm();
 
     useEffect(() => {
-        const fetchUsers = async () => {
-            try {
-                const response = await fetch(import.meta.env.VITE_APP_API_URL_USER);
-                if (response.ok) {
-                    const data = await response.json();
-                    setUsers(data.data);
-                } else {
-                    console.error('Error al obtener los usuarios');
-                }
-            } catch (error) {
-                console.error(error);
-            }
-        };
-
         fetchUsers();
     }, []);
 
     const getRandomColor = () => {
         const colors = ['blue', 'red', 'yellow', 'green', 'purple'];
         return colors[Math.floor(Math.random() * colors.length)];
+    };
+
+    const fetchUsers = async () => {
+        try {
+            const response = await fetch(import.meta.env.VITE_APP_API_URL_USER);
+            if (response.ok) {
+                const data = await response.json();
+                setUsers(data.data);
+            } else {
+                console.error('Error getting users');
+            }
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     const handleDelete = (id) => {
@@ -48,35 +48,74 @@ const Users = () => {
             okType: 'danger',
             cancelText: 'Cancelar',
             onOk() {
-                const updatedUsers = users.filter(user => user.id !== id);
-                setUsers(updatedUsers);
+                fetch(`${import.meta.env.VITE_APP_API_URL_USER}/${id}`, {
+                    method: 'DELETE',
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            fetchUsers(); // Actualizar la lista de usuarios después de eliminar uno
+                        } else {
+                            console.error('Error to delete contact');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error processing request:', error);
+                    });
             },
             onCancel() {
-                console.log('Cancelado');
+                console.log('Canceled');
             },
         });
     };
 
     const handleUpdate = (user) => {
         setSelectedUser(user);
-        setModalVisible(true);
         form.setFieldsValue({
             name: user.name,
             email: user.email,
             role: user.role,
             active: user.active
         });
+        setDrawerVisible(true);
     };
 
-    const onFinish = (values) => {
-        const updatedUsers = users.map(user => {
-            if (user.id === selectedUser.id) {
-                return { ...user, ...values };
+    const onFinish = async (values) => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_USER}/${selectedUser.id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(values),
+            });
+            if (response.ok) {
+                await fetchUsers(); // Actualizar la lista de usuarios después de editar uno
+                setDrawerVisible(false);
+            } else {
+                console.error('Error updating user');
             }
-            return user;
-        });
-        setUsers(updatedUsers);
-        setModalVisible(false);
+        } catch (error) {
+            console.error('Error processing request:', error);
+        }
+    };
+
+    const handleSwitchChange = async (userId, checked) => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_USER}/${userId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ active: checked }),
+            });
+            if (!response.ok) {
+                console.error('Error updating user');
+            } else {
+                await fetchUsers(); // Actualizar la lista de usuarios después de cambiar el estado de uno
+            }
+        } catch (error) {
+            console.error('Error processing request:', error);
+        }
     };
 
     const columns = [
@@ -110,12 +149,13 @@ const Users = () => {
             title: 'Estado',
             dataIndex: 'active',
             key: 'active',
-            render: (active) => (
+            render: (active, record) => (
                 <Switch
+                    checked={active}
                     checkedChildren="Activo"
                     unCheckedChildren="Inactivo"
-                    defaultChecked={active}
-                    style={{ backgroundColor: active ? 'green' : 'red' }}
+                    onChange={(checked) => handleSwitchChange(record.id, checked)}
+                    style={{ backgroundColor: active ? 'green' : 'red', transition: 'background-color 0.3s' }} // Agregar una transición de color de fondo
                 />
             ),
         },
@@ -147,11 +187,11 @@ const Users = () => {
                     <Table dataSource={users} columns={columns} rowKey="_id" />
                 </Layout.Content>
             </Layout>
-            <Modal
-                title="Actualizar usuario"
-                visible={modalVisible}
-                onCancel={() => setModalVisible(false)}
-                footer={null}
+            <Drawer
+                title="Editar usuario"
+                width={500}
+                onClose={() => setDrawerVisible(false)}
+                visible={drawerVisible}
             >
                 <Form form={form} onFinish={onFinish}>
                     <Form.Item label="Nombre" name="name">
@@ -163,14 +203,11 @@ const Users = () => {
                     <Form.Item label="Rol" name="role">
                         <Input />
                     </Form.Item>
-                    <Form.Item label="Estado" name="active">
-                        <Input />
-                    </Form.Item>
                     <Form.Item>
                         <Button type="primary" htmlType="submit" style={{ textAlign: 'center' }}>Guardar cambios</Button>
                     </Form.Item>
                 </Form>
-            </Modal>
+            </Drawer>
         </Layout>
     )
 }
