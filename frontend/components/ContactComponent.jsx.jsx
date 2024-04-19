@@ -89,7 +89,6 @@ const ContactComponent = () => {
                 body: JSON.stringify(values),
             });
             if (response.ok) {
-                // Actualizar el contacto en el estado
                 const updatedContact = await response.json();
                 const updatedContacts = contacts.map(contact =>
                     contact.id === updatedContact.id ? updatedContact : contact
