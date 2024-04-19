@@ -46,6 +46,8 @@ exports.login = async(req, res, next) => {
 
         if(!user) return next(new createError('Usuario no encontrado', 404))
 
+        if(user.active === false) return next(new createError('Usuario sin autorización', 403))
+
         const isPasswordValid = await bcrypt.compare(password, user.password)
 
         if (!isPasswordValid) {
