@@ -41,7 +41,7 @@ const items = [
         getItem('Ver ingresos', '8', null, null, null, '/income'), 
         getItem('Ingresos diarios', '9', null, null, null, '/dailyincome'),
     ]),
-    getItem('Información', '10', <InfoCircleOutlined />, null, null, '/about'),
+    getItem('Información', '10', <InfoCircleOutlined />, null, null, '/module_about'),
     getItem('Contacto', '11', <PhoneOutlined />, null, null, '/module_contact')
 ];
 
