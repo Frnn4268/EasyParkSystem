@@ -16,7 +16,7 @@ import { useAuth } from './contexts/AuthContext.jsx';
 import Dashboard from './pages/dashboard/Dashboard.jsx';
 
 // Parking
-import Park from './pages/park/Park.jsx';
+import ParkingSpace from './pages/parking space/ParkingSpace.jsx';
 
 // Users 
 import Users from './pages/users/Users.jsx'
@@ -69,7 +69,7 @@ const App = () => {
         <Route
           path="/park"
           element={
-            isAuthenticated ? <Park /> :  <Login />
+            isAuthenticated ? <ParkingSpace /> :  <Login />
           }
         />
         <Route
