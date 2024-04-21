@@ -143,8 +143,8 @@ const Customers = () => {
                 <Layout.Sider>
                     <LeftMenu />
                 </Layout.Sider>
-                <Layout.Content className='layout-content-user'>
-                    <Typography.Title className='table-title-user'>
+                <Layout.Content className='layout-content-customer'>
+                    <Typography.Title className='table-title-customer'>
                         Clientes
                     </Typography.Title>
                     <Table dataSource={customers} columns={columns} rowKey="_id" />
