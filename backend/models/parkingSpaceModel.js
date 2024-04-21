@@ -20,7 +20,7 @@ const parkingSpaceSchema = new mongoose.Schema({
     },
     timed_parking_space: {
         type: Date,
-        required: true
+        default: null
     },
 });
 

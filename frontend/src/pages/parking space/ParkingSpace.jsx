@@ -5,7 +5,7 @@ import TopMenu from '../dashboard/TopMenu.jsx';
 import LeftMenu from '../dashboard/LeftMenu.jsx';
 
 import '../../css/DashboardMenu.css';
-import '../../css/Park.css';
+import '../../css/ParkingSpaces.css';
 
 const { Header } = Layout;
 const { Option } = Select;
@@ -58,7 +58,7 @@ const renderForm = () => {
     );
 };
 
-const Park = () => {
+const ParkingSpaces = () => {
     const [openDrawer, setOpenDrawer] = useState(false);
     const [drawerContent, setDrawerContent] = useState(null);
     const [buttonNumber, setButtonNumber] = useState(null);
@@ -204,4 +204,4 @@ const Park = () => {
     );
 };
 
-export default Park;
+export default ParkingSpaces;
