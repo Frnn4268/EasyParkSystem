@@ -11,7 +11,8 @@ import {
     InfoCircleOutlined, 
     PhoneOutlined, 
     UserOutlined,
-    AreaChartOutlined 
+    AreaChartOutlined,
+    HistoryOutlined 
     } from '@ant-design/icons';
 
 function getItem(label, key, icon, children, type, link) {
@@ -28,21 +29,22 @@ function getItem(label, key, icon, children, type, link) {
 const items = [
     getItem('Inicio', '1', <HomeOutlined />, null, null, '/dashboard'),
     getItem('Parqueo', '2', <PieChartOutlined />, null, null, '/park'),
-    getItem('Usuarios', '3', <UserOutlined />, null, null, '/users'),
+    getItem('Historial de Parqueo', '3', <HistoryOutlined />, null, null, '/parkhistory'),
+    getItem('Usuarios', '4', <UserOutlined />, null, null, '/users'),
     getItem('Clientes', 'sub2', <UsergroupAddOutlined  />, [
-        getItem('Ver Clientes', '4', null, null, null, '/customers'),
-        getItem('Clientes frecuentes', '5', null, null, null, '/usual_customers'), 
+        getItem('Ver Clientes', '5', null, null, null, '/customers'),
+        getItem('Clientes frecuentes', '6', null, null, null, '/usual_customers'), 
     ]),
     getItem('Vehículos', 'sub1', <CarOutlined  />, [
-        getItem('Ver Vehículos', '6', null, null, null, '/vehicles'),
-        getItem('Historial de vehículos', '7', null, null, null, '/vehicleshistory'),
+        getItem('Ver Vehículos', '7', null, null, null, '/vehicles'),
+        getItem('Historial de vehículos', '8', null, null, null, '/vehicleshistory'),
     ]),
     getItem('Ingresos', 'sub3', <AreaChartOutlined />, [
-        getItem('Ver ingresos', '8', null, null, null, '/income'), 
-        getItem('Ingresos diarios', '9', null, null, null, '/dailyincome'),
+        getItem('Ver ingresos', '9', null, null, null, '/income'), 
+        getItem('Ingresos diarios', '10', null, null, null, '/dailyincome'),
     ]),
-    getItem('Información', '10', <InfoCircleOutlined />, null, null, '/module_about'),
-    getItem('Contacto', '11', <PhoneOutlined />, null, null, '/module_contact')
+    getItem('Información', '11', <InfoCircleOutlined />, null, null, '/module_about'),
+    getItem('Contacto', '12', <PhoneOutlined />, null, null, '/module_contact')
 ];
 
 const LeftMenu = () => {

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const clientSchema = new mongoose.Schema({
+const customerSchema = new mongoose.Schema({
     firstname_owner: {
         type: String,
         required: true
@@ -15,7 +15,7 @@ const clientSchema = new mongoose.Schema({
     }
 });
 
-clientSchema.set('toJSON', {
+customerSchema.set('toJSON', {
     transform: (document, returnedObject) => {
         returnedObject.id = returnedObject._id;
         delete returnedObject._id;
@@ -23,6 +23,6 @@ clientSchema.set('toJSON', {
     }
 });
 
-const Client = mongoose.model('Client', clientSchema);
+const Customer = mongoose.model('Customer', customerSchema);
 
-module.exports = Client;
+module.exports = Customer;
