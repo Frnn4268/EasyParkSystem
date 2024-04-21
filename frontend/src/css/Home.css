@@ -61,8 +61,8 @@ body {
     border-radius: 20px;
     font-family: 'Poppins', sans-serif;
     align-items: center;
-    font-size: 15px;
-    width: 150px;
+    font-size: 20px;
+    width: 200px;
     height: 55px;
     font-weight: bold;
 }
@@ -86,4 +86,10 @@ body {
     text-align: center;
     margin: 70px auto;
     font-family: 'Poppins', sans-serif;
+}
+.home-carousel {
+    margin: 30px 0 0 0;
+}
+.home-footer {
+    text-align: center;
 }

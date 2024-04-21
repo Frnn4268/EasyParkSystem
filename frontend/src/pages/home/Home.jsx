@@ -57,7 +57,7 @@ const Home = () => {
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div>
             <Title level={2} className="home-welcome-text" style={{ fontSize: 55 }}>Bienvenido a EasyPark</Title>
-            <Text level={3} className="home-welcome-message">Por favor, inicia sesión o regístrate para continuar</Text>
+            <Text level={3} className="home-welcome-message">Por favor, inicia sesión o regístrate para continuar.</Text>
           </div>
             <img src={logo_card} alt="EasyPark Logo" className='logo-card' />
         </div>
@@ -109,7 +109,7 @@ const Home = () => {
               </Card>
             </Col>
           </Row>
-          <Carousel afterChange={onChange} style={{ margin: '30px 0 0 0' }}>
+          <Carousel afterChange={onChange} className='home-carousel'>
             <div>
               <h3 style={contentStyle}>1</h3>
             </div>
@@ -121,8 +121,8 @@ const Home = () => {
             </div>
           </Carousel>
       </Content>
-      { /* Comment section */}
-      <Footer style={{ textAlign: 'center' }}>Restaurante y Pastelería Florencia - ©2024 EasyPark</Footer>
+      { /* Footer section */}
+      <Footer className='home-footer'>Restaurante y Pastelería Florencia - 2024 ©EasyPark</Footer>
     </Layout>
   );
 };

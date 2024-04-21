@@ -1,21 +1,17 @@
 const mongoose = require('mongoose');
 
 const clientSchema = new mongoose.Schema({
-    placa: {
+    firstname_owner: {
         type: String,
         required: true
     },
-    tipo: {
+    lastname_owner: {
         type: String,
         required: true
     },
-    nombre_propietario: {
+    phone_number: {
         type: String,
-        required: true
-    },
-    apellido_propietario: {
-        type: String,
-        required: true
+        required: false
     }
 });
 

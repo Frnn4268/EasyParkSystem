@@ -3,7 +3,7 @@ import { useAuth } from "../contexts/AuthContext.jsx";
 import { notification } from "antd";
 import { SmileOutlined } from '@ant-design/icons';
 
-import '../css/Auth.css'
+import '../css/Auth.css';
 
 const useLogin = () => {
     const { login } = useAuth();
@@ -44,6 +44,9 @@ const useLogin = () => {
             if (res.status === 200) {
                 openNotification('success', 'Bienvenido a EasyPark', data.message);
                 login(data.toke, data.user);
+            } else if (res.status === 403) {
+                setError(data.message);
+                openNotificationError('warning', 'Error al iniciar sesión: ', data.message);
             } else if (res.status === 404) {
                 setError(data.message);
                 openNotificationError('warning', 'Error al iniciar sesión: ', data.message);

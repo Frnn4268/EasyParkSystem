@@ -15,6 +15,7 @@ const clientRoute = require('./routes/clientRoute')
 const parkingSpaceRoute = require('./routes/parkingSpaceRoute')
 const vehicleRoute = require('./routes/vehicleRoute')
 const incomeRoute = require('./routes/incomeRoute')
+const parkingRoute = require('./routes/parkingEntryRoute')
 
 // Middlewares
 app.use(cors())
@@ -28,6 +29,7 @@ app.use('/api/client', clientRoute) // Client
 app.use('/api/parking_space', parkingSpaceRoute) // Parking space
 app.use('/api/vehicle', vehicleRoute) // Vehicle
 app.use('/api/income', incomeRoute) // Income
+app.use('/api/parking-space', parkingRoute) // Parking Spaces 
 
 // Global error handler
 app.use((err, req, res, next) => {
