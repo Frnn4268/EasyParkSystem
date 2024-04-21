@@ -1,5 +1,5 @@
 const ParkingSpace = require('../models/parkingSpaceModel.js');
-const Client = require('../models/clientModel.js');
+const Customer = require('../models/customerModel.js');
 const Vehicle = require('../models/vehicleModel.js');
 
 exports.getAllParkingSpaces = async (req, res, next) => {
@@ -14,7 +14,7 @@ exports.getAllParkingSpaces = async (req, res, next) => {
 
 exports.parkingEntryCreate = async (req, res, next) => {
     try {
-        const { clientData, vehicleData } = req.body;
+        const { customerData, vehicleData } = req.body;
 
         const parkingSpace = new ParkingSpace({
             state: 'Ocupado', 
@@ -24,10 +24,10 @@ exports.parkingEntryCreate = async (req, res, next) => {
 
         await parkingSpace.save();
 
-        const client = new Client(clientData);
-        await client.save();
+        const customer = new Customer(customerData);
+        await customer.save();
 
-        vehicleData.clientId = client._id;
+        vehicleData.CustomerId = customer._id;
 
         const vehicle = new Vehicle(vehicleData);
         await vehicle.save();

@@ -28,6 +28,7 @@
     font-size: 30px;
     color: white;
     font-style: italic;
+    text-shadow: 3px 3px 5px rgba(255, 255, 255, 1);
 }
 .home-header-dashboard {
     width: 100%;

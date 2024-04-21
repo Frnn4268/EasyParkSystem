@@ -11,7 +11,7 @@ const app = express()
 const authRoute = require('./routes/authRoute')
 const contactRoute = require('./routes/contactRoute')
 const userRoute = require('./routes/userRoute')
-const clientRoute = require('./routes/clientRoute')
+const customerRoute = require('./routes/CustomerRoute')
 const parkingSpaceRoute = require('./routes/parkingSpaceRoute')
 const vehicleRoute = require('./routes/vehicleRoute')
 const incomeRoute = require('./routes/incomeRoute')
@@ -25,7 +25,7 @@ app.use(express.json())
 app.use('/api/auth', authRoute) // Auth
 app.use('/api/contact', contactRoute) // Contact
 app.use('/api/user', userRoute) // User
-app.use('/api/client', clientRoute) // Client
+app.use('/api/customer', customerRoute) // Customer
 app.use('/api/parking_space', parkingSpaceRoute) // Parking space
 app.use('/api/vehicle', vehicleRoute) // Vehicle
 app.use('/api/income', incomeRoute) // Income

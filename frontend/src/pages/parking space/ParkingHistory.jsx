@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Layout, Table, Typography, Tag, Space, Button, Modal } from 'antd'; // Agregar Modal al import
-import { DeleteOutlined, SyncOutlined } from '@ant-design/icons';
+import { Layout, Table, Typography, Tag, Space, Button, Modal } from 'antd';
+import { DeleteOutlined } from '@ant-design/icons';
 
 import TopMenu from '../dashboard/TopMenu.jsx';
 import LeftMenu from '../dashboard/LeftMenu.jsx';
