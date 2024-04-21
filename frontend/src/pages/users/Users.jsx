@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Layout, Table, Tag, Typography, Button, Space, Modal, Form, Input, Switch, Drawer } from 'antd';
+import { Layout, Table, Tag, Typography, Button, Space, Modal, Form, Input, Switch, Drawer, Radio } from 'antd';
 import { DeleteOutlined, SyncOutlined } from '@ant-design/icons';
 
 import TopMenu from '../dashboard/TopMenu.jsx';
@@ -15,16 +15,12 @@ const Users = () => {
     const [users, setUsers] = useState([]);
     const [drawerVisible, setDrawerVisible] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
+    const [selectedRole, setSelectedRole] = useState(null); 
     const [form] = Form.useForm();
 
     useEffect(() => {
         fetchUsers();
     }, []);
-
-    const getRandomColor = () => {
-        const colors = ['blue', 'red', 'yellow', 'green', 'purple'];
-        return colors[Math.floor(Math.random() * colors.length)];
-    };
 
     const fetchUsers = async () => {
         try {
@@ -40,6 +36,11 @@ const Users = () => {
         }
     };
 
+    const getRandomColor = () => {
+        const colors = ['blue', 'red', 'yellow', 'green', 'purple'];
+        return colors[Math.floor(Math.random() * colors.length)];
+    };
+
     const handleDelete = (id) => {
         confirm({
             title: '¿Estás seguro de eliminar este usuario?',
@@ -53,7 +54,7 @@ const Users = () => {
                 })
                     .then(response => {
                         if (response.ok) {
-                            fetchUsers(); // Actualizar la lista de usuarios después de eliminar uno
+                            fetchUsers(); 
                         } else {
                             console.error('Error to delete contact');
                         }
@@ -76,6 +77,7 @@ const Users = () => {
             role: user.role,
             active: user.active
         });
+        setSelectedRole(user.role); 
         setDrawerVisible(true);
     };
 
@@ -89,7 +91,7 @@ const Users = () => {
                 body: JSON.stringify(values),
             });
             if (response.ok) {
-                await fetchUsers(); // Actualizar la lista de usuarios después de editar uno
+                await fetchUsers(); 
                 setDrawerVisible(false);
             } else {
                 console.error('Error updating user');
@@ -111,7 +113,7 @@ const Users = () => {
             if (!response.ok) {
                 console.error('Error updating user');
             } else {
-                await fetchUsers(); // Actualizar la lista de usuarios después de cambiar el estado de uno
+                await fetchUsers(); 
             }
         } catch (error) {
             console.error('Error processing request:', error);
@@ -201,7 +203,10 @@ const Users = () => {
                         <Input />
                     </Form.Item>
                     <Form.Item label="Rol" name="role">
-                        <Input />
+                        <Radio.Group onChange={(e) => setSelectedRole(e.target.value)}>
+                            <Radio.Button value="Empleado">Empleado</Radio.Button>
+                            <Radio.Button value="Administrador">Administrador</Radio.Button>
+                        </Radio.Group>
                     </Form.Item>
                     <Form.Item>
                         <Button type="primary" htmlType="submit" style={{ textAlign: 'center' }}>Guardar cambios</Button>

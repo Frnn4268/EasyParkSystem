@@ -1,30 +1,21 @@
 const mongoose = require('mongoose');
 
 const vehicleSchema = new mongoose.Schema({
-    placa: {
+    license_plate: {
         type: String,
         required: true
     },
-    tipo: {
+    type: {
         type: String,
         required: true
     },
-    fecha_hora_entrada: {
-        type: Date,
-        required: true
+    brand: {
+        type: String,
+        required: false
     },
-    fecha_hora_salida: {
-        type: Date,
-        default: null
-    },
-    id_espacio_parqueo: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'ParkingSpace',
-        required: true
-    },
-    tiempo_estacionado: {
-        type: Date,
-        required: true
+    color: {
+        type: String,
+        required: false
     }
 });
 
