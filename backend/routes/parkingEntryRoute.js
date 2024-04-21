@@ -7,5 +7,6 @@ const router = express.Router()
 router.get('/', parkingEntryController.getAllParkingSpaces);
 router.post('/', parkingEntryController.parkingEntryCreate);
 router.put('/:id', parkingEntryController.parkingOutputEdit);
+router.delete('/:id', parkingEntryController.deleteParkingSpace)
 
 module.exports = router;
