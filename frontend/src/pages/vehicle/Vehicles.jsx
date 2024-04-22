@@ -143,7 +143,7 @@ const Vehicles = () => {
             key: 'license_plate',
         },
         {
-            title: 'Tipo',
+            title: 'Tipo de Vehículo',
             dataIndex: 'type',
             key: 'type',
             render: (type) => (
@@ -209,7 +209,16 @@ const Vehicles = () => {
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item label="Tipo" name="type_plate">
+                            <Form.Item 
+                                label="Tipo" 
+                                name="type_plate"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: '¡Por favor selecciona el tipo de placa!',
+                                    },
+                                ]}
+                            >
                                 <Select>
                                     <Option value="P">Particulares (P)</Option>
                                     <Option value="M">Mercantiles (M)</Option>
@@ -222,7 +231,7 @@ const Vehicles = () => {
                             </Form.Item>
                         </Col>
                     </Row>
-                    <Form.Item label="Tipo" name="type">
+                    <Form.Item label="Tipo de Vehículo" name="type">
                         <Select>
                             <Option value="SUV">SUV</Option>
                             <Option value="Pickup">Pickup</Option>
