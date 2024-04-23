@@ -189,7 +189,7 @@ const Vehicles = () => {
                     <LeftMenu />
                 </Layout.Sider>
                 <Layout.Content className='layout-content-vehicle'>
-                    <Typography.Title className='table-title-vehicle'>
+                    <Typography.Title className='table-title-vehicle' level={2}>
                         Vehículos
                     </Typography.Title>
                     <Table dataSource={vehicles} columns={columns} rowKey="_id" />
@@ -256,7 +256,7 @@ const Vehicles = () => {
                                     <Option value="Suzuki">Suzuki</Option>
                                     <Option value="Ford">Ford</Option>
                                     <Option value="KIA">KIA</Option>
-                                    <Option value="Hyundai">KIA</Option>
+                                    <Option value="Hyundai">Hyundai</Option>
                                     <Option value="Otro">Otro</Option>
                                 </Select>
                             </Form.Item>

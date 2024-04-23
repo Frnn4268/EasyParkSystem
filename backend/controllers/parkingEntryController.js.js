@@ -12,6 +12,22 @@ exports.getAllParkingSpaces = async (req, res, next) => {
     }
 };
 
+exports.getParkingSpaceById = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+
+        const parkingSpace = await ParkingSpace.findOne({ parking_space_id: id }).sort({ hour_date_entry: -1 });
+
+        if (!parkingSpace) {
+            return res.status(404).json({ message: 'Espacio de estacionamiento no encontrado' });
+        }
+
+        res.status(200).json({ parkingSpace });
+    } catch (error) {
+        next(error);
+    }
+};
+
 exports.parkingEntryCreate = async (req, res, next) => {
     try {
         const { customerData, vehicleData } = req.body;
@@ -43,28 +59,25 @@ exports.parkingEntryCreate = async (req, res, next) => {
 exports.parkingOutputEdit = async (req, res, next) => {
     try {
         const { id } = req.params; 
-        const { state } = req.body; 
+        const { state } = req.body;
 
-        const updatedParkingSpace = await ParkingSpace.findByIdAndUpdate(
-            id,
-            {
-                state,
-                hour_date_output: new Date(), 
-            },
-            { new: true } 
-        );
+        const parkingSpaces = await ParkingSpace.find({ parking_space_id: id }).sort({ hour_date_entry: -1 });
 
-        const timeDifference = updatedParkingSpace.hour_date_output - updatedParkingSpace.hour_date_entry;
-
-        updatedParkingSpace.timed_parking_space = new Date(timeDifference);
-
-        await updatedParkingSpace.save();
-
-        if (!updatedParkingSpace) {
+        if (!parkingSpaces || parkingSpaces.length === 0) {
             return res.status(404).json({ message: 'Espacio de estacionamiento no encontrado' });
         }
 
-        res.status(200).json({ message: 'Estado del espacio de estacionamiento actualizado exitosamente', updatedParkingSpace });
+        const lastParkingSpace = parkingSpaces[0];
+
+        lastParkingSpace.state = state;
+        lastParkingSpace.hour_date_output = new Date();
+
+        const timeDifference = lastParkingSpace.hour_date_output - lastParkingSpace.hour_date_entry;
+        lastParkingSpace.timed_parking_space = new Date(timeDifference);
+
+        await lastParkingSpace.save();
+
+        res.status(200).json({ message: 'Estado del espacio de estacionamiento actualizado exitosamente', updatedParkingSpace: lastParkingSpace });
     } catch (error) {
         next(error);
     }
