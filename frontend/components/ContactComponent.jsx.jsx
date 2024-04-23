@@ -157,7 +157,7 @@ const ContactComponent = () => {
                     <LeftMenu />
                 </Layout.Sider>
                 <Layout.Content className='layout-content-contact'>
-                    <Typography.Title className='table-title-contact'>
+                    <Typography.Title className='table-title-contact' level={2}>
                         Contacto
                     </Typography.Title>
                     <Table dataSource={contacts} columns={columns} rowKey="_id" />

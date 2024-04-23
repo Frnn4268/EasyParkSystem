@@ -183,7 +183,7 @@ const Users = () => {
                     <LeftMenu />
                 </Layout.Sider>
                 <Layout.Content className='layout-content-user'>
-                    <Typography.Title className='table-title-user'>
+                    <Typography.Title className='table-title-user' level={2}>
                         Usuarios
                     </Typography.Title>
                     <Table dataSource={users} columns={columns} rowKey="_id" />

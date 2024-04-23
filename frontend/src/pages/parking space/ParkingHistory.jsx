@@ -6,7 +6,7 @@ import TopMenu from '../dashboard/TopMenu.jsx';
 import LeftMenu from '../dashboard/LeftMenu.jsx';
 
 import '../../css/DashboardMenu.css';
-import '../../css/ParkingSpaces.css';
+import '../../css/ParkingHistory.css';
 
 const { Header } = Layout;
 const { confirm } = Modal;
@@ -119,8 +119,8 @@ const ParkingHistory = () => {
                 <Layout.Sider>
                     <LeftMenu />
                 </Layout.Sider>
-                <Layout.Content className='layout-content-contact'>
-                    <Typography.Title className='table-title-contact'>
+                <Layout.Content className='layout-content-parking-history'>
+                    <Typography.Title className='table-title-parking-history' level={2}>
                         Historial de Parqueo
                     </Typography.Title>
                     <Table dataSource={parkingspaces} columns={columns} rowKey="_id" />

@@ -39,7 +39,7 @@ const ParkingSpaces = () => {
                     phone_number: values.phone_number,
                 },
                 vehicleData: {
-                    license_plate: `${values.type_plate}-${values.license_plate}`, // Concatenar tipo de placa con número de placa
+                    license_plate: `${values.type_plate}-${values.license_plate}`,
                     type: values.type,
                     brand: values.brand,
                     color: values.color,
@@ -64,6 +64,7 @@ const ParkingSpaces = () => {
                 console.log('Datos guardados exitosamente:', data);
                 setDrawerContent(null);
                 form.resetFields();
+                onCloseDrawer();
             } else {
                 console.error('Error al guardar los datos:', data);
             }
@@ -205,7 +206,7 @@ const ParkingSpaces = () => {
                                     <Option value="Suzuki">Suzuki</Option>
                                     <Option value="Ford">Ford</Option>
                                     <Option value="KIA">KIA</Option>
-                                    <Option value="Hyundai">KIA</Option>
+                                    <Option value="Hyundai">Hyundai</Option>
                                     <Option value="Otro">Otro</Option>
                                 </Select>
                             </Form.Item>

@@ -144,7 +144,7 @@ const Customers = () => {
                     <LeftMenu />
                 </Layout.Sider>
                 <Layout.Content className='layout-content-customer'>
-                    <Typography.Title className='table-title-customer'>
+                    <Typography.Title className='table-title-customer' level={2}>
                         Clientes
                     </Typography.Title>
                     <Table dataSource={customers} columns={columns} rowKey="_id" />
