@@ -12,6 +12,25 @@ exports.getAllParkingSpaces = async (req, res, next) => {
     }
 };
 
+exports.getAllLatestParkingSpaces = async (req, res, next) => {
+    try {
+        const latestParkingSpaces = await ParkingSpace.aggregate([
+            { $sort: { hour_date_entry: -1 } },
+            { $group: { _id: "$parking_space_id", latestEntry: { $first: "$$ROOT" } } } 
+        ]);
+
+        const formattedParkingSpaces = latestParkingSpaces.map(space => ({
+            parking_space_id: space.latestEntry.parking_space_id,
+            state: space.latestEntry.state,
+            hour_date_entry: space.latestEntry.hour_date_entry
+        }));
+
+        res.status(200).json({ parkingSpaces: formattedParkingSpaces });
+    } catch (error) {
+        next(error);
+    }
+};
+
 exports.getParkingSpaceById = async (req, res, next) => {
     try {
         const { id } = req.params;

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Layout, Button, ConfigProvider, Drawer, Space, Col, Form, Input, Row, Select, Card, Statistic, Typography, Divider } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Layout, Button, ConfigProvider, Drawer, Space, Col, Form, Input, Row, Select, Card, Statistic, Typography, Divider, Tag } from 'antd';
 
 import TopMenu from '../dashboard/TopMenu.jsx';
 import LeftMenu from '../dashboard/LeftMenu.jsx';
@@ -17,16 +17,57 @@ const ParkingSpaces = () => {
     const [openDrawer, setOpenDrawer] = useState(false);
     const [drawerContent, setDrawerContent] = useState(null);
     const [buttonNumber, setButtonNumber] = useState(null);
+    const [parkingSpaceStates, setParkingSpaceStates] = useState({});
+    const [selectedParkingSpaceState, setSelectedParkingSpaceState] = useState(null);
     const [form] = Form.useForm();
 
-    const showDrawer = (content, number) => {
-        setDrawerContent(content);
-        setButtonNumber(number);
-        setOpenDrawer(true);
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE_ENTRY}/state`);
+            const data = await response.json();
+            const latestParkingSpaces = data.parkingSpaces;
+
+            const parkingSpaceStatesCopy = {};
+            latestParkingSpaces.forEach(space => {
+                parkingSpaceStatesCopy[space.parking_space_id] = space.state;
+            });
+
+            setParkingSpaceStates(parkingSpaceStatesCopy);
+        } catch (error) {
+            console.error('Error al obtener los datos del estado de los espacios de parqueo:', error);
+        }
     };
 
+    const showDrawer = async (content, id) => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE_ENTRY}/${id}`);
+            const data = await response.json();
+
+            setDrawerContent(content);
+            setButtonNumber(id);
+            setSelectedParkingSpaceState(data.parkingSpace.state);
+            
+            setParkingSpaceStates(prevState => ({
+                ...prevState,
+                [id]: data.parkingSpace.state
+            }));
+            
+            setOpenDrawer(true);
+        } catch (error) {
+            console.error('Error al procesar la solicitud:', error);
+            setSelectedParkingSpaceState(null);
+            setOpenDrawer(true);
+        }
+    };
+    
     const onCloseDrawer = () => {
         setOpenDrawer(false);
+        form.resetFields(); 
+        fetchData()
     };
 
     const handleParkingEntry = async () => {
@@ -65,13 +106,19 @@ const ParkingSpaces = () => {
                 setDrawerContent(null);
                 form.resetFields();
                 onCloseDrawer();
+                fetchData(); // Actualizar feed de botones automáticamente
             } else {
                 console.error('Error al guardar los datos:', data);
             }
         } catch (error) {
             console.error('Error al procesar la solicitud:', error);
         }
-    };        
+    };    
+    
+    const getButtonColor = (id) => {
+        const spaceState = parkingSpaceStates[id];
+        return spaceState === 'Ocupado' ? 'red' : 'green';
+    };
 
     const renderDrawerContent = () => {
         return (
@@ -93,6 +140,14 @@ const ParkingSpaces = () => {
                 }
             >
                 <Form form={form} layout="vertical" hideRequiredMark>
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end', height: '13%', flexDirection: 'column' }}>
+                        <div style={{ marginLeft: 'auto' }}>
+                            Estado del espacio de estacionamiento:  
+                            <Tag color={selectedParkingSpaceState === 'Ocupado' ? 'red' : 'green'}>
+                                {selectedParkingSpaceState}
+                            </Tag>
+                        </div>
+                    </div>
                     <Typography.Title level={3}>
                         Cliente
                     </Typography.Title>
@@ -256,7 +311,18 @@ const ParkingSpaces = () => {
                                 }}
                             >
                                 {[...Array(14)].map((_, index) => (
-                                    <Button key={index} onClick={() => showDrawer(renderDrawerContent(), index + 6)}>{index + 6}</Button>
+                                    <Button 
+                                        key={index} 
+                                        onClick={() => showDrawer(renderDrawerContent(), index + 6)}
+                                        style={{ 
+                                            backgroundColor: getButtonColor(index + 6), 
+                                            color: 'white',
+                                            fontWeight: 'bold',
+                                            borderColor: 'white'
+                                         }}
+                                    >
+                                        {index + 6}
+                                    </Button>
                                 ))}
                             </div>
                             <div
@@ -265,7 +331,18 @@ const ParkingSpaces = () => {
                                 }}
                             >
                                 {[...Array(5)].map((_, index) => (
-                                    <Button key={index} onClick={() => showDrawer(renderDrawerContent(), index + 1)}>{index + 1}</Button>
+                                    <Button 
+                                        key={index} 
+                                        onClick={() => showDrawer(renderDrawerContent(), index + 1)}
+                                        style={{ 
+                                            backgroundColor: getButtonColor(index + 1), 
+                                            color: 'white',
+                                            fontWeight: 'bold',
+                                            borderColor: 'white'
+                                        }}
+                                    >
+                                        {index + 1}
+                                    </Button>
                                 ))}
                             </div>
                         </div>
