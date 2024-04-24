@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Layout, Button, ConfigProvider, Drawer, Space, Col, Form, Input, Row, Select, Card, Statistic, Typography, Divider, Tag } from 'antd';
+import { Layout, Button, ConfigProvider, Drawer, Space, Col, Form, Input, Row, Select, Card, Statistic, Typography, Divider, Tag, Modal } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 import TopMenu from '../dashboard/TopMenu.jsx';
 import LeftMenu from '../dashboard/LeftMenu.jsx';
@@ -19,6 +20,9 @@ const ParkingSpaces = () => {
     const [buttonNumber, setButtonNumber] = useState(null);
     const [parkingSpaceStates, setParkingSpaceStates] = useState({});
     const [selectedParkingSpaceState, setSelectedParkingSpaceState] = useState(null);
+    const [selectedButtonIndex, setSelectedButtonIndex] = useState(null);
+    const [confirmVisible, setConfirmVisible] = useState(false);
+    const [selectedButtonId, setSelectedButtonId] = useState(null); // Agregamos el estado para el ID del botón seleccionado
     const [form] = Form.useForm();
 
     useEffect(() => {
@@ -106,15 +110,57 @@ const ParkingSpaces = () => {
                 setDrawerContent(null);
                 form.resetFields();
                 onCloseDrawer();
-                fetchData(); // Actualizar feed de botones automáticamente
+                fetchData(); 
             } else {
                 console.error('Error al guardar los datos:', data);
             }
         } catch (error) {
             console.error('Error al procesar la solicitud:', error);
         }
-    };    
+    };   
     
+    const editParkingSpaceState = async (id, newState) => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE_ENTRY}/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ state: newState }),
+            });
+    
+            const data = await response.json();
+    
+            if (response.ok) {
+                console.log('Estado del espacio de estacionamiento actualizado exitosamente:', data);
+                fetchData();
+            } else {
+                console.error('Error al actualizar el estado del espacio de estacionamiento:', data);
+            }
+        } catch (error) {
+            console.error('Error al procesar la solicitud:', error);
+        }
+    };    
+
+    const handleParkingSpaceClick = async (index) => {
+        setSelectedButtonIndex(index);
+        setSelectedButtonId(index); 
+        if (parkingSpaceStates[index] === 'Ocupado') {
+            setConfirmVisible(true);
+        } else {
+            showDrawer(renderDrawerContent(), index);
+        }
+    };
+
+    const handleConfirm = () => {
+        editParkingSpaceState(selectedButtonIndex, 'Disponible');
+        setConfirmVisible(false); 
+    };
+
+    const handleCancel = () => {
+        setConfirmVisible(false); 
+    };
+
     const getButtonColor = (id) => {
         const spaceState = parkingSpaceStates[id];
         return spaceState === 'Ocupado' ? 'red' : 'green';
@@ -312,14 +358,14 @@ const ParkingSpaces = () => {
                             >
                                 {[...Array(14)].map((_, index) => (
                                     <Button 
-                                        key={index} 
-                                        onClick={() => showDrawer(renderDrawerContent(), index + 6)}
+                                        key={index}
+                                        onClick={() => handleParkingSpaceClick(index + 6)}
                                         style={{ 
                                             backgroundColor: getButtonColor(index + 6), 
                                             color: 'white',
                                             fontWeight: 'bold',
                                             borderColor: 'white'
-                                         }}
+                                        }}
                                     >
                                         {index + 6}
                                     </Button>
@@ -332,8 +378,8 @@ const ParkingSpaces = () => {
                             >
                                 {[...Array(5)].map((_, index) => (
                                     <Button 
-                                        key={index} 
-                                        onClick={() => showDrawer(renderDrawerContent(), index + 1)}
+                                        key={index}
+                                        onClick={() => handleParkingSpaceClick(index + 1)}
                                         style={{ 
                                             backgroundColor: getButtonColor(index + 1), 
                                             color: 'white',
@@ -348,6 +394,18 @@ const ParkingSpaces = () => {
                         </div>
                     </ConfigProvider>
                     {renderDrawerContent()}
+                    <Modal
+                        title="¿Está seguro de que desea liberar este espacio de parqueo?"
+                        visible={confirmVisible}
+                        onOk={handleConfirm}
+                        onCancel={handleCancel}
+                        okText="Confirmar"
+                        cancelText="Cancelar"
+                        okType="danger"
+                        icon={<ExclamationCircleOutlined />}
+                    >
+                        <p>Ha seleccionado el botón con ID: {selectedButtonId}</p>
+                    </Modal>
                     <div className="center-right-container-parking">
                         <Row gutter={20}>
                             <Col span={40}>
