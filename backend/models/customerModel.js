@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const { Schema, mongoose } = require('mongoose');
 
 const customerSchema = new mongoose.Schema({
     firstname_owner: {
@@ -12,6 +12,10 @@ const customerSchema = new mongoose.Schema({
     phone_number: {
         type: String,
         required: false
+    },
+    vehicle: {
+        type: Schema.Types.ObjectId,
+        ref: 'Vehicle'
     }
 });
 
@@ -24,5 +28,4 @@ customerSchema.set('toJSON', {
 });
 
 const Customer = mongoose.model('Customer', customerSchema);
-
 module.exports = Customer;

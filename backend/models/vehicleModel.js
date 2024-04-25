@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const { Schema, mongoose } = require('mongoose');
 
 const vehicleSchema = new mongoose.Schema({
     license_plate: {
@@ -16,6 +16,10 @@ const vehicleSchema = new mongoose.Schema({
     color: {
         type: String,
         required: false
+    },
+    customer: {
+        type: Schema.Types.ObjectId,
+        ref: 'Customer'
     }
 });
 
@@ -28,5 +32,4 @@ vehicleSchema.set('toJSON', {
 });
 
 const Vehicle = mongoose.model('Vehicle', vehicleSchema);
-
 module.exports = Vehicle;

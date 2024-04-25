@@ -1,4 +1,4 @@
-import React from 'react';
+import { React, useState, useEffect} from 'react';
 import { Layout, Alert, Row, Statistic, Col, Card } from 'antd';
 import Marquee from 'react-fast-marquee';
 
@@ -11,6 +11,50 @@ import logo_dashboard from '../../assets/home/logo_card.png';
 const { Header } = Layout;
 
 const Dashboard = () => {
+    const [parkingStatistics, setParkingStatistics] = useState({
+        usagePercentage: 0,
+        unusedPercentage: 0,
+        freeSpaces: 0,
+        occupiedSpaces: 0
+    });
+
+    useEffect(() => {
+        fetchParkingStatistics();
+    }, []);
+
+    const fetchParkingStatistics = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE_ENTRY}/state`);
+            const data = await response.json();
+            const parkingSpaces = data.parkingSpaces;
+    
+            let occupiedCount = 0;
+            let availableCount = 0;
+    
+            parkingSpaces.forEach(space => {
+                if (space.state === 'Ocupado') {
+                    occupiedCount++;
+                } else if (space.state === 'Disponible') {
+                    availableCount++;
+                }
+            });
+    
+            const totalSpaces = occupiedCount + availableCount;
+    
+            const usagePercentage = ((occupiedCount / totalSpaces) * 100).toFixed(2);
+            const unusedPercentage = ((availableCount / totalSpaces) * 100).toFixed(2);
+    
+            setParkingStatistics({
+                usagePercentage: isNaN(usagePercentage) ? 0 : usagePercentage,
+                unusedPercentage: isNaN(unusedPercentage) ? 0 : unusedPercentage,
+                freeSpaces: availableCount,
+                occupiedSpaces: occupiedCount
+            });
+        } catch (error) {
+            console.error('Error al obtener las estadísticas del parqueo:', error);
+        }
+    };
+
     return (
         <Layout>
             <Header className='home-header-dashboard'>
@@ -35,22 +79,23 @@ const Dashboard = () => {
                         <Row gutter={20}>
                             <Col span={40}>
                                 <Card bordered={false}>
-                                    <Statistic
-                                    title="Porcentaje de parqueo en uso"
-                                    value={100}
-                                    valueStyle={{
-                                        color: '#3f8600',
-                                    }}
-                                    suffix="%"
-                                    style={{ marginBottom: 20 }}
+                                <Statistic
+                                        title="Porcentaje de parqueo disponible"
+                                        value={parkingStatistics.unusedPercentage}
+                                        valueStyle={{
+                                            color: '#3f8600',
+                                        }}
+                                        style={{ marginBottom: 20 }}
+                                        suffix="%"
                                     />
                                     <Statistic
-                                    title="Porcentaje de parqueo en desuso"
-                                    value={100}
-                                    valueStyle={{
-                                        color: '#cf1322',
-                                    }}
-                                    suffix="%"
+                                        title="Porcentaje de parqueo ocupado"
+                                        value={parkingStatistics.usagePercentage}
+                                        valueStyle={{
+                                            color: '#cf1322',
+                                        }}
+                                        suffix="%"
+                                        style={{ marginBottom: 20 }}
                                     />
                                 </Card>
                             </Col>
@@ -61,19 +106,20 @@ const Dashboard = () => {
                             <Col span={40}>
                                 <Card bordered={false}>
                                     <Statistic
-                                    title="Espacios de parqueo libres"
-                                    value={0}
-                                    valueStyle={{
-                                        color: '#3f8600',
-                                    }}
-                                    style={{ marginBottom: 20 }}
+                                        title="Espacios de parqueo libres"
+                                        value={parkingStatistics.freeSpaces}
+                                        valueStyle={{
+                                            color: '#3f8600',
+                                        }}
+                                        style={{ marginBottom: 20 }}
                                     />
                                     <Statistic
-                                    title="Espacios de parqueo ocupados"
-                                    value={0}
-                                    valueStyle={{
-                                        color: '#cf1322',
-                                    }}
+                                        title="Espacios de parqueo ocupados"
+                                        value={parkingStatistics.occupiedSpaces}
+                                        valueStyle={{
+                                            color: '#cf1322',
+                                        }}
+                                        style={{ marginBottom: 20 }}
                                     />
                                 </Card>
                             </Col>

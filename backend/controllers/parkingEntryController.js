@@ -1,10 +1,13 @@
 const ParkingSpace = require('../models/parkingSpaceModel.js');
 const Customer = require('../models/customerModel.js');
 const Vehicle = require('../models/vehicleModel.js');
+const moment = require('moment');
 
 exports.getAllParkingSpaces = async (req, res, next) => {
     try {
-        const parkingSpaces = await ParkingSpace.find();
+        const parkingSpaces = await ParkingSpace.find()
+            .populate('customer')
+            .populate('vehicle');
 
         res.status(200).json({ parkingSpaces });
     } catch (error) {
@@ -31,6 +34,48 @@ exports.getAllLatestParkingSpaces = async (req, res, next) => {
     }
 };
 
+exports.getFrequentCustomers = async (req, res, next) => {
+    try {
+        const currentDate = moment();
+
+        const firstDayOfMonth = currentDate.startOf('month').toDate();
+
+        const frequentCustomers = await Customer.aggregate([
+            {
+                $lookup: {
+                    from: 'parkingspaces',
+                    localField: '_id',
+                    foreignField: 'customer',
+                    as: 'parkingSpaces'
+                }
+            },
+            {
+                $unwind: '$parkingSpaces'
+            },
+            {
+                $match: {
+                    'parkingSpaces.hour_date_entry': { $gte: firstDayOfMonth }
+                }
+            },
+            {
+                $group: {
+                    _id: { firstname_owner: '$firstname_owner', lastname_owner: '$lastname_owner', phone_number: '$phone_number' },
+                    count: { $sum: 1 }
+                }
+            },
+            {
+                $match: {
+                    count: { $gte: 5 }
+                }
+            }
+        ]);
+
+        res.status(200).json({ frequentCustomers });
+    } catch (error) {
+        next(error);
+    }
+};
+
 exports.getParkingSpaceById = async (req, res, next) => {
     try {
         const { id } = req.params;
@@ -49,27 +94,27 @@ exports.getParkingSpaceById = async (req, res, next) => {
 
 exports.parkingEntryCreate = async (req, res, next) => {
     try {
-        const { customerData, vehicleData } = req.body;
-
-        const parkingSpace = new ParkingSpace({
-            state: 'Ocupado', 
-            hour_date_entry: new Date(), 
-            ...req.body.parkingSpaceData 
-        });
-
-        await parkingSpace.save();
+        const { customerData, vehicleData, parkingSpaceData } = req.body;
 
         const customer = new Customer(customerData);
         await customer.save();
 
-        vehicleData.CustomerId = customer._id;
-
         const vehicle = new Vehicle(vehicleData);
         await vehicle.save();
 
-        await ParkingSpace.findByIdAndUpdate(parkingSpace._id, { vehicleId: vehicle._id });
+        const parkingSpace = new ParkingSpace({
+            state: 'Ocupado',
+            hour_date_entry: new Date(),
+            ...parkingSpaceData,
+            customer: customer._id,
+            vehicle: vehicle._id
+        });
 
-        res.status(201).json({ message: 'Datos guardados exitosamente' });
+        await parkingSpace.save();
+
+        await parkingSpace.populate('customer').populate('vehicle').execPopulate();
+
+        res.status(201).json({ message: 'Data successfully saved', parkingSpace });
     } catch (error) {
         next(error);
     }

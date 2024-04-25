@@ -100,6 +100,30 @@ const ParkingHistory = () => {
             key: 'timed_parking_space',
         },
         {
+            title: 'Placa del vehículo',
+            dataIndex: 'vehicle',
+            key: 'vehicle',
+            render: (vehicle) => (
+                <span>{vehicle.license_plate}</span>
+            ),
+        },
+        {
+            title: 'Nombre del cliente',
+            dataIndex: 'customer',
+            key: 'customer',
+            render: (customer) => (
+                <span>{customer.firstname_owner}</span>
+            ),
+        },
+        {
+            title: 'Apellido del cliente',
+            dataIndex: 'customer',
+            key: 'customer',
+            render: (customer) => (
+                <span>{customer.lastname_owner}</span>
+            ),
+        },
+        {
             title: 'Acción',
             key: 'action',
             render: (_, record) => (
@@ -108,7 +132,7 @@ const ParkingHistory = () => {
                 </Space>
             ),
         },
-    ];
+    ];    
 
     return (
         <Layout>

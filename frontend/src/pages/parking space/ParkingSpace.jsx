@@ -22,11 +22,19 @@ const ParkingSpaces = () => {
     const [selectedParkingSpaceState, setSelectedParkingSpaceState] = useState(null);
     const [selectedButtonIndex, setSelectedButtonIndex] = useState(null);
     const [confirmVisible, setConfirmVisible] = useState(false);
-    const [selectedButtonId, setSelectedButtonId] = useState(null); // Agregamos el estado para el ID del botón seleccionado
+    const [selectedButtonId, setSelectedButtonId] = useState(null); 
     const [form] = Form.useForm();
+
+    const [parkingStatistics, setParkingStatistics] = useState({
+        usagePercentage: 0,
+        unusedPercentage: 0,
+        freeSpaces: 0,
+        occupiedSpaces: 0
+    });
 
     useEffect(() => {
         fetchData();
+        fetchParkingStatistics();
     }, []);
 
     const fetchData = async () => {
@@ -45,6 +53,39 @@ const ParkingSpaces = () => {
             console.error('Error al obtener los datos del estado de los espacios de parqueo:', error);
         }
     };
+
+    const fetchParkingStatistics = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE_ENTRY}/state`);
+            const data = await response.json();
+            const parkingSpaces = data.parkingSpaces;
+    
+            let occupiedCount = 0;
+            let availableCount = 0;
+    
+            parkingSpaces.forEach(space => {
+                if (space.state === 'Ocupado') {
+                    occupiedCount++;
+                } else if (space.state === 'Disponible') {
+                    availableCount++;
+                }
+            });
+    
+            const totalSpaces = occupiedCount + availableCount;
+    
+            const usagePercentage = ((occupiedCount / totalSpaces) * 100).toFixed(2);
+            const unusedPercentage = ((availableCount / totalSpaces) * 100).toFixed(2);
+    
+            setParkingStatistics({
+                usagePercentage: isNaN(usagePercentage) ? 0 : usagePercentage,
+                unusedPercentage: isNaN(unusedPercentage) ? 0 : unusedPercentage,
+                freeSpaces: availableCount,
+                occupiedSpaces: occupiedCount
+            });
+        } catch (error) {
+            console.error('Error al obtener las estadísticas del parqueo:', error);
+        }
+    };    
 
     const showDrawer = async (content, id) => {
         try {
@@ -110,7 +151,8 @@ const ParkingSpaces = () => {
                 setDrawerContent(null);
                 form.resetFields();
                 onCloseDrawer();
-                fetchData(); 
+                fetchData();
+                fetchParkingStatistics(); 
             } else {
                 console.error('Error al guardar los datos:', data);
             }
@@ -134,13 +176,14 @@ const ParkingSpaces = () => {
             if (response.ok) {
                 console.log('Estado del espacio de estacionamiento actualizado exitosamente:', data);
                 fetchData();
+                fetchParkingStatistics(); 
             } else {
                 console.error('Error al actualizar el estado del espacio de estacionamiento:', data);
             }
         } catch (error) {
             console.error('Error al procesar la solicitud:', error);
         }
-    };    
+    };  
 
     const handleParkingSpaceClick = async (index) => {
         setSelectedButtonIndex(index);
@@ -404,33 +447,33 @@ const ParkingSpaces = () => {
                         okType="danger"
                         icon={<ExclamationCircleOutlined />}
                     >
-                        <p>Ha seleccionado el botón con ID: {selectedButtonId}</p>
+                        <p>Ha seleccionado el espacio de parqueo número: {selectedButtonId}</p>
                     </Modal>
                     <div className="center-right-container-parking">
                         <Row gutter={20}>
                             <Col span={40}>
                                 <Card bordered={false}>
                                     <Statistic
-                                        title="Porcentaje de parqueo en uso"
-                                        value={100}
+                                        title="Porcentaje de parqueo disponible"
+                                        value={parkingStatistics.unusedPercentage}
                                         valueStyle={{
                                             color: '#3f8600',
                                         }}
-                                        suffix="%"
                                         style={{ marginBottom: 20 }}
+                                        suffix="%"
                                     />
                                     <Statistic
-                                        title="Porcentaje de parqueo en desuso"
-                                        value={0}
+                                        title="Porcentaje de parqueo ocupado"
+                                        value={parkingStatistics.usagePercentage}
                                         valueStyle={{
                                             color: '#cf1322',
                                         }}
-                                        style={{ marginBottom: 20 }}
                                         suffix="%"
+                                        style={{ marginBottom: 20 }}
                                     />
                                     <Statistic
                                         title="Espacios de parqueo libres"
-                                        value={19}
+                                        value={parkingStatistics.freeSpaces}
                                         valueStyle={{
                                             color: '#3f8600',
                                         }}
@@ -438,28 +481,10 @@ const ParkingSpaces = () => {
                                     />
                                     <Statistic
                                         title="Espacios de parqueo ocupados"
-                                        value={0}
+                                        value={parkingStatistics.occupiedSpaces}
                                         valueStyle={{
                                             color: '#cf1322',
                                         }}
-                                        style={{ marginBottom: 20 }}
-                                    />
-                                    <Statistic
-                                        title="Porcentaje de parqueo en uso"
-                                        value={100}
-                                        valueStyle={{
-                                            color: '#3f8600',
-                                        }}
-                                        suffix="%"
-                                        style={{ marginBottom: 20 }}
-                                    />
-                                    <Statistic
-                                        title="Porcentaje de parqueo en uso"
-                                        value={100}
-                                        valueStyle={{
-                                            color: '#cf1322',
-                                        }}
-                                        suffix="%"
                                         style={{ marginBottom: 20 }}
                                     />
                                 </Card>
