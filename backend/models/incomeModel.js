@@ -1,23 +1,23 @@
 const mongoose = require('mongoose');
 
 const incomeSchema = new mongoose.Schema({
-    día: {
+    day: {
         type: Number,
         required: true
     },
-    mes: {
+    month: {
         type: Number,
         required: true
     },
-    año: {
+    year: {
         type: Number,
         required: true
     },
-    monto: {
+    income: {
         type: Number,
         required: true
     },
-    fecha_hora: {
+    hour_date: {
         type: Date,
         required: true
     }

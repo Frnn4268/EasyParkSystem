@@ -40,11 +40,12 @@ const items = [
         getItem('Historial de vehículos', '8', null, null, null, '/vehicleshistory'),
     ]),
     getItem('Ingresos', 'sub3', <AreaChartOutlined />, [
-        getItem('Ver ingresos', '9', null, null, null, '/income'), 
+        getItem('Estadísticas', '9', null, null, null, '/statistics'),
         getItem('Ingresos diarios', '10', null, null, null, '/dailyincome'),
+        getItem('Historial de ingresos', '11', null, null, null, '/income'),
     ]),
-    getItem('Información', '11', <InfoCircleOutlined />, null, null, '/module_about'),
-    getItem('Contacto', '12', <PhoneOutlined />, null, null, '/module_contact')
+    getItem('Información', '12', <InfoCircleOutlined />, null, null, '/module_about'),
+    getItem('Contacto', '13', <PhoneOutlined />, null, null, '/module_contact')
 ];
 
 const LeftMenu = () => {
