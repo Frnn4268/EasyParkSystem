@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const { Schema, mongoose } = require('mongoose');
 
 const parkingSpaceSchema = new mongoose.Schema({
     parking_space_id: {
@@ -22,6 +22,14 @@ const parkingSpaceSchema = new mongoose.Schema({
         type: Date,
         default: null
     },
+    customer: {
+        type: Schema.Types.ObjectId,
+        ref: 'Customer'
+    },
+    vehicle: {
+        type: Schema.Types.ObjectId,
+        ref: 'Vehicle'
+    }
 });
 
 parkingSpaceSchema.set('toJSON', {
@@ -33,5 +41,4 @@ parkingSpaceSchema.set('toJSON', {
 });
 
 const ParkingSpace = mongoose.model('ParkingSpace', parkingSpaceSchema);
-
 module.exports = ParkingSpace;
