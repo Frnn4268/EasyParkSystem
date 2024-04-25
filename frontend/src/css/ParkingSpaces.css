@@ -20,8 +20,18 @@
     background-color: green;
     color: white;
 }
-
 .red-button {
     background-color: red;
     color: white;
+}
+.bottom-right-container-parking-spaces {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 15px;
+}
+.bottom-right-container-typography {
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    font-size: 12px;
 }
