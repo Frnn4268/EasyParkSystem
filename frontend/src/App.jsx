@@ -33,6 +33,7 @@ import VehiclesHistory from './pages/vehicle/VehiclesHistory.jsx'
 // Income
 import Incomes from './pages/income/Incomes.jsx'
 import DailyIncome from './pages/income/DailyIncome.jsx'
+import Statistics from './pages/income/Statistics.jsx';
 
 // Components
 import ContactComponent from './../components/ContactComponent.jsx'
@@ -113,6 +114,12 @@ const App = () => {
           path="/income"
           element={
             isAuthenticated ? <Incomes /> :  <Login />
+          }
+        />
+        <Route
+          path="/statistics"
+          element={
+            isAuthenticated ? <Statistics /> :  <Login />
           }
         />
         <Route
