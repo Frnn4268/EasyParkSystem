@@ -81,24 +81,6 @@ const VehiclesHistory = () => {
             key: 'id',
         },
         {
-            title: 'Nombre del cliente',
-            dataIndex: 'firstname_owner',
-            key: 'firstname_owner',
-        },
-        {
-            title: 'Apellido del cliente',
-            dataIndex: 'lastname_owner',
-            key: 'lastname_owner',
-        },
-        {
-            title: 'Número de teléfono del cliente',
-            dataIndex: 'phone_number',
-            key: 'phone_number',
-            render: (phone_number, record) => (
-                <Tag color={record.phone_number_color}>{phone_number}</Tag>
-            ),
-        },
-        {
             title: 'Placa del vehículo',
             dataIndex: 'license_plate',
             key: 'license_plate',
@@ -122,6 +104,24 @@ const VehiclesHistory = () => {
             key: 'color',
             render: (color) => (
                 <Tag color={colorColorMap[color]}>{color}</Tag>
+            ),
+        },
+        {
+            title: 'Nombre del cliente',
+            dataIndex: 'firstname_owner',
+            key: 'firstname_owner',
+        },
+        {
+            title: 'Apellido del cliente',
+            dataIndex: 'lastname_owner',
+            key: 'lastname_owner',
+        },
+        {
+            title: 'Número de teléfono del cliente',
+            dataIndex: 'phone_number',
+            key: 'phone_number',
+            render: (phone_number, record) => (
+                <Tag color={record.phone_number_color}>{phone_number}</Tag>
             ),
         },
     ];    
