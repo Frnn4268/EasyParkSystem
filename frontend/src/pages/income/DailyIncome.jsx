@@ -1,5 +1,7 @@
-import React from 'react';
-import { Row, Col, Button, Form, Input, Layout, Card, Typography, message, DatePicker, Statistic } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Row, Col, Button, Form, Layout, Card, Typography, message, DatePicker, InputNumber, Statistic } from 'antd';
+import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
+import moment from 'moment'; // Importa la librería moment.js
 
 import TopMenu from '../dashboard/TopMenu.jsx';
 import LeftMenu from '../dashboard/LeftMenu.jsx';
@@ -12,20 +14,49 @@ const { useForm } = Form;
 const DailyIncome = () => {
     const [form] = useForm();
     const [messageApi, contextHolder] = message.useMessage();
+    const [income, setIncome] = useState(0); 
+    const [lastSavedIncome, setLastSavedIncome] = useState(0); 
+    const [lastDateIncome, setLastDateIncome] = useState(null); // Nuevo estado para almacenar la fecha y hora del último ingreso
 
     const success = () => {
         messageApi
             .loading('Guardando ingreso...', 2.5)
             .then(() => {
                 message.success('Ingreso guardado correctamente', 2.5);
-                form.resetFields(); 
+                form.resetFields();
+                setLastSavedIncome(income); 
             })
             .catch(() => message.error('Error al guardar el ingreso', 2.5));
     };
 
+    const parseIncome = (value) => {
+        const parsedValue = value.replace(/[^\d.]/g, '');
+        return parseFloat(parsedValue).toFixed(2);
+    };
+
+    useEffect(() => {
+        fetchLastIncome();
+    }, []); 
+
+    const fetchLastIncome = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_INCOME}/last-income`);
+            const data = await response.json();
+            if (data.status === 'success') {
+                setIncome(data.data.income);
+                setLastSavedIncome(data.data.income); 
+                setLastDateIncome(moment(data.data.hour_date).format('YYYY-MM-DD HH:mm:ss')); // Formatea la fecha y hora del último ingreso
+            } else {
+                throw new Error('Error al obtener el último ingreso');
+            }
+        } catch (error) {
+            message.error(error.message);
+        }
+    };
+
     const handleSubmit = async (values) => {
         try {
-            const { date, income } = values;
+            const { date } = values;
             const day = date.date();
             const month = date.month() + 1; 
             const year = date.year();
@@ -39,7 +70,7 @@ const DailyIncome = () => {
                     day,
                     month,
                     year,
-                    income
+                    income 
                 }),
             });
 
@@ -79,6 +110,7 @@ const DailyIncome = () => {
                                                 message: 'Por favor selecciona la fecha'
                                             }
                                         ]}
+                                        style={{ marginTop: 15 }}
                                     >
                                         <DatePicker 
                                             format="YYYY-MM-DD" 
@@ -96,13 +128,14 @@ const DailyIncome = () => {
                                             }
                                         ]}
                                     >
-                                        <Input
+                                        <InputNumber
                                             size='large'
                                             placeholder='Ingresa el monto'
-                                            addonBefore='Q'
-                                            type='number'
-                                            step='0.1'
-                                            min='0'
+                                            defaultValue={0}
+                                            value={income} 
+                                            formatter={(value) => `Q ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                            parser={parseIncome} 
+                                            onChange={setIncome} 
                                             style={{ width: '100%' }}
                                         />
                                     </Form.Item>
@@ -115,6 +148,22 @@ const DailyIncome = () => {
                             </Col>
                         </Row>
                     </Card>
+                    <Row gutter={10} style={{ marginLeft: '4.5%', marginTop: -35 }}>
+                        <Col span={6}>
+                            <Card bordered={false}>
+                                <Statistic
+                                    title="Último Ingreso monetario:"
+                                    value={`Q ${lastSavedIncome}`} 
+                                    precision={2}
+                                    valueStyle={{
+                                        color: '#3f8600',
+                                    }}
+                                    prefix={<ArrowUpOutlined />}
+                                    suffix={lastDateIncome ? ` (${lastDateIncome})` : ''} 
+                                />
+                            </Card>
+                        </Col>
+                    </Row>
                 </Layout.Content>
             </Layout>
             {contextHolder}
