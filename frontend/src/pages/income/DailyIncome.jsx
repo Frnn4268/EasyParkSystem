@@ -148,7 +148,7 @@ const DailyIncome = () => {
                             </Col>
                         </Row>
                     </Card>
-                    <Row gutter={10} style={{ marginLeft: '4.5%', marginTop: -35 }}>
+                    <Row gutter={10} style={{ marginLeft: '4.5%', width: '115%' }}>
                         <Col span={6}>
                             <Card bordered={false}>
                                 <Statistic

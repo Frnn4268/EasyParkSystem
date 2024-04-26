@@ -42,7 +42,7 @@ const items = [
     getItem('Ingresos', 'sub3', <AreaChartOutlined />, [
         getItem('Estadísticas', '9', null, null, null, '/statistics'),
         getItem('Ingresos diarios', '10', null, null, null, '/dailyincome'),
-        getItem('Historial de ingresos', '11', null, null, null, '/income'),
+        getItem('Historial de ingresos', '11', null, null, null, '/incomehistory'),
     ]),
     getItem('Información', '12', <InfoCircleOutlined />, null, null, '/module_about'),
     getItem('Contacto', '13', <PhoneOutlined />, null, null, '/module_contact')
