@@ -6,7 +6,7 @@ import TopMenu from '../dashboard/TopMenu.jsx';
 import LeftMenu from '../dashboard/LeftMenu.jsx';
 
 import '../../css/DashboardMenu.css';
-import '../../css/ContactComponent.css';
+import '../../css/IncomeHistory.css';
 
 const { Header } = Layout;
 const { confirm } = Modal;
@@ -168,9 +168,9 @@ const IncomeHistory = () => {
                 <Layout.Sider>
                     <LeftMenu />
                 </Layout.Sider>
-                <Layout.Content className='layout-content-contact'>
-                    <Typography.Title className='table-title-contact' level={2}>
-                        Contacto
+                <Layout.Content className='layout-content-income-history'>
+                    <Typography.Title className='table-title-income-history' level={2}>
+                        Historial de Ingresos
                     </Typography.Title>
                     <Table dataSource={incomes} columns={columns} rowKey="_id" />
                 </Layout.Content>

@@ -18,6 +18,7 @@ import Dashboard from './pages/dashboard/Dashboard.jsx';
 // Parking
 import ParkingSpace from './pages/parking space/ParkingSpace.jsx';
 import ParkingHistory from './pages/parking space/ParkingHistory.jsx'
+import ParkingStatistics from './pages/parking space/ParkingStatistics.jsx';
 
 // Users 
 import Users from './pages/users/Users.jsx'
@@ -33,7 +34,7 @@ import VehiclesHistory from './pages/vehicle/VehiclesHistory.jsx'
 // Income
 import IncomeHistory from './pages/income/IncomeHistory.jsx'
 import DailyIncome from './pages/income/DailyIncome.jsx'
-import Statistics from './pages/income/Statistics.jsx';
+import IncomeStatistics from './pages/income/IncomeStatistics.jsx';
 
 // Components
 import ContactComponent from './../components/ContactComponent.jsx'
@@ -81,6 +82,12 @@ const App = () => {
           }
         />
         <Route
+          path="/parkingstatistics"
+          element={
+            isAuthenticated ? <ParkingStatistics /> :  <Login />
+          }
+        />
+        <Route
           path="/users"
           element={
             isAuthenticated ? <Users /> :  <Login />
@@ -117,9 +124,9 @@ const App = () => {
           }
         />
         <Route
-          path="/statistics"
+          path="/incomestatistics"
           element={
-            isAuthenticated ? <Statistics /> :  <Login />
+            isAuthenticated ? <IncomeStatistics /> :  <Login />
           }
         />
         <Route

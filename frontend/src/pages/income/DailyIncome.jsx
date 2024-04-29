@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Button, Form, Layout, Card, Typography, message, DatePicker, InputNumber, Statistic } from 'antd';
-import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
-import moment from 'moment'; // Importa la librería moment.js
+import { ArrowUpOutlined } from '@ant-design/icons';
+import moment from 'moment'; 
 
 import TopMenu from '../dashboard/TopMenu.jsx';
 import LeftMenu from '../dashboard/LeftMenu.jsx';
@@ -16,7 +16,7 @@ const DailyIncome = () => {
     const [messageApi, contextHolder] = message.useMessage();
     const [income, setIncome] = useState(0); 
     const [lastSavedIncome, setLastSavedIncome] = useState(0); 
-    const [lastDateIncome, setLastDateIncome] = useState(null); // Nuevo estado para almacenar la fecha y hora del último ingreso
+    const [lastDateIncome, setLastDateIncome] = useState(null); 
 
     const success = () => {
         messageApi
@@ -45,7 +45,7 @@ const DailyIncome = () => {
             if (data.status === 'success') {
                 setIncome(data.data.income);
                 setLastSavedIncome(data.data.income); 
-                setLastDateIncome(moment(data.data.hour_date).format('YYYY-MM-DD HH:mm:ss')); // Formatea la fecha y hora del último ingreso
+                setLastDateIncome(moment(data.data.hour_date).format('YYYY-MM-DD HH:mm:ss')); 
             } else {
                 throw new Error('Error al obtener el último ingreso');
             }
@@ -148,18 +148,21 @@ const DailyIncome = () => {
                             </Col>
                         </Row>
                     </Card>
-                    <Row gutter={10} style={{ marginLeft: '4.5%', width: '115%' }}>
+                    <Row gutter={10} style={{ marginLeft: '4.5%', width: '100%' }}>
                         <Col span={6}>
                             <Card bordered={false}>
                                 <Statistic
-                                    title="Último Ingreso monetario:"
+                                    title="Último Ingreso"
                                     value={`Q ${lastSavedIncome}`} 
                                     precision={2}
                                     valueStyle={{
                                         color: '#3f8600',
                                     }}
                                     prefix={<ArrowUpOutlined />}
-                                    suffix={lastDateIncome ? ` (${lastDateIncome})` : ''} 
+                                />
+                                <Statistic
+                                    title="Fecha y Hora"
+                                    value={lastDateIncome ? moment(lastDateIncome).format('YYYY-MM-DD HH:mm:ss') : '-'}
                                 />
                             </Card>
                         </Col>
