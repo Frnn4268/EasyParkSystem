@@ -12,7 +12,8 @@ import {
     PhoneOutlined, 
     UserOutlined,
     AreaChartOutlined,
-    HistoryOutlined 
+    HistoryOutlined,
+    BarChartOutlined 
     } from '@ant-design/icons';
 
 function getItem(label, key, icon, children, type, link) {
@@ -30,22 +31,23 @@ const items = [
     getItem('Inicio', '1', <HomeOutlined />, null, null, '/dashboard'),
     getItem('Parqueo', '2', <PieChartOutlined />, null, null, '/park'),
     getItem('Historial de Parqueo', '3', <HistoryOutlined />, null, null, '/parkhistory'),
-    getItem('Usuarios', '4', <UserOutlined />, null, null, '/users'),
+    getItem('Estadísticas de Parqueo', '4', <BarChartOutlined />, null, null, '/parkingstatistics'),
+    getItem('Usuarios', '5', <UserOutlined />, null, null, '/users'),
     getItem('Clientes', 'sub2', <UsergroupAddOutlined  />, [
-        getItem('Ver Clientes', '5', null, null, null, '/customers'),
-        getItem('Clientes frecuentes', '6', null, null, null, '/usual_customers'), 
+        getItem('Ver Clientes', '6', null, null, null, '/customers'),
+        getItem('Clientes frecuentes', '7', null, null, null, '/usual_customers'), 
     ]),
     getItem('Vehículos', 'sub1', <CarOutlined  />, [
-        getItem('Ver Vehículos', '7', null, null, null, '/vehicles'),
-        getItem('Historial de vehículos', '8', null, null, null, '/vehicleshistory'),
+        getItem('Ver Vehículos', '8', null, null, null, '/vehicles'),
+        getItem('Historial de vehículos', '9', null, null, null, '/vehicleshistory'),
     ]),
     getItem('Ingresos', 'sub3', <AreaChartOutlined />, [
-        getItem('Estadísticas', '9', null, null, null, '/statistics'),
-        getItem('Ingresos diarios', '10', null, null, null, '/dailyincome'),
-        getItem('Historial de ingresos', '11', null, null, null, '/income'),
+        getItem('Estadísticas de Ingresos', '10', null, null, null, '/incomestatistics'),
+        getItem('Ingresos diarios', '11', null, null, null, '/dailyincome'),
+        getItem('Historial de ingresos', '12', null, null, null, '/incomehistory'),
     ]),
-    getItem('Información', '12', <InfoCircleOutlined />, null, null, '/module_about'),
-    getItem('Contacto', '13', <PhoneOutlined />, null, null, '/module_contact')
+    getItem('Información', '13', <InfoCircleOutlined />, null, null, '/module_about'),
+    getItem('Contacto', '14', <PhoneOutlined />, null, null, '/module_contact')
 ];
 
 const LeftMenu = () => {
