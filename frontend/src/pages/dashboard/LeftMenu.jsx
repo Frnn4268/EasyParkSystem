@@ -62,7 +62,7 @@ const LeftMenu = () => {
         <div className='left-menu-div'>
             <Button
                 type="primary"
-                onClick={toggleCollapsed}
+                //onClick={toggleCollapsed}
                 style={{
                 borderRadius: 0,
                 width: buttonWidth

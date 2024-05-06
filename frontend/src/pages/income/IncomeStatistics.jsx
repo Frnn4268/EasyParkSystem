@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Layout, Row, Col, Card } from 'antd';
 import { BarChart } from '@mui/x-charts/BarChart';
-import moment from 'moment';
 
 import TopMenu from '../dashboard/TopMenu.jsx';
 import LeftMenu from '../dashboard/LeftMenu.jsx';
@@ -9,22 +8,22 @@ import LeftMenu from '../dashboard/LeftMenu.jsx';
 import '../../css/DashboardMenu.css';
 import '../../css/IncomeStatistics.css';
 
-const { Header, Content } = Layout;
+const { Header } = Layout;
 
 const IncomeStatistics = () => {
-    const [allIncomeData, setAllIncomeData] = useState([]);
+    const [weeklyIncomes, setWeeklyIncomes] = useState([]);
 
     useEffect(() => {
-        fetchAllIncomeData();
+        fetchWeekIncomeData();
     }, []);
 
-    const fetchAllIncomeData = async () => {
+    const fetchWeekIncomeData = async () => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_INCOME}/all-incomes`);
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_INCOME}/week-income`);
             const data = await response.json();
-            setAllIncomeData(data.data);
+            setWeeklyIncomes(data.data);
         } catch (error) {
-            console.error('Error fetching all income data:', error);
+            console.error('Error fetching week income data:', error);
         }
     };
 
@@ -44,21 +43,10 @@ const IncomeStatistics = () => {
                                 <Card title="Ingresos semanales">
                                     <BarChart
                                         series={[
-                                            { data: allIncomeData.map(income => income.totalIncome) }
+                                            { data: weeklyIncomes.map(income => income.totalIncome) }
                                         ]}
                                         height={250}
-                                        xAxis={[{ data: allIncomeData.map(income => moment(income._id).format('MMM D')), scaleType: 'band' }]}
-                                    />
-                                </Card>
-                            </Col>
-                            <Col span={8}>
-                                <Card title="Estadísticas de Ingresos">
-                                    <BarChart
-                                        series={[
-                                            { data: [35, 44, 24, 34] }, // Datos de ejemplo
-                                        ]}
-                                        height={250}
-                                        xAxis={[{ data: ['Q1', 'Q2', 'Q3', 'Q4'], scaleType: 'band' }]}
+                                        xAxis={[{ data: weeklyIncomes.map(income => income.day), scaleType: 'band' }]}
                                     />
                                 </Card>
                             </Col>
