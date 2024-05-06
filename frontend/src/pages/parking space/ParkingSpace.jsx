@@ -485,7 +485,6 @@ const ParkingSpaces = () => {
                                         valueStyle={{
                                             color: '#cf1322',
                                         }}
-                                        style={{ marginBottom: 20 }}
                                     />
                                 </Card>
                             </Col>

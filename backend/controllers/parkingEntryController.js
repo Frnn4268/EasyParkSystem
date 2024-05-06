@@ -112,8 +112,6 @@ exports.parkingEntryCreate = async (req, res, next) => {
 
         await parkingSpace.save();
 
-        await parkingSpace.populate('customer').populate('vehicle').execPopulate();
-
         res.status(201).json({ message: 'Data successfully saved', parkingSpace });
     } catch (error) {
         next(error);

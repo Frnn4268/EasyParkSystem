@@ -1,6 +1,5 @@
 const Income = require('../models/incomeModel');
 const createError = require('../utils/appError');
-const moment = require('moment');
 
 // Get all incomes 
 exports.getAllIncomes = async (req, res, next) => {
@@ -10,70 +9,6 @@ exports.getAllIncomes = async (req, res, next) => {
             status: 'success',
             data: incomes
         });
-    } catch (error) {
-        next(error);
-    }
-};
-
-// Get all week incomes
-exports.getWeeklyIncome = async (req, res, next) => {
-    try {
-        const currentDate = moment();
-        const startDate = currentDate.clone().startOf('week'); // Inicio de la semana actual
-        const endDate = currentDate.clone().endOf('week'); // Fin de la semana actual
-
-        const weeklyIncomes = await Income.aggregate([
-            {
-                $match: {
-                    hour_date: { $gte: startDate.toDate(), $lte: endDate.toDate() } // Filtrar por la semana actual
-                }
-            },
-            {
-                $group: {
-                    _id: {
-                        $dateToString: { format: '%A', date: '$hour_date' } // Convertir la fecha a nombre del día de la semana
-                    },
-                    totalIncome: { $sum: '$income' } // Sumar los ingresos diarios
-                }
-            }
-        ]);
-
-        res.status(200).json({ weeklyIncomes });
-    } catch (error) {
-        next(error);
-    }
-};
-
-// Statistics Income 
-exports.getFilteredIncome = async (req, res, next) => {
-    try {
-        const { filterType } = req.query;
-        let groupByFormat = '';
-
-        switch (filterType) {
-            case 'weekly':
-                groupByFormat = '%Y-%U'; // Agrupar por año y semana
-                break;
-            case 'monthly':
-                groupByFormat = '%Y-%m'; // Agrupar por año y mes
-                break;
-            case 'annual':
-                groupByFormat = '%Y'; // Agrupar por año
-                break;
-            default:
-                throw new Error('Tipo de filtro no válido');
-        }
-
-        const filteredIncomes = await Income.aggregate([
-            {
-                $group: {
-                    _id: { $dateToString: { format: groupByFormat, date: '$hour_date' } }, // Agrupar según el formato seleccionado
-                    totalIncome: { $sum: '$income' } // Sumar los ingresos según el grupo
-                }
-            }
-        ]);
-
-        res.status(200).json({ filteredIncomes });
     } catch (error) {
         next(error);
     }
@@ -89,6 +24,45 @@ exports.getLastIncome = async (req, res, next) => {
         res.status(200).json({
             status: 'success',
             data: lastIncome
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+// Get all incomes of the current week grouped by day, month, and yearconst Income = require('../models/incomeModel');
+exports.getIncomesByWeek = async (req, res, next) => {
+    try {
+        const currentDate = new Date();
+        const firstDayOfWeek = new Date(currentDate.setDate(currentDate.getDate() - currentDate.getDay()));
+        const lastDayOfWeek = new Date(firstDayOfWeek);
+        lastDayOfWeek.setDate(lastDayOfWeek.getDate() + 6);
+
+        const incomes = await Income.aggregate([
+            {
+                $match: {
+                    hour_date: { $gte: firstDayOfWeek, $lte: lastDayOfWeek }
+                }
+            },
+            {
+                $group: {
+                    _id: { day: "$day" },
+                    totalIncome: { $sum: "$income" }
+                }
+            },
+            {
+                $sort: { "_id.day": 1 } 
+            }
+        ]);
+
+        const formattedData = incomes.map(income => ({
+            day: income._id.day,
+            totalIncome: income.totalIncome
+        }));
+
+        res.status(200).json({
+            status: 'success',
+            data: formattedData
         });
     } catch (error) {
         next(error);

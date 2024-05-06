@@ -16,6 +16,7 @@ const DailyIncome = () => {
     const [messageApi, contextHolder] = message.useMessage();
     const [income, setIncome] = useState(0); 
     const [lastSavedIncome, setLastSavedIncome] = useState(0); 
+    const [selectedDate, setSelectedDate] = useState(null);
     const [lastDateIncome, setLastDateIncome] = useState(null); 
 
     const success = () => {
@@ -27,6 +28,10 @@ const DailyIncome = () => {
                 setLastSavedIncome(income); 
             })
             .catch(() => message.error('Error al guardar el ingreso', 2.5));
+    };
+
+    const handleDateChange = (date) => {
+        setSelectedDate(date);
     };
 
     const parseIncome = (value) => {
@@ -56,21 +61,19 @@ const DailyIncome = () => {
 
     const handleSubmit = async (values) => {
         try {
-            const { date } = values;
-            const day = date.date();
-            const month = date.month() + 1; 
-            const year = date.year();
-            
+            const { income } = values;
+
             const response = await fetch(import.meta.env.VITE_APP_API_URL_INCOME, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    day,
-                    month,
-                    year,
-                    income 
+                    day: selectedDate.date(),
+                    month: selectedDate.month() + 1,
+                    year: selectedDate.year(),
+                    income: parseFloat(income),
+                    hour_date: selectedDate.toISOString()
                 }),
             });
 
@@ -82,7 +85,7 @@ const DailyIncome = () => {
         } catch (error) {
             message.error(error.message);
         }
-    }; 
+    };      
 
     return (
         <Layout>
@@ -116,6 +119,7 @@ const DailyIncome = () => {
                                             format="YYYY-MM-DD" 
                                             style={{ width: '100%' }}  
                                             placeholder='Selecciona la fecha'
+                                            onChange={handleDateChange}
                                         />
                                     </Form.Item>
                                     <Form.Item 
