@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Layout, Button, ConfigProvider, Drawer, Space, Col, Form, Input, Row, Select, Card, Statistic, Typography, Divider, Tag, Modal } from 'antd';
+import { Layout, Button, ConfigProvider, Drawer, Space, Col, Form, Input, Row, Select, Card, Statistic, Typography, Divider, Tag, Modal, Popover, QRCode } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 import TopMenu from '../dashboard/TopMenu.jsx';
@@ -23,6 +23,7 @@ const ParkingSpaces = () => {
     const [selectedButtonIndex, setSelectedButtonIndex] = useState(null);
     const [confirmVisible, setConfirmVisible] = useState(false);
     const [selectedButtonId, setSelectedButtonId] = useState(null); 
+    const [parkingSpaceDetails, setParkingSpaceDetails] = useState(null);
     const [form] = Form.useForm();
 
     const [parkingStatistics, setParkingStatistics] = useState({
@@ -36,10 +37,15 @@ const ParkingSpaces = () => {
         averageParkingTime: 0
     });
 
+    const [totalCustomersToday, setTotalCustomersToday] = useState({
+        totalCustomersToday: 0
+    });
+
     useEffect(() => {
         fetchData();
         fetchParkingStatistics();
         fetchAverageParkingTime();
+        fetchTotalCustomersToday();
     }, []);
 
     const fetchData = async () => {
@@ -111,6 +117,23 @@ const ParkingSpaces = () => {
         }
     };
 
+    const fetchTotalCustomersToday = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE_ENTRY}/total-customers`);
+            const data = await response.json();
+
+            const totalCustomersToday = data.totalCustomersToday;
+            setTotalCustomersToday(totalCustomersToday);
+
+            setTotalCustomersToday(prevState => ({
+                ...prevState,
+                totalCustomersToday: data.totalCustomersToday
+            }));
+        } catch (error) {
+            console.error('Error al obtener el total de clientes hoy:', error);
+        }
+    };
+
     const showDrawer = async (content, id) => {
         try {
             const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE_ENTRY}/${id}`);
@@ -177,6 +200,7 @@ const ParkingSpaces = () => {
                 onCloseDrawer();
                 fetchData();
                 fetchParkingStatistics(); 
+                fetchTotalCustomersToday();
             } else {
                 console.error('Error al guardar los datos:', data);
             }
@@ -201,6 +225,7 @@ const ParkingSpaces = () => {
                 console.log('Estado del espacio de estacionamiento actualizado exitosamente:', data);
                 fetchData();
                 fetchParkingStatistics(); 
+                fetchAverageParkingTime();
             } else {
                 console.error('Error al actualizar el estado del espacio de estacionamiento:', data);
             }
@@ -212,8 +237,20 @@ const ParkingSpaces = () => {
     const handleParkingSpaceClick = async (index) => {
         setSelectedButtonIndex(index);
         setSelectedButtonId(index); 
+
         if (parkingSpaceStates[index] === 'Ocupado') {
-            setConfirmVisible(true);
+            try {
+                const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_TIME_CUSTOMER}/${index}`);
+                const data = await response.json();
+
+                const parkingSpaceDetails = data.id
+
+                console.log(parkingSpaceDetails)
+
+                setConfirmVisible(true); 
+            } catch (error) {
+                console.error('Error al obtener los detalles del espacio de parqueo:', error);
+            }
         } else {
             showDrawer(renderDrawerContent(), index);
         }
@@ -468,13 +505,39 @@ const ParkingSpaces = () => {
                         onCancel={handleCancel}
                         okText="Confirmar"
                         cancelText="Cancelar"
+
                         okType="danger"
                         icon={<ExclamationCircleOutlined />}
                     >
                         <p>Ha seleccionado el espacio de parqueo número: {selectedButtonId}</p>
+                        <Popover
+                            overlayInnerStyle={{
+                            padding: 0,
+                            width: 400,
+                            height: 410
+                            }}
+                            content={
+                                <div>
+                                    <QRCode 
+                                        value={`${import.meta.env.VITE_APP_API_URL_PARKING_TIME_CUSTOMER}/${parkingSpaceDetails}`}
+                                        bordered={false} 
+                                        color='blue'
+                                        bgColor='white'
+                                        style={{ width: 350, height: 350,  margin: '0px 0px 0px 25px' }}
+                                    />
+                                    <Input
+                                        placeholder="-"
+                                        value={`${import.meta.env.VITE_APP_API_URL_PARKING_TIME_CUSTOMER}/${parkingSpaceDetails}`}
+                                        style={{ width: 350, height: 35, margin: '7.5px 0px 0px 25px' }}
+                                    />
+                                </div>
+                            }
+                        > 
+                            <Button type="primary" ghost style={{ position: 'fixed' }}>Código QR Cliente</Button>
+                        </Popover>
                     </Modal>
                     <div className="center-right-container-parking">
-                        <Row gutter={20}>
+                        <Row gutter={20} style={{ marginTop: 50 }}>
                             <Col span={40}>
                                 <Card bordered={false}>
                                     <Statistic
@@ -518,6 +581,14 @@ const ParkingSpaces = () => {
                                             color: '#005FFF',
                                         }}
                                         suffix="min"
+                                        style={{ marginBottom: 20 }}
+                                    />
+                                    <Statistic
+                                        title="Total de clientes registrados hoy"
+                                        value={totalCustomersToday.totalCustomersToday}
+                                        valueStyle={{
+                                            color: '#C58118',
+                                        }}
                                     />
                                 </Card>
                             </Col>
