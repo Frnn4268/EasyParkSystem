@@ -6,7 +6,7 @@ const router = express.Router()
 // Income route
 router.get('/', incomeController.getAllIncomes)
 router.get('/last-income', incomeController.getLastIncome)
-router.get('/week-income', incomeController.getIncomesByWeek)
+router.get('/:period', incomeController.getIncomesGroupedByPeriod);
 //router.get('/statistics-income', incomeController.getFilteredIncome)
 router.post('/', incomeController.createIncome)
 router.put('/:id', incomeController.updateIncome)

@@ -14,6 +14,43 @@ exports.getAllIncomes = async (req, res, next) => {
     }
 };
 
+// Get incomes by week, month or year
+exports.getIncomesGroupedByPeriod = async (req, res, next) => {
+    try {
+        const { period } = req.params;
+
+        let groupBy;
+        if (period === 'week') {
+            groupBy = { $isoWeek: '$hour_date' };
+        } else if (period === 'month') {
+            groupBy = { $month: '$hour_date' }; 
+        } else if (period === 'year') {
+            groupBy = { $year: '$hour_date' };
+        } else {
+            return next(createError(400, 'Periodo de agrupación no válido'));
+        }
+
+        const incomes = await Income.aggregate([
+            {
+                $group: {
+                    _id: groupBy,
+                    totalIncome: { $sum: '$income' }
+                }
+            },
+            {
+                $sort: { '_id': 1 }
+            }
+        ]);
+
+        res.status(200).json({
+            status: 'success',
+            data: incomes
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
 // Get the last income
 exports.getLastIncome = async (req, res, next) => {
     try {
@@ -24,45 +61,6 @@ exports.getLastIncome = async (req, res, next) => {
         res.status(200).json({
             status: 'success',
             data: lastIncome
-        });
-    } catch (error) {
-        next(error);
-    }
-};
-
-// Get all incomes of the current week grouped by day, month, and yearconst Income = require('../models/incomeModel');
-exports.getIncomesByWeek = async (req, res, next) => {
-    try {
-        const currentDate = new Date();
-        const firstDayOfWeek = new Date(currentDate.setDate(currentDate.getDate() - currentDate.getDay()));
-        const lastDayOfWeek = new Date(firstDayOfWeek);
-        lastDayOfWeek.setDate(lastDayOfWeek.getDate() + 6);
-
-        const incomes = await Income.aggregate([
-            {
-                $match: {
-                    hour_date: { $gte: firstDayOfWeek, $lte: lastDayOfWeek }
-                }
-            },
-            {
-                $group: {
-                    _id: { day: "$day" },
-                    totalIncome: { $sum: "$income" }
-                }
-            },
-            {
-                $sort: { "_id.day": 1 } 
-            }
-        ]);
-
-        const formattedData = incomes.map(income => ({
-            day: income._id.day,
-            totalIncome: income.totalIncome
-        }));
-
-        res.status(200).json({
-            status: 'success',
-            data: formattedData
         });
     } catch (error) {
         next(error);
