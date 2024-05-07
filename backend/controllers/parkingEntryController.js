@@ -99,6 +99,46 @@ exports.getFrequentCustomers = async (req, res, next) => {
     }
 };
 
+exports.getTotalCustomersToday = async (req, res, next) => {
+    try {
+        // Obtener la fecha de hoy
+        const today = moment().startOf('day').toDate();
+
+        // Realizar la agregación para contar los clientes que han estacionado hoy
+        const totalCustomersToday = await Customer.aggregate([
+            {
+                $lookup: {
+                    from: 'parkingspaces',
+                    localField: '_id',
+                    foreignField: 'customer',
+                    as: 'parkingSpaces'
+                }
+            },
+            {
+                $unwind: '$parkingSpaces'
+            },
+            {
+                $match: {
+                    'parkingSpaces.hour_date_entry': { $gte: today }
+                }
+            },
+            {
+                $group: {
+                    _id: null,
+                    totalCustomers: { $sum: 1 }
+                }
+            }
+        ]);
+
+        // Extraer el total de clientes o establecerlo en 0 si no hay resultados
+        const total = totalCustomersToday.length > 0 ? totalCustomersToday[0].totalCustomers : 0;
+
+        res.status(200).json({ totalCustomersToday: total });
+    } catch (error) {
+        next(error);
+    }
+};
+
 exports.getParkingSpaceById = async (req, res, next) => {
     try {
         const { id } = req.params;

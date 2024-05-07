@@ -6,7 +6,7 @@
     position: 'fixed'; 
     width: '100%';
     z-index: 1000;
-    top: 50%; 
+    top: 52.5%; 
     transform: translateY(-50%); 
 }
 .center-right-container-parking {

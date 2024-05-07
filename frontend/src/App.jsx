@@ -19,6 +19,7 @@ import Dashboard from './pages/dashboard/Dashboard.jsx';
 import ParkingSpace from './pages/parking space/ParkingSpace.jsx';
 import ParkingHistory from './pages/parking space/ParkingHistory.jsx'
 import ParkingStatistics from './pages/parking space/ParkingStatistics.jsx';
+import ParkingTime from './pages/parking time/ParkingTime.jsx'
 
 // Users 
 import Users from './pages/users/Users.jsx'
@@ -62,6 +63,12 @@ const App = () => {
           path="/login"
           element={
             !isAuthenticated ? <Login /> : <Navigate to="/dashboard" />
+          }
+        />
+        <Route
+          path="/parking-time"
+          element={
+            !isAuthenticated ? <ParkingTime /> : <Navigate to="/parking-time" />
           }
         />
         <Route
