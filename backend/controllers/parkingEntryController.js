@@ -34,6 +34,29 @@ exports.getAllLatestParkingSpaces = async (req, res, next) => {
     }
 };
 
+exports.getAverageParkingTime = async (req, res, next) => {
+    try {
+        const parkingSpaces = await ParkingSpace.find({ hour_date_output: { $ne: null } });
+
+        // Calcular la diferencia de tiempo para cada registro y almacenarla en un array
+        const parkingDurations = parkingSpaces.map(space => {
+            const entryTime = new Date(space.hour_date_entry);
+            const outputTime = new Date(space.hour_date_output);
+            return outputTime - entryTime; // Diferencia de tiempo en milisegundos
+        });
+
+        // Calcular el promedio de las diferencias de tiempo
+        const averageParkingTime = parkingDurations.reduce((acc, cur) => acc + cur, 0) / parkingDurations.length;
+
+        // Convertir el promedio a minutos
+        const averageParkingTimeInMinutes = averageParkingTime / (1000 * 60);
+
+        res.status(200).json({ averageParkingTime: averageParkingTimeInMinutes });
+    } catch (error) {
+        next(error);
+    }
+};
+
 exports.getFrequentCustomers = async (req, res, next) => {
     try {
         const currentDate = moment();

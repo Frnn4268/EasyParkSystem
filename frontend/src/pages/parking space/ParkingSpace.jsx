@@ -32,9 +32,14 @@ const ParkingSpaces = () => {
         occupiedSpaces: 0
     });
 
+    const [parkingAverageTime, setParkingAverageTime] = useState({
+        averageParkingTime: 0
+    });
+
     useEffect(() => {
         fetchData();
         fetchParkingStatistics();
+        fetchAverageParkingTime();
     }, []);
 
     const fetchData = async () => {
@@ -86,6 +91,25 @@ const ParkingSpaces = () => {
             console.error('Error al obtener las estadísticas del parqueo:', error);
         }
     };    
+
+    const fetchAverageParkingTime = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE_ENTRY}/average-time`);
+            const data = await response.json();
+    
+            console.log(data);
+    
+            const averageParkingTime = parseFloat(data.averageParkingTime);
+            const formattedAverageParkingTime = averageParkingTime.toFixed(2);
+    
+            setParkingAverageTime(prevState => ({
+                ...prevState,
+                averageParkingTime: formattedAverageParkingTime
+            }));
+        } catch (error) {
+            console.error('Error al obtener el tiempo promedio de estacionamiento:', error);
+        }
+    };
 
     const showDrawer = async (content, id) => {
         try {
@@ -485,6 +509,15 @@ const ParkingSpaces = () => {
                                         valueStyle={{
                                             color: '#cf1322',
                                         }}
+                                        style={{ marginBottom: 20 }}
+                                    />
+                                    <Statistic
+                                        title="Tiempo promedio de estacionado"
+                                        value={parkingAverageTime.averageParkingTime}
+                                        valueStyle={{
+                                            color: '#005FFF',
+                                        }}
+                                        suffix="min"
                                     />
                                 </Card>
                             </Col>
