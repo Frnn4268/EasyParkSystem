@@ -39,12 +39,12 @@ const items = [
     ]),
     getItem('Vehículos', 'sub1', <CarOutlined  />, [
         getItem('Ver Vehículos', '8', null, null, null, '/vehicles'),
-        getItem('Historial de vehículos', '9', null, null, null, '/vehicleshistory'),
+        getItem('Historial de Vehículos', '9', null, null, null, '/vehicleshistory'),
     ]),
     getItem('Ingresos', 'sub3', <AreaChartOutlined />, [
         getItem('Estadísticas de Ingresos', '10', null, null, null, '/incomestatistics'),
         getItem('Ingresos diarios', '11', null, null, null, '/dailyincome'),
-        getItem('Historial de ingresos', '12', null, null, null, '/incomehistory'),
+        getItem('Historial de Ingresos', '12', null, null, null, '/incomehistory'),
     ]),
     getItem('Información', '13', <InfoCircleOutlined />, null, null, '/module_about'),
     getItem('Contacto', '14', <PhoneOutlined />, null, null, '/module_contact')

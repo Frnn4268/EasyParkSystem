@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Layout, Row, Col, Card, Select } from 'antd';
+import { Layout, Row, Col, Card, Select, Result } from 'antd';
 import { BarChart } from '@mui/x-charts/BarChart';
 
 import TopMenu from '../dashboard/TopMenu.jsx';
@@ -30,6 +30,7 @@ const IncomeStatistics = () => {
     };
 
     return (
+        /*
         <Layout>
             <Header className='home-header-dashboard'>
                 <TopMenu />
@@ -62,6 +63,27 @@ const IncomeStatistics = () => {
                                 </Select>
                             </Col>
                         </Row>
+                    </div>
+                </Layout.Content>
+            </Layout>
+        </Layout>
+        */
+
+        <Layout>
+            <Header className='home-header-dashboard'>
+                <TopMenu />
+            </Header>
+            <Layout>
+                <Layout.Sider>
+                    <LeftMenu />
+                </Layout.Sider>
+                <Layout.Content>
+                    <div className='center-div-notfound-container'>
+                        <Result
+                            status="404"
+                            title="404"
+                            subTitle="Perdón, la página que intentas visitar aún no existe."
+                        />
                     </div>
                 </Layout.Content>
             </Layout>
