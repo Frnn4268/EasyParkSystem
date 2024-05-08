@@ -211,7 +211,7 @@ const ParkingSpaces = () => {
     
     const editParkingSpaceState = async (id, newState) => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE_ENTRY}/${id}`, {
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE_ENTRY}${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -243,9 +243,9 @@ const ParkingSpaces = () => {
                 const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_TIME_CUSTOMER}/${index}`);
                 const data = await response.json();
 
-                const parkingSpaceDetails = data.id
+                setParkingSpaceDetails(data.id);
 
-                console.log(parkingSpaceDetails)
+                console.log(setParkingSpaceDetails)
 
                 setConfirmVisible(true); 
             } catch (error) {
@@ -519,7 +519,7 @@ const ParkingSpaces = () => {
                             content={
                                 <div>
                                     <QRCode 
-                                        value={`${import.meta.env.VITE_APP_API_URL_PARKING_TIME_CUSTOMER}/${parkingSpaceDetails}`}
+                                        value={`${import.meta.env.VITE_APP_API_URL_PARKING_TIME_CUSTOMER_GET}/customer/${parkingSpaceDetails}`}
                                         bordered={false} 
                                         color='blue'
                                         bgColor='white'
@@ -527,7 +527,7 @@ const ParkingSpaces = () => {
                                     />
                                     <Input
                                         placeholder="-"
-                                        value={`${import.meta.env.VITE_APP_API_URL_PARKING_TIME_CUSTOMER}/${parkingSpaceDetails}`}
+                                        value={`${import.meta.env.VITE_APP_API_URL_PARKING_TIME_CUSTOMER_GET}/customer/${parkingSpaceDetails}`}
                                         style={{ width: 350, height: 35, margin: '7.5px 0px 0px 25px' }}
                                     />
                                 </div>

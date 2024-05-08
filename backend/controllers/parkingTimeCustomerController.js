@@ -1,11 +1,11 @@
 const ParkingSpace = require('../models/parkingSpaceModel.js');
 
-exports.getLatestParkingSpaceById = async (req, res, next) => {
+exports.getLatestParkingSpaceByCustomer = async (req, res, next) => {
     const { id } = req.params;
 
     try {
         const latestParkingSpace = await ParkingSpace.findOne({
-            parking_space_id: id,
+            _id: id,
             hour_date_output: null 
         })
         .sort({ hour_date_entry: -1 })
