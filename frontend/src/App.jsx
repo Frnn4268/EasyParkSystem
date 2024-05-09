@@ -66,9 +66,9 @@ const App = () => {
           }
         />
         <Route
-          path="/parking-time"
+          path="/parking-time/:id"
           element={
-            !isAuthenticated ? <ParkingTime /> : <Navigate to="/parking-time" />
+            !isAuthenticated ? <ParkingTime /> : <Navigate to="/parking-time/:id" />
           }
         />
         <Route

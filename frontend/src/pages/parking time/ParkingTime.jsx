@@ -1,43 +1,63 @@
-import React, { useState, useEffect } from 'react';
-import { Layout, Typography } from 'antd';
-import TopMenuClient from './TopMenuCustomer';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { useParams } from 'react-router-dom'; // Importa useParams de React Router para obtener los parámetros de la URL
+import { Card, Layout, Spin } from 'antd';
 
-import '../../css/DashboardMenu.css';
+import TopMenuCustomer from '../parking time/TopMenuCustomer';
 
-const { Header } = Layout;
-const { Text } = Typography;
+import '../../css/ParkingTimeCustomer.css';
+import background from '../../assets/home/Easy park.png';
+
+const { Header, Footer } = Layout;
 
 const ParkingTime = () => {
-    const [latestParkingSpace, setLatestParkingSpace] = useState(null);
-    const { id } = useParams(); // Obtén el parámetro 'id' de la URL
+    const { id } = useParams();
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true); 
 
     useEffect(() => {
-        fetchTimeCustomer();
-    }, [id]); // Ejecuta fetchTimeCustomer cuando cambie el 'id'
-
-    const fetchTimeCustomer = async () => {
-        try {
-            const response = await axios.get(`${import.meta.env.VITE_APP_API_URL_PARKING_TIME_CUSTOMER_GET}/customer/${id}`);
-            if (response.status === 200) {
-                console.log(response.data); 
-                setLatestParkingSpace(response.data);
-            } else {
-                console.error('Error getting data');
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_APP_API_URL_PARKING_TIME_CUSTOMER_GET}/customer/${id}`);
+                setData(response.data);
+                setTimeout(() => setLoading(false), 3000);
+            } catch (error) {
+                console.error('Error fetching data:', error);
             }
-        } catch (error) {
-            console.error(error);
-        }
-    };
+        };
+        fetchData();
+    }, [id]);
+
+    if (loading) {
+        return (
+            <div className="loading-container">
+                <Spin size="large" />
+            </div>
+        );
+    }
 
     return (
-        <Header className='home-header-dashboard'>
-            <TopMenuClient />
-            <div style={{ padding: '20px' }}>
-            </div>
-        </Header>
-    )
-}
+        <div className="container">
+            <Layout>
+                <Header>
+                    <TopMenuCustomer />
+                </Header>
+                <Layout.Content>
+                    <div className="card-wrapper">
+                        <Card title="Información de Tiempo de Parqueo" className='card-text-customer'>
+                            <p>ID: {data.id}</p>
+                            <p>Hora de entrada: {data.hour_date_entry}</p>
+                            <p>Número de espacio de parqueo: {data.parking_space_id}</p>
+                            <p>Estado: {data.state}</p>
+                        </Card>
+                    </div>
+                </Layout.Content>
+                <Footer className="footer">
+                    Restaurante y Pastelería Florencia - 2024 ©EasyPark
+                </Footer>
+            </Layout>
+        </div>
+    );
+};
 
 export default ParkingTime;

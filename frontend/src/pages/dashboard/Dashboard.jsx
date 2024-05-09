@@ -79,13 +79,13 @@ const Dashboard = () => {
                         <Row gutter={20}>
                             <Col span={40}>
                                 <Card bordered={false}>
-                                <Statistic
+                                    <Statistic
                                         title="Porcentaje de parqueo disponible"
                                         value={parkingStatistics.unusedPercentage}
                                         valueStyle={{
                                             color: '#3f8600',
                                         }}
-                                        style={{ marginBottom: 20 }}
+                                        style={{ marginBottom: 20, marginTop: 20 }}
                                         suffix="%"
                                     />
                                     <Statistic
@@ -95,7 +95,7 @@ const Dashboard = () => {
                                             color: '#cf1322',
                                         }}
                                         suffix="%"
-                                        style={{ marginBottom: 20 }}
+                                        style={{ marginBottom: 20, marginTop: 20 }}
                                     />
                                 </Card>
                             </Col>
@@ -111,7 +111,7 @@ const Dashboard = () => {
                                         valueStyle={{
                                             color: '#3f8600',
                                         }}
-                                        style={{ marginBottom: 20 }}
+                                        style={{ marginBottom: 20, marginTop: 20 }}
                                     />
                                     <Statistic
                                         title="Espacios de parqueo ocupados"
@@ -119,7 +119,7 @@ const Dashboard = () => {
                                         valueStyle={{
                                             color: '#cf1322',
                                         }}
-                                        style={{ marginBottom: 20 }}
+                                        style={{ marginBottom: 20, marginTop: 20 }}
                                     />
                                 </Card>
                             </Col>
