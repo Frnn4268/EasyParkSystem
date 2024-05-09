@@ -105,7 +105,7 @@ const DailyIncome = () => {
                             <Col xs={22} sm={18} md={16} lg={8}>
                                 <Form layout="vertical" onFinish={handleSubmit} form={form}>
                                     <Form.Item 
-                                        label='Fecha de ingreso' 
+                                        label='Fecha de ingreso:' 
                                         name='date' 
                                         rules={[
                                             {
@@ -123,7 +123,7 @@ const DailyIncome = () => {
                                         />
                                     </Form.Item>
                                     <Form.Item 
-                                        label='Monto monetario'
+                                        label='Monto:'
                                         name='income'
                                         rules={[
                                             { 
