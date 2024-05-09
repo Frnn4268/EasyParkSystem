@@ -13,7 +13,8 @@ import {
     UserOutlined,
     AreaChartOutlined,
     HistoryOutlined,
-    BarChartOutlined 
+    BarChartOutlined,
+    DollarOutlined 
     } from '@ant-design/icons';
 
 function getItem(label, key, icon, children, type, link) {
@@ -46,8 +47,9 @@ const items = [
         getItem('Ingresos diarios', '11', null, null, null, '/dailyincome'),
         getItem('Historial de Ingresos', '12', null, null, null, '/incomehistory'),
     ]),
-    getItem('Información', '13', <InfoCircleOutlined />, null, null, '/module_about'),
-    getItem('Contacto', '14', <PhoneOutlined />, null, null, '/module_contact')
+    getItem('Precio de Estacionado', '13', <DollarOutlined />, null, null, '//module_parking_price'),
+    getItem('Información', '14', <InfoCircleOutlined />, null, null, '/module_about'),
+    getItem('Contacto', '15', <PhoneOutlined />, null, null, '/module_contact')
 ];
 
 const LeftMenu = () => {
@@ -56,20 +58,23 @@ const LeftMenu = () => {
         setCollapsed(!collapsed);
     };
 
-    const buttonWidth = collapsed ? `${collapsed ? 80 : 200}px` : 'auto' ;
+    const buttonWidth = collapsed ? `${collapsed ? 20 : 200}px` : 'auto' ;
 
     return (
         <div className='left-menu-div'>
-            <Button
-                type="primary"
-                //onClick={toggleCollapsed}
-                style={{
-                borderRadius: 0,
-                width: buttonWidth
-                }}
-            >
-                {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-            </Button>
+            {/* 
+                <Button
+                    type="primary"
+                    //onClick={toggleCollapsed}
+                    style={{
+                        borderRadius: 0,
+                        width: buttonWidth,
+                        height: '-5px', 
+                    }}
+                >
+                    {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+                </Button>
+            */}
             <Menu 
                 defaultOpenKeys={items.map(item => item.key)}
                 mode="inline"

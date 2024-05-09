@@ -40,6 +40,7 @@ import IncomeStatistics from './pages/income/IncomeStatistics.jsx';
 // Components
 import ContactComponent from './../components/ContactComponent.jsx'
 import InformationComponent from './../components/InformationComponent.jsx'
+import ParkingPriceComponent from './../components/ParkingPriceComponent.jsx'
 
 const App = () => {
   const { isAuthenticated } = useAuth();
@@ -152,6 +153,12 @@ const App = () => {
           path="/module_about"
           element={
             isAuthenticated ? <InformationComponent /> :  <Login />
+          }
+        />
+        <Route
+          path="/module_parking_price"
+          element={
+            isAuthenticated ? <ParkingPriceComponent /> :  <Login />
           }
         />
         <Route
