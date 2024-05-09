@@ -47,7 +47,7 @@ const items = [
         getItem('Ingresos diarios', '11', null, null, null, '/dailyincome'),
         getItem('Historial de Ingresos', '12', null, null, null, '/incomehistory'),
     ]),
-    getItem('Precio de Estacionado', '13', <DollarOutlined />, null, null, '//module_parking_price'),
+    getItem('Precio de Estacionado', '13', <DollarOutlined />, null, null, '/module_parking_price'),
     getItem('Información', '14', <InfoCircleOutlined />, null, null, '/module_about'),
     getItem('Contacto', '15', <PhoneOutlined />, null, null, '/module_contact')
 ];
