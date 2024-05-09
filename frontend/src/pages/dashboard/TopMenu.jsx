@@ -35,7 +35,7 @@ const TopMenu = () => {
         <div style={{ position: 'fixed', width: '100%', zIndex: 1000 }}>
             <Menu theme='dark' mode="horizontal" style={{ display: 'flex' }} selectable={false}>
                 <Menu.Item key='1' >
-                    <Typography.Text className='top-nav-text' >EasyPark</Typography.Text>
+                    <Typography.Text className='top-nav-text'>EasyPark</Typography.Text>
                 </Menu.Item>
                     <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}>
                         <div>

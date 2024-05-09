@@ -519,7 +519,7 @@ const ParkingSpaces = () => {
                             content={
                                 <div>
                                     <QRCode 
-                                        value={`${import.meta.env.VITE_APP_API_URL_PARKING_TIME_CUSTOMER_VIEW}/${parkingSpaceDetails}`} //${import.meta.env.VITE_APP_API_URL_PARKING_TIME_CUSTOMER}
+                                        value={`${import.meta.env.VITE_APP_API_URL_PARKING_TIME_CUSTOMER_VIEW}/${parkingSpaceDetails}`} 
                                         bordered={false} 
                                         color='blue'
                                         bgColor='white'
