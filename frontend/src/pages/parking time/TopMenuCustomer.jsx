@@ -12,9 +12,10 @@ const TopMenuCustomer = () => {
                             fontSize: 30, color: 'white', 
                             fontStyle: 'italic', 
                             fontWeight: 'bold', 
+                            marginLeft: '-45px',
                             textShadow: '3px 3px 5px rgba(255, 255, 255, 1)',
-                             WebkitTextStrokeWidth: '0.2px', 
-                             WebkitTextStrokeColor: 'black' }}>
+                            WebkitTextStrokeWidth: '0.2px', 
+                            WebkitTextStrokeColor: 'black' }}>
                         EasyPark
                     </Typography.Text>
                 </Menu.Item>
