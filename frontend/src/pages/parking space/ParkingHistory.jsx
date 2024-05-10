@@ -147,7 +147,16 @@ const ParkingHistory = () => {
                     <Typography.Title className='table-title-parking-history' level={2}>
                         Historial de Parqueo
                     </Typography.Title>
-                    <Table dataSource={parkingspaces} columns={columns} rowKey="_id" />
+                    <Table 
+                        dataSource={parkingspaces} 
+                        columns={columns} rowKey="_id" 
+                        pagination={{
+                            pageSize: 9, 
+                            showSizeChanger: false, 
+                            pageSizeOptions: ['5', '10', '20'], 
+                            showTotal: (total, range) => `${range[0]}-${range[1]} de ${total} filas`,
+                        }}
+                    />
                 </Layout.Content>
             </Layout>
         </Layout>
