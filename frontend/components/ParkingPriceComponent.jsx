@@ -93,7 +93,7 @@ const ParkingPriceComponent = () => {
                             <Col xs={22} sm={18} md={16} lg={8}>
                                 <Form layout="vertical" onFinish={handleSubmit} form={form}>
                                     <Form.Item 
-                                        label='Precio' 
+                                        label='Precio:' 
                                         name='price' 
                                         rules={[
                                             {
@@ -113,7 +113,7 @@ const ParkingPriceComponent = () => {
                                         />
                                     </Form.Item>
                                     <Form.Item 
-                                        label='Tiempo' 
+                                        label='Tiempo:' 
                                         name='time_in_hours' 
                                         rules={[
                                             {

@@ -1,32 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { Card, Layout, Spin, Tag, FloatButton } from 'antd';
+import { Card, Layout, Spin, Tag, FloatButton, Popover } from 'antd';
 import { 
     CheckCircleOutlined,
     CloseCircleOutlined,
     SyncOutlined,
     QuestionCircleOutlined
-    } from '@ant-design/icons';
+} from '@ant-design/icons';
 
 import TopMenuCustomer from '../parking time/TopMenuCustomer';
 
 import '../../css/ParkingTimeCustomer.css';
-import background from '../../assets/home/Easy park.png';
 
 const { Header, Footer } = Layout;
 
 const ParkingTime = () => {
     const { id } = useParams();
     const [data, setData] = useState(null);
+    const [parkingCost, setParkingCost] = useState(null);
     const [loading, setLoading] = useState(true);
     const [elapsedTime, setElapsedTime] = useState(0);
+    const [popoverVisible, setPopoverVisible] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await axios.get(`${import.meta.env.VITE_APP_API_URL_PARKING_TIME_CUSTOMER_GET}/customer/${id}`);
                 setData(response.data);
+
                 setLoading(false);
 
                 const entryTime = new Date(response.data.hour_date_entry).getTime();
@@ -39,6 +41,9 @@ const ParkingTime = () => {
                     const elapsed = Math.floor((currentTime - entryTime) / 1000);
                     setElapsedTime(elapsed);
                 }, 1000);
+
+                const costResponse = await axios.get(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE_PRICE}/${id}`);
+                setParkingCost(costResponse.data);
 
                 return () => clearInterval(intervalId);
             } catch (error) {
@@ -67,6 +72,10 @@ const ParkingTime = () => {
         } else {
             return `${remainingSeconds} seg`;
         }
+    };
+
+    const handlePopoverVisibleChange = (visible) => {
+        setPopoverVisible(visible);
     };
 
     if (loading) {
@@ -103,17 +112,31 @@ const ParkingTime = () => {
                                 <Tag icon={<CloseCircleOutlined />} color="error" style={{ fontWeight: 'bold', marginBottom: 25, fontSize: 13 }}>
                                     {data.state}
                                 </Tag>
-                            </p>                          
+                            </p> 
+                            <p>Costo de estacionamiento: 
+                                <Tag color="warning" style={{ fontWeight: 'bold', marginBottom: 25, fontSize: 13 }}>
+                                    Q{parkingCost && parkingCost.data && parkingCost.data.parkingCost}
+                                </Tag>
+                            </p>                        
                         </Card>
                     </div>
-                    <FloatButton
-                        icon={<QuestionCircleOutlined />}
-                        type="primary"
-                        style={{
-                            right: 20,
-                            bottom: 70
-                        }}
-                    />
+                    <Popover
+                        content="Todos los datos son mera referencia y pueden no ser 100% exactos al momento de pagar el servicio de estacionamiento."
+                        title="Aviso"
+                        trigger="click"
+                        visible={popoverVisible}
+                        onVisibleChange={handlePopoverVisibleChange}
+                        overlayClassName="custom-popover"
+                    >
+                        <FloatButton
+                            icon={<QuestionCircleOutlined />}
+                            type="primary"
+                            style={{
+                                right: 20,
+                                bottom: 70
+                            }}
+                        />
+                    </Popover>
                 </Layout.Content>
                 <Footer className="footer">
                     Restaurante y Pastelería Florencia - 2024 ©EasyPark

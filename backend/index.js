@@ -33,9 +33,9 @@ app.use('/api/parking_space', parkingSpaceRoute) // Parking space
 app.use('/api/parking-space', parkingRoute) // Parking Spaces
 app.use('/api/parking-time', parkingTimeRoute) // Parking Spaces
 app.use('/api/parking-time-customer', parkingTimeCustomerRoute) // Parking Spaces
+app.use('/api/parking-price', parkingPriceRoute) // Parking Price
 app.use('/api/vehicle', vehicleRoute) // Vehicle
 app.use('/api/income', incomeRoute) // Income
-app.use('/api/parking-price', parkingPriceRoute) // Parking Price
  
 
 // Global error handler
