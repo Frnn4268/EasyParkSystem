@@ -172,7 +172,17 @@ const IncomeHistory = () => {
                     <Typography.Title className='table-title-income-history' level={2}>
                         Historial de Ingresos
                     </Typography.Title>
-                    <Table dataSource={incomes} columns={columns} rowKey="_id" />
+                    <Table 
+                        dataSource={incomes} 
+                        columns={columns} 
+                        rowKey="_id" 
+                        pagination={{
+                            pageSize: 9, 
+                            showSizeChanger: false, 
+                            pageSizeOptions: ['5', '10', '20'], 
+                            showTotal: (total, range) => `${range[0]}-${range[1]} de ${total} filas`,
+                        }}
+                    />
                 </Layout.Content>
             </Layout>
             <Drawer

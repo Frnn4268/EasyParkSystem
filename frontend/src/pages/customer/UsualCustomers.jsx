@@ -85,7 +85,17 @@ const UsualCustomers = () => {
                     <Typography.Title className='table-title-usual-customers' level={2}>
                         Clientes Frecuentes
                     </Typography.Title>
-                    <Table dataSource={usualCustomers} columns={columns} rowKey={(record) => record._id.phone_number} />
+                    <Table 
+                        dataSource={usualCustomers} 
+                        columns={columns} 
+                        rowKey={(record) => record._id.phone_number} 
+                        pagination={{
+                            pageSize: 10, 
+                            showSizeChanger: false, 
+                            pageSizeOptions: ['5', '10', '20'], 
+                            showTotal: (total, range) => `${range[0]}-${range[1]} de ${total} filas`,
+                        }}    
+                    />
                 </Layout.Content>
             </Layout>
         </Layout>

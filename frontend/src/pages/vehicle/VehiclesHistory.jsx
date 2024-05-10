@@ -139,7 +139,17 @@ const VehiclesHistory = () => {
                     <Typography.Title className='table-title-vehicle-history' level={2}>
                         Historial de Vehículos
                     </Typography.Title>
-                    <Table dataSource={vehiclesHistory} columns={columns} rowKey="id" />
+                    <Table 
+                        dataSource={vehiclesHistory} 
+                        columns={columns} 
+                        rowKey="id" 
+                        pagination={{
+                            pageSize: 11, 
+                            showSizeChanger: false, 
+                            pageSizeOptions: ['5', '10', '20'], 
+                            showTotal: (total, range) => `${range[0]}-${range[1]} de ${total} filas`,
+                        }}
+                    />
                 </Layout.Content>
             </Layout>
         </Layout>

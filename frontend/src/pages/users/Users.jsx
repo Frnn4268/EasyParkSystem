@@ -186,7 +186,17 @@ const Users = () => {
                     <Typography.Title className='table-title-user' level={2}>
                         Usuarios
                     </Typography.Title>
-                    <Table dataSource={users} columns={columns} rowKey="_id" />
+                    <Table 
+                        dataSource={users} 
+                        columns={columns} 
+                        rowKey="_id" 
+                        pagination={{
+                            pageSize: 10, 
+                            showSizeChanger: false, 
+                            pageSizeOptions: ['5', '10', '20'], 
+                            showTotal: (total, range) => `${range[0]}-${range[1]} de ${total} filas`,
+                        }}
+                    />
                 </Layout.Content>
             </Layout>
             <Drawer
