@@ -19,13 +19,14 @@ const ParkingPriceComponent = () => {
     const [lastSavedParkingPrice, setLastSavedParkingPrice] = useState(0); 
     const [lastDateParkingPrice, setLastDateParkingPrice] = useState(null); 
 
-    const success = () => {
+    const success = async () => {
         messageApi
             .loading('Guardando ingreso...', 2.5)
-            .then(() => {
+            .then(async () => {
                 message.success('Precio de parqueo guardado correctamente', 2.5);
                 form.resetFields();
-                setLastSavedParkingPrice(parkingPrice); 
+                setLastSavedParkingPrice(parkingPrice);
+                await fetchLastParkingIncome(); 
             })
             .catch(() => message.error('Error al guardar el precio de parqueo', 2.5));
     };
