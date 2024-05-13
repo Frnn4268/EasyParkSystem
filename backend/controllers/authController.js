@@ -6,36 +6,42 @@ const createError = require('../utils/appError')
 require('dotenv').config()
 
 // Register user
-exports.signup = async(req, res, next) => {
+exports.signup = async (req, res, next) => {
     try {
-        const user = await User.findOne({email: req.body.email})
+        const adminUser = await User.findOne({ role: 'Administrador' });
+
+        if (adminUser && req.body.role === 'Administrador') {
+            return next(new createError('Ya existe un administrador asignado. No se pueden registrar más administradores.', 403))
+        } 
+
+        const user = await User.findOne({ email: req.body.email });
 
         if (user) {
-            return next(new createError('El usuario ya existe', 400))
+            return next(new createError('El usuario ya existe', 400));
         }
 
-        const hashedPassword = await bcrypt.hash(req.body.password, 12)
+        const hashedPassword = await bcrypt.hash(req.body.password, 12);
 
         const newUser = await User.create({
             ...req.body,
             password: hashedPassword,
             active: true
-        })
+        });
 
         // Assing JWT (json web token) to user
-        const token = jwt.sign({_id: newUser._id}, process.env.SECRET_KEY, {
+        const token = jwt.sign({ _id: newUser._id }, process.env.SECRET_KEY, {
             expiresIn: '90d',
-        })
+        });
 
         res.status(201).json({
             status: 'succes',
             message: 'Usuario registrado exitosamente',
             token,
-        })
-    } catch(error) {
-        next(error)
+        });
+    } catch (error) {
+        next(error);
     }
-}
+};
 
 // Login user
 exports.login = async(req, res, next) => {

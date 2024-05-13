@@ -31,6 +31,22 @@ body {
     padding: 0 50px;
 }
 .home-block-section {
+    margin: 75px auto;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 20px 10px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
+    width: 75%;
+}
+.home-block-section-contact {
+    margin: 110px auto;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 20px 10px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
+    width: 75%;
+}
+.home-block-section-information {
     margin: 70px auto;
     padding: 20px;
     border-radius: 20px;
