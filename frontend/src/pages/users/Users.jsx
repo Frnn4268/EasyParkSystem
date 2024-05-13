@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Layout, Table, Tag, Typography, Button, Space, Modal, Form, Input, Switch, Drawer, Radio } from 'antd';
+import { Layout, Table, Tag, Typography, Button, Space, Modal, Form, Input, Switch, Drawer, Radio, message } from 'antd';
 import { DeleteOutlined, SyncOutlined } from '@ant-design/icons';
 
 import TopMenu from '../dashboard/TopMenu.jsx';
@@ -55,6 +55,7 @@ const Users = () => {
                     .then(response => {
                         if (response.ok) {
                             fetchUsers(); 
+                            message.success('Usuario eliminado exitosamente.');
                         } else {
                             console.error('Error to delete contact');
                         }
@@ -93,6 +94,7 @@ const Users = () => {
             if (response.ok) {
                 await fetchUsers(); 
                 setDrawerVisible(false);
+                message.success('Usuario editado exitosamente.');
             } else {
                 console.error('Error updating user');
             }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Layout, Table, Typography, Tag, Space, Button, Modal } from 'antd';
+import { Layout, Table, Typography, Tag, Space, Button, Modal, message } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 
 import TopMenu from '../dashboard/TopMenu.jsx';
@@ -44,20 +44,23 @@ const ParkingHistory = () => {
             okText: 'Eliminar',
             okType: 'danger',
             cancelText: 'Cancelar',
-            onOk() {
-                fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE_ENTRY}/${id}`, {
-                    method: 'DELETE',
-                })
-                    .then(response => {
-                        if (response.ok) {
-                            fetchParkingSpaces(); 
-                        } else {
-                            console.error('Error to delete parking history');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error processing request:', error);
+            async onOk() {
+                try {
+                    const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE_ENTRY}/${id}`, {
+                        method: 'DELETE',
                     });
+                    if (response.ok) {
+                        await fetchParkingSpaces();
+                        message.success('Historial de parqueo eliminado exitosamente.');
+                    } else if (response.status === 400) {
+                        const data = await response.json();
+                        message.warning(data.message);
+                    } else {
+                        console.error('Error to delete parking history');
+                    }
+                } catch (error) {
+                    console.error('Error processing request:', error);
+                }
             },
             onCancel() {
                 console.log('Canceled');

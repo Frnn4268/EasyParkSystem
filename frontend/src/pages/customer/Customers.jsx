@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Layout, Table, Tag, Typography, Button, Space, Modal, Form, Input, Drawer } from 'antd';
+import { Layout, Table, Tag, Typography, Button, Space, Modal, Form, Input, Drawer, message } from 'antd';
 import { DeleteOutlined, SyncOutlined } from '@ant-design/icons';
 
 import TopMenu from '../dashboard/TopMenu.jsx';
@@ -47,20 +47,23 @@ const Customers = () => {
             okText: 'Eliminar',
             okType: 'danger',
             cancelText: 'Cancelar',
-            onOk() {
-                fetch(`${import.meta.env.VITE_APP_API_URL_CUSTOMER}/${id}`, {
-                    method: 'DELETE',
-                })
-                    .then(response => {
-                        if (response.ok) {
-                            fetchCustomers(); 
-                        } else {
-                            console.error('Error to delete customer');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error processing request:', error);
+            async onOk() {
+                try {
+                    const response = await fetch(`${import.meta.env.VITE_APP_API_URL_CUSTOMER}/${id}`, {
+                        method: 'DELETE',
                     });
+                    if (response.ok) {
+                        await fetchCustomers();
+                        message.success('Cliente eliminado exitosamente.');
+                    } else if (response.status === 400) {
+                        const data = await response.json();
+                        message.warning(data.message);
+                    } else {
+                        console.error('Error to delete customer');
+                    }
+                } catch (error) {
+                    console.error('Error processing request:', error);
+                }
             },
             onCancel() {
                 console.log('Canceled');
@@ -90,6 +93,7 @@ const Customers = () => {
             if (response.ok) {
                 await fetchCustomers(); 
                 setDrawerVisible(false);
+                message.success('Cliente editado exitosamente.');
             } else {
                 console.error('Error updating customer');
             }

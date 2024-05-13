@@ -2,6 +2,7 @@ const ParkingSpace = require('../models/parkingSpaceModel.js');
 const Customer = require('../models/customerModel.js');
 const Vehicle = require('../models/vehicleModel.js');
 const moment = require('moment');
+const createError = require('../utils/appError');
 
 exports.getAllParkingSpaces = async (req, res, next) => {
     try {
@@ -38,17 +39,14 @@ exports.getAverageParkingTime = async (req, res, next) => {
     try {
         const parkingSpaces = await ParkingSpace.find({ hour_date_output: { $ne: null } });
 
-        // Calcular la diferencia de tiempo para cada registro y almacenarla en un array
         const parkingDurations = parkingSpaces.map(space => {
             const entryTime = new Date(space.hour_date_entry);
             const outputTime = new Date(space.hour_date_output);
-            return outputTime - entryTime; // Diferencia de tiempo en milisegundos
+            return outputTime - entryTime; 
         });
 
-        // Calcular el promedio de las diferencias de tiempo
         const averageParkingTime = parkingDurations.reduce((acc, cur) => acc + cur, 0) / parkingDurations.length;
 
-        // Convertir el promedio a minutos
         const averageParkingTimeInMinutes = averageParkingTime / (1000 * 60);
 
         res.status(200).json({ averageParkingTime: averageParkingTimeInMinutes });
@@ -104,7 +102,6 @@ exports.getTotalCustomersToday = async (req, res, next) => {
         // Obtener la fecha de hoy
         const today = moment().startOf('day').toDate();
 
-        // Realizar la agregación para contar los clientes que han estacionado hoy
         const totalCustomersToday = await Customer.aggregate([
             {
                 $lookup: {
@@ -130,7 +127,6 @@ exports.getTotalCustomersToday = async (req, res, next) => {
             }
         ]);
 
-        // Extraer el total de clientes o establecerlo en 0 si no hay resultados
         const total = totalCustomersToday.length > 0 ? totalCustomersToday[0].totalCustomers : 0;
 
         res.status(200).json({ totalCustomersToday: total });
@@ -211,6 +207,14 @@ exports.parkingOutputEdit = async (req, res, next) => {
 exports.deleteParkingSpace = async (req, res, next) => {
     try {
         const { id } = req.params; 
+
+        const parkingSpace = await ParkingSpace.findById(id);
+        if (!parkingSpace) {
+            return res.status(404).json({ message: 'Espacio de estacionamiento no encontrado' });
+        }
+        if (parkingSpace.state === 'Ocupado') {
+            return next(new createError('No se puede eliminar el historial de parqueo porque está ocupado. Libere el espacio de estacionamiento antes de eliminarlo.', 400));
+        }
 
         const deletedParkingSpace = await ParkingSpace.findByIdAndDelete(id);
 
