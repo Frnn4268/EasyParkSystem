@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Layout, Table, Tag, Typography, Button, Space, Modal, Form, Input, Drawer } from 'antd';
+import { Layout, Table, Tag, Typography, Button, Space, Modal, Form, Input, Drawer, message } from 'antd';
 import { DeleteOutlined, SyncOutlined } from '@ant-design/icons';
 
 import TopMenu from '../dashboard/TopMenu.jsx';
@@ -55,6 +55,7 @@ const IncomeHistory = () => {
                     if (response.ok) {
                         const updatedIncomes = incomes.filter(income => income.id !== id);
                         setIncomes(updatedIncomes);
+                        message.success('Ingreso eliminado exitosamente.');
                     } else {
                         console.error('Error to delete income');
                     }
@@ -99,6 +100,8 @@ const IncomeHistory = () => {
                 setDrawerVisible(false);
     
                 const updatedResponse = await fetch(import.meta.env.VITE_APP_API_URL_INCOME);
+
+                message.success('Ingreso editado exitosamente.');
                 if (updatedResponse.ok) {
                     const updatedData = await updatedResponse.json();
                     setIncomes(updatedData.data);

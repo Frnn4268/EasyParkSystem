@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Layout, Table, Tag, Typography, Button, Space, Modal, Form, Input, Drawer } from 'antd';
+import { Layout, Table, Tag, Typography, Button, Space, Modal, Form, Input, Drawer, message } from 'antd';
 import { DeleteOutlined, SyncOutlined } from '@ant-design/icons';
 
 import TopMenu from '../src/pages/dashboard/TopMenu.jsx';
@@ -55,6 +55,7 @@ const ContactComponent = () => {
                     if (response.ok) {
                         const updatedContacts = contacts.filter(contact => contact.id !== id);
                         setContacts(updatedContacts);
+                        message.success('Contacto eliminado exitosamente.');
                     } else {
                         console.error('Error to delete contact');
                     }

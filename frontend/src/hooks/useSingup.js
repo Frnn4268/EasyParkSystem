@@ -17,7 +17,7 @@ const useSignup = () => {
 
     const registerUser = async (values) => {
         if (values.password !== values.passwordConfirm) {
-            return setError("La contraseña no es la misma")
+            return setError("Las contraseñas no coinciden.")
         }
 
         try {
@@ -44,7 +44,6 @@ const useSignup = () => {
                 setError(data.message);
 
             } else if (res.status === 403) {
-                setError(data.message);
                 openNotificationError('warning', 'Error al registrar: ', data.message);
             } else {
                 message.error('Error al registrar');

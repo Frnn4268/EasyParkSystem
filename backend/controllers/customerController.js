@@ -1,4 +1,5 @@
 const Customer = require('../models/customerModel');
+const ParkingSpace = require('../models/parkingSpaceModel.js');
 const createError = require('../utils/appError');
 
 // Get all customers
@@ -41,10 +42,19 @@ exports.updateCustomer = async (req, res, next) => {
 exports.deleteCustomer = async (req, res, next) => {
     try {
         const { id } = req.params;
+
+        const customerInParkingSpace = await ParkingSpace.findOne({ customer: id });
+
+        if (customerInParkingSpace) {
+            return next(new createError('No se puede eliminar este cliente porque está asociado a un espacio de estacionamiento.', 400));
+        }
+        
         const deletedCustomer = await Customer.findByIdAndDelete(id);
+        
         if (!deletedCustomer) {
             return next(createError(404, 'Cliente no encontrado'));
         }
+
         res.status(204).json({
             status: 'success',
             message: 'Cliente eliminado exitosamente!',

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Table, Tag, Typography, Button, Space, Modal, Form, Input, Drawer, Select, Row, Col } from 'antd';
+import { Layout, Table, Tag, Typography, Button, Space, Modal, Form, Input, Drawer, Select, Row, Col, message } from 'antd';
 import { DeleteOutlined, SyncOutlined } from '@ant-design/icons';
 
 import TopMenu from '../dashboard/TopMenu.jsx';
@@ -48,20 +48,24 @@ const Vehicles = () => {
             okText: 'Eliminar',
             okType: 'danger',
             cancelText: 'Cancelar',
-            onOk() {
-                fetch(`${import.meta.env.VITE_APP_API_URL_VEHICLE}/${id}`, {
-                    method: 'DELETE',
-                })
-                    .then(response => {
-                        if (response.ok) {
-                            fetchVehicles(); 
-                        } else {
-                            console.error('Error to delete vehicle');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error processing request:', error);
+            async onOk() {
+                try {
+                    const response = await fetch(`${import.meta.env.VITE_APP_API_URL_VEHICLE}/${id}`, {
+                        method: 'DELETE',
                     });
+                    if (response.ok) {
+                        await fetchVehicles();
+                        message.success('Vehículo eliminado exitosamente.');
+                    } else if (response.status === 400) {
+                        const data = await response.json();
+                        message.warning(data.message);
+                    } else {
+                        console.error('Error to dolete vehicle')
+                    }
+                } catch (error) {
+                    console.error('Error processing request:', error);
+                    message.error('Error al eliminar el vehículo.');
+                }
             },
             onCancel() {
                 console.log('Canceled');
@@ -101,6 +105,7 @@ const Vehicles = () => {
             if (response.ok) {
                 await fetchVehicles(); 
                 setDrawerVisible(false);
+                message.success('Vehículo editado exitosamente.');
             } else {
                 console.error('Error updating vehicle');
             }
