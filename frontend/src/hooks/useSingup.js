@@ -1,11 +1,19 @@
-import { useState } from "react"
-import { useAuth } from "../contexts/AuthContext.jsx"
-import { message } from "antd"
+import { useState } from "react";
+import { useAuth } from "../contexts/AuthContext.jsx";
+import { message } from "antd";
+import { notification } from "antd";
 
 const useSignup = () => {
     const { login } = useAuth()
     const [error, setError] = useState(null)
     const [loading, setLoading] = useState(null)
+
+    const openNotificationError = (type, message, description) => {
+        notification[type]({
+            message,
+            description,
+        });
+    };
 
     const registerUser = async (values) => {
         if (values.password !== values.passwordConfirm) {
@@ -29,14 +37,17 @@ const useSignup = () => {
             const data = await res.json()
 
             if (res.status === 201) {
-                message.success(data.message)
-                login(data.toke, data.user)
+                message.success(data.message);
+                login(data.token, data.user);
 
             } else if (res.status === 400) {
-                setError(data.message)
+                setError(data.message);
 
+            } else if (res.status === 403) {
+                setError(data.message);
+                openNotificationError('warning', 'Error al registrar: ', data.message);
             } else {
-                message.error('Error al registrar')
+                message.error('Error al registrar');
 
             }
         } catch(error) {

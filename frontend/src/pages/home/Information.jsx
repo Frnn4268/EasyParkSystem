@@ -98,8 +98,8 @@ const Information = () => {
                 <Header className='home-header'> 
                     <MainMenu />
                 </Header>
-                <Content style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
-                    <Card className="home-block-section">
+                <Content style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <Card className="home-block-section-information">
                         <Typography.Title level={3} strong className='title' style={{textAlign: 'center'}}>
                             Información
                         </Typography.Title>
