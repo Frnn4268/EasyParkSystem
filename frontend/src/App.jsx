@@ -23,6 +23,7 @@ import ParkingTime from './pages/parking time/ParkingTime.jsx'
 
 // Users 
 import Users from './pages/users/Users.jsx'
+import UserProfile from './pages/users/UserProfile.jsx'
 
 // Customers
 import Customers from './pages/customer/Customers.jsx'
@@ -99,6 +100,12 @@ const App = () => {
           path="/users"
           element={
             isAuthenticated ? <Users /> :  <Login />
+          }
+        />
+        <Route
+          path="/user-profile"
+          element={
+            isAuthenticated ? <UserProfile /> :  <Login />
           }
         />
         <Route

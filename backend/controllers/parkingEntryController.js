@@ -80,7 +80,7 @@ exports.getFrequentCustomers = async (req, res, next) => {
             },
             {
                 $group: {
-                    _id: { firstname_owner: '$firstname_owner', lastname_owner: '$lastname_owner', phone_number: '$phone_number' },
+                    _id: { firstname_owner: '$firstname_owner', lastname_owner: '$lastname_owner' },
                     count: { $sum: 1 }
                 }
             },
@@ -99,7 +99,6 @@ exports.getFrequentCustomers = async (req, res, next) => {
 
 exports.getTotalCustomersToday = async (req, res, next) => {
     try {
-        // Obtener la fecha de hoy
         const today = moment().startOf('day').toDate();
 
         const totalCustomersToday = await Customer.aggregate([

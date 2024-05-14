@@ -21,7 +21,7 @@ const ParkingPriceComponent = () => {
 
     const success = async () => {
         messageApi
-            .loading('Guardando ingreso...', 2.5)
+            .loading('Guardando precio de parqueo...', 2.5)
             .then(async () => {
                 message.success('Precio de parqueo guardado correctamente', 2.5);
                 form.resetFields();
