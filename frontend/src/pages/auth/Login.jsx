@@ -1,14 +1,13 @@
 import React from 'react'
-import { Card, Flex, Typography, Form, Input, Button, Alert, Spin, AutoComplete, FloatButton, Layout } from 'antd' 
 import { Link } from 'react-router-dom'
+import { Card, Flex, Typography, Form, Input, Button, Alert, Spin, AutoComplete, FloatButton, Layout } from 'antd' 
+import { HomeFilled, InfoCircleFilled, PhoneFilled } from '@ant-design/icons';
 
 import '../../css/Auth.css'
 import form_card from '../../assets/home/form_card2.png'
 import loginImage from '../../assets/login_logo1.jpg'
 
 import useLogin from '../../hooks/useLogin.jsx'
-
-import { HomeFilled, InfoCircleFilled } from '@ant-design/icons';
 
 const backgroundStyle = {
   backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 3)), url(${form_card})`,
@@ -50,7 +49,11 @@ const Login = () => {
                 <FloatButton className='float-button-color' style={{marginBottom: 20}} icon={<HomeFilled />} />
               </Link>
               <Link to="/about">  
-                <FloatButton className='float-button-color' icon={<InfoCircleFilled />} >
+                <FloatButton className='float-button-color' style={{marginBottom: 20}} icon={<InfoCircleFilled />} >
+                </FloatButton>
+              </Link>
+              <Link to="/contact">  
+                <FloatButton className='float-button-color' icon={<PhoneFilled />} >
                 </FloatButton>
               </Link>
             </FloatButton.Group>

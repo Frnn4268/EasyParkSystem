@@ -28,23 +28,28 @@ const ParkingTime = () => {
             try {
                 const response = await axios.get(`${import.meta.env.VITE_APP_API_URL_PARKING_TIME_CUSTOMER_GET}/customer/${id}`);
                 setData(response.data);
-
+    
                 setLoading(false);
-
+    
                 const entryTime = new Date(response.data.hour_date_entry).getTime();
                 const currentTime = new Date().getTime();
                 const elapsed = Math.floor((currentTime - entryTime) / 1000); 
                 setElapsedTime(elapsed);
                 
-                const intervalId = setInterval(() => {
+                const intervalId = setInterval(async () => {
                     const currentTime = new Date().getTime();
                     const elapsed = Math.floor((currentTime - entryTime) / 1000);
                     setElapsedTime(elapsed);
+    
+                    if (elapsed % 900 === 0) {
+                        const costResponse = await axios.get(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE_PRICE}/${id}`);
+                        setParkingCost(costResponse.data);
+                    }
                 }, 1000);
-
+    
                 const costResponse = await axios.get(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE_PRICE}/${id}`);
                 setParkingCost(costResponse.data);
-
+    
                 return () => clearInterval(intervalId);
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -121,7 +126,12 @@ const ParkingTime = () => {
                         </Card>
                     </div>
                     <Popover
-                        content="Todos los datos son mera referencia y pueden no ser 100% exactos al momento de pagar el servicio de estacionamiento."
+                        content={(
+                            <div>
+                                <p>Por favor, ten en cuenta que todos los datos proporcionados son de referencia y podrían no ser completamente precisos al momento de realizar el pago por el servicio de estacionamiento.</p>
+                                <p>Para obtener información más detallada sobre el costo actual del estacionamiento, te recomendamos verificar con el personal autorizado.</p>
+                            </div>
+                        )}
                         title="Aviso"
                         trigger="click"
                         visible={popoverVisible}

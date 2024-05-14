@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Menu, Avatar, Button, Popover, Typography, Divider, Breadcrumb } from 'antd';
-import { UserOutlined, LogoutOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
+import { Menu, Avatar, Button, Popover, Typography, Divider } from 'antd';
+import { UserOutlined, LogoutOutlined, EditOutlined } from '@ant-design/icons';
 
 import { useAuth } from '../../contexts/AuthContext.jsx';
 
@@ -28,6 +29,11 @@ const TopMenu = () => {
         <div>
             <p><strong>Rol:</strong> {userData && userData.role}</p>
             <p><strong>Correo:</strong> {userData && userData.email}</p>
+            <Link to="/user-profile">
+                <Button type="link" icon={<EditOutlined />} style={{ marginLeft: 45 }}>
+                    Editar perfil
+                </Button>
+            </Link>
         </div>
     );
 
