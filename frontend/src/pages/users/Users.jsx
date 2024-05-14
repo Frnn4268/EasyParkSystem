@@ -159,7 +159,7 @@ const Users = () => {
                     checkedChildren="Activo"
                     unCheckedChildren="Inactivo"
                     onChange={(checked) => handleSwitchChange(record.id, checked)}
-                    style={{ backgroundColor: active ? 'green' : 'red', transition: 'background-color 0.3s' }} // Agregar una transición de color de fondo
+                    style={{ backgroundColor: active ? 'green' : 'red', transition: 'background-color 0.3s' }} 
                 />
             ),
         },

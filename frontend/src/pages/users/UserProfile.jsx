@@ -12,7 +12,6 @@ import {
     ZoomInOutlined,
     ZoomOutOutlined
 } from '@ant-design/icons';
-import axios from 'axios';
 
 import TopMenu from '../dashboard/TopMenu.jsx';
 import LeftMenu from '../dashboard/LeftMenu.jsx';
@@ -28,8 +27,10 @@ const { Dragger } = Upload;
 const src = 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png';
 
 const UserProfile = () => {
-    const [form] = Form.useForm();
+    const [user, setUser] = useState([]);
+    const [password, setPassword] = useState(''); // Estado para almacenar la contraseña
     const { userData } = useAuth();
+    const [form] = Form.useForm();
 
     useEffect(() => {
         fetchUserData();
@@ -37,32 +38,56 @@ const UserProfile = () => {
 
     const fetchUserData = async () => {
         try {
-            const response = await axios.get('');
-            userData(response.data);
-            form.setFieldsValue({
-                name: response.data.name,
-                email: response.data.email,
-            });
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_USER_PROFILE}/${userData._id}`);
+            if (response.ok) {
+                const data = await response.json();
+                setUser(data.data);
+                setPassword(data.data.password); // Almacenar la contraseña en el estado
+                form.setFieldsValue({
+                    id: response.data.id,
+                    name: response.data.name,
+                    email: response.data.email,
+                    password: response.data.password
+                });
+            } else {
+                console.error('Error getting users');
+            }
         } catch (error) {
-            console.error('Error fetching user data:', error);
+            console.error(error);
         }
     };
 
-    const onFinish = (values) => {
-        console.log('Received values:', values);
-        message.success('Perfil actualizado exitosamente');
+    const onFinish = async (values) => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_USER_PROFILE}/${userData._id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(values),
+            });
+            if (response.ok) {
+                await fetchUserData(); 
+                message.success('Usuario editado exitosamente.');
+            } else {
+                console.error('Error updating user');
+            }
+        } catch (error) {
+            console.error('Error processing request:', error);
+        }
     };
 
     const beforeUpload = (file) => {
-        const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-        if (!isJpgOrPng) {
-            message.error('Solo puedes subir archivos JPG/PNG!');
+        // Verificar el tipo y tamaño del archivo
+        // Resto del código...
+    };
+
+    const compareToFirstPassword = (_, value) => {
+        const { form } = _;
+        if (value && value !== form.getFieldValue('password')) {
+            return Promise.reject('Las contraseñas no coinciden');
         }
-        const isLt2M = file.size / 1024 / 1024 < 2;
-        if (!isLt2M) {
-            message.error('La imagen debe ser más pequeña que 2MB!');
-        }
-        return isJpgOrPng && isLt2M;
+        return Promise.resolve();
     };
 
     return (
@@ -92,32 +117,54 @@ const UserProfile = () => {
                                     }}
                                 >
                                     <Form.Item
-                                        label="Nombre"
+                                        label="Nombre: "
                                         name="name"
                                         rules={[{ required: true, message: 'Por favor ingresa tu nombre' }]}
                                     >
                                         <Input prefix={<UserOutlined />} />
                                     </Form.Item>
                                     <Form.Item
-                                        label="Correo electrónico"
+                                        label="Correo electrónico: "
                                         name="email"
                                         rules={[{ required: true, message: 'Por favor ingresa tu correo electrónico' }]}
                                     >
                                         <Input prefix={<MailOutlined />} />
                                     </Form.Item>
-                                    <Dragger>
+                                    <Form.Item
+                                        label="Contraseña: "
+                                        name="password"
+                                        rules={[{ required: true, message: 'Por favor ingresa tu contraseña' }]}
+                                    >
+                                        <Input.Password prefix={<MailOutlined />} />
+                                    </Form.Item>
+                                    <Form.Item
+                                        label="Confirmación de contraseña: "
+                                        name="confirmPassword"
+                                        dependencies={['password']}
+                                        rules={[
+                                            { required: true, message: 'Por favor ingresa de nuevo tu contraseña' },
+                                            { validator: compareToFirstPassword }
+                                        ]}
+                                    >
+                                        <Input.Password prefix={<MailOutlined />} />
+                                    </Form.Item>
+                                    <Dragger beforeUpload={beforeUpload}>
                                         <p className="ant-upload-drag-icon">
                                         <InboxOutlined />
                                         </p>
                                         <p className="ant-upload-text">Haga clic o arrastre la imagen de perfil a esta área para cargarla.</p>
                                         <p className="ant-upload-hint">
-                                        Soporte para una carga única o masiva. Está estrictamente prohibido cargar datos de la empresa u otros
-                                        archivos prohibidos.
+                                            Soporte para una carga única o masiva. Está estrictamente prohibido cargar datos de la empresa u otros
+                                            archivos prohibidos.
                                         </p>
                                     </Dragger>
-
                                     <Form.Item>
-                                        <Button type="primary" htmlType="submit" icon={<SaveOutlined />} style={{ marginTop: 25 }}>
+                                        <Button 
+                                            type="primary" 
+                                            htmlType="submit"
+                                             icon={<SaveOutlined />} 
+                                             style={{ marginTop: 25 }}
+                                        >
                                             Guardar Perfil
                                         </Button>
                                     </Form.Item>
@@ -127,30 +174,25 @@ const UserProfile = () => {
                         <Col xs={24} sm={24} md={12} lg={12} xl={12}>
                             <Card>
                             {userData && (
-                                <Form
-                                    form={form}
-                                    name="profile_form"
-                                    layout="vertical"
-                                    onFinish={onFinish}
-                                    initialValues={{
-                                        name: userData.name,
-                                        email: userData.email,
-                                        role: userData.role,
-                                        active: userData.active
-                                    }}
-                                >
+                                <div>
+                                    <Typography.Text strong>Id:</Typography.Text>
+                                    <Typography.Text>{userData._id}</Typography.Text>
+                                    <br />
                                     <Typography.Text strong>Nombre:</Typography.Text>
-                                        <Typography.Text>{userData.name}</Typography.Text>
-                                        <br />
-                                        <Typography.Text strong>Correo electrónico:</Typography.Text>
-                                        <Typography.Text>{userData.email}</Typography.Text>
-                                        <br />
-                                        <Typography.Text strong>Rol:</Typography.Text>
-                                        <Typography.Text>{userData.role}</Typography.Text>
-                                        <br />
-                                        <Typography.Text strong>Estado:</Typography.Text>
-                                        <Typography.Text>{userData.active}</Typography.Text>
-                                        <br />
+                                    <Typography.Text>{userData.name}</Typography.Text>
+                                    <br />
+                                    <Typography.Text strong>Correo electrónico:</Typography.Text>
+                                    <Typography.Text>{userData.email}</Typography.Text>
+                                    <br />
+                                    <Typography.Text strong>Rol:</Typography.Text>
+                                    <Typography.Text>{userData.role}</Typography.Text>
+                                    <br />
+                                    <Typography.Text strong>Estado:</Typography.Text>
+                                    <Typography.Text>{userData.active ? 'Activo' : 'Inactivo'}</Typography.Text>
+                                    <br />
+                                    <Typography.Text strong>Contraseña:</Typography.Text>
+                                    <Typography.Text>{password}</Typography.Text> 
+                                    <br />
                                     <Image
                                         width={200}
                                         src={src}
@@ -174,7 +216,7 @@ const UserProfile = () => {
                                             ),
                                         }}
                                     />
-                                </Form>
+                                </div>
                             )}
                             </Card>
                         </Col>

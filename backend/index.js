@@ -11,6 +11,7 @@ const app = express()
 const authRoute = require('./routes/authRoute')
 const contactRoute = require('./routes/contactRoute')
 const userRoute = require('./routes/userRoute')
+const userProfileRoute = require('./routes/userProfileRoute')
 const customerRoute = require('./routes/CustomerRoute')
 const parkingSpaceRoute = require('./routes/parkingSpaceRoute')
 const parkingRoute = require('./routes/parkingEntryRoute')
@@ -28,6 +29,7 @@ app.use(express.json())
 app.use('/api/auth', authRoute) // Auth
 app.use('/api/contact', contactRoute) // Contact
 app.use('/api/user', userRoute) // User
+app.use('/api/user-profile', userProfileRoute) // User profile
 app.use('/api/customer', customerRoute) // Customer
 app.use('/api/parking_space', parkingSpaceRoute) // Parking space
 app.use('/api/parking-space', parkingRoute) // Parking Spaces
@@ -37,7 +39,6 @@ app.use('/api/parking-price', parkingPriceRoute) // Parking Price
 app.use('/api/vehicle', vehicleRoute) // Vehicle
 app.use('/api/income', incomeRoute) // Income
  
-
 // Global error handler
 app.use((err, req, res, next) => {
     err.statusCode = err.statusCode || 500;

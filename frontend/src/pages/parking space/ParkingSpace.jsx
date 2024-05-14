@@ -418,7 +418,7 @@ const ParkingSpaces = () => {
                         </Col>
                         <Col span={12}>
                             <Form.Item label="Color" name="color">
-                                <Select placeholder="Marca del vehículo">
+                                <Select placeholder="Color del vehículo">
                                     <Option value="Rojo">Rojo</Option>
                                     <Option value="Azul">Azul</Option>
                                     <Option value="Negro">Negro</Option>
