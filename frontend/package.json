@@ -17,7 +17,7 @@
     "@mui/icons-material": "^5.15.15",
     "@mui/material": "^5.15.15",
     "@mui/styled-engine-sc": "^6.0.0-alpha.18",
-    "@mui/x-charts": "^7.3.1",
+    "@mui/x-charts": "^7.4.0",
     "@types/mapbox-gl": "^3.1.0",
     "antd": "^5.15.4",
     "axios": "^1.6.8",
