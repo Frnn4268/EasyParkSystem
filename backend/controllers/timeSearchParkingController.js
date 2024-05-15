@@ -14,6 +14,27 @@ exports.getAllTimeSearchParking = async (req, res, next) => {
     }
 };
 
+// Get last created time search parking ID
+exports.getLastTimeSearchParking = async (req, res, next) => {
+    try {
+        const lastTimeSearchParking = await TimeSearchParking.findOne().sort({ _id: -1 });
+        if (!lastTimeSearchParking) {
+            return res.status(404).json({
+                status: 'success',
+                message: 'No se encontraron registros de búsqueda de estacionamiento',
+                data: null
+            });
+        }
+
+        res.status(200).json({
+            status: 'success',
+            data: lastTimeSearchParking._id
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
 // Create a new time search parking
 exports.createTimeSearchParking = async (req, res, next) => {
     try {
@@ -64,17 +85,14 @@ exports.updateTimeSearchParking = async (req, res, next) => {
 exports.deleteTimeSearchParking = async (req, res, next) => {
     try {
         const { id } = req.params;
-
-        const timeSearchParking = await TimeSearchParking.findById(id);
-        if (!timeSearchParking) {
-            return next(createError(404, 'Registro de búsqueda de estacionamiento no encontrado'));
+        const deletedTimeSearchParking = await TimeSearchParking.findByIdAndDelete(id);
+        if(!deletedTimeSearchParking) {
+            return next(createError(404, 'Time search parking not found'));
         }
-
-        await timeSearchParking.remove();
-
-        res.status(200).json({
+        res.status(204).json({
             status: 'success',
-            message: 'Registro de búsqueda de estacionamiento eliminado correctamente'
+            message: 'Time search parking deleted successfully',
+            data: null
         });
     } catch (error) {
         next(error);

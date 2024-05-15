@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Layout, Button, ConfigProvider, Drawer, Space, Col, Form, Input, Row, Select, Card, Statistic, Typography, Divider, Tag, Modal, Popover, QRCode } from 'antd';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { ExclamationCircleOutlined, ClockCircleOutlined, PauseOutlined, ReloadOutlined } from '@ant-design/icons';
 
 import TopMenu from '../dashboard/TopMenu.jsx';
 import LeftMenu from '../dashboard/LeftMenu.jsx';
@@ -40,6 +40,10 @@ const ParkingSpaces = () => {
     const [totalCustomersToday, setTotalCustomersToday] = useState({
         totalCustomersToday: 0
     });
+
+    const [timerRunning, setTimerRunning] = useState(false);
+    const [timerValue, setTimerValue] = useState(0);
+    const [timerInterval, setTimerInterval] = useState(null);
 
     useEffect(() => {
         fetchData();
@@ -103,8 +107,6 @@ const ParkingSpaces = () => {
             const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE_ENTRY}/average-time`);
             const data = await response.json();
     
-            console.log(data);
-    
             const averageParkingTime = parseFloat(data.averageParkingTime);
             const formattedAverageParkingTime = averageParkingTime.toFixed(2);
     
@@ -131,6 +133,59 @@ const ParkingSpaces = () => {
             }));
         } catch (error) {
             console.error('Error al obtener el total de clientes hoy:', error);
+        }
+    };
+
+    const startTimer = async () => {
+        try {
+            const response = await fetch(import.meta.env.VITE_APP_API_URL_PARKING_TIME_SEARCH, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({}),
+            });
+            
+            if (!response.ok) {
+                throw new Error('Error al iniciar el cronómetro');
+            }
+    
+            setTimerRunning(true);
+            setTimerInterval(setInterval(() => {
+                setTimerValue(prevValue => prevValue + 1);
+            }, 1000));
+        } catch (error) {
+            console.error('Error al iniciar el cronómetro:', error);
+        }
+    };
+
+    const stopTimer = () => {
+        setTimerRunning(false);
+        clearInterval(timerInterval);
+    };
+
+    const resetTimer = async () => {
+        try {
+            const lastTimeResponse = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_TIME_SEARCH}/last-time`);
+            const lastTimeData = await lastTimeResponse.json();
+            const id = lastTimeData.data;
+    
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_TIME_SEARCH}/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({}),
+            });
+            
+            if (!response.ok) {
+                throw new Error('Error al reiniciar el cronómetro');
+            }
+    
+            stopTimer();
+            setTimerValue(0);
+        } catch (error) {
+            console.error('Error al reiniciar el cronómetro:', error);
         }
     };
 
@@ -194,7 +249,6 @@ const ParkingSpaces = () => {
             const data = await response.json();
     
             if (response.ok) {
-                console.log('Datos guardados exitosamente:', data);
                 setDrawerContent(null);
                 form.resetFields();
                 onCloseDrawer();
@@ -222,7 +276,6 @@ const ParkingSpaces = () => {
             const data = await response.json();
     
             if (response.ok) {
-                console.log('Estado del espacio de estacionamiento actualizado exitosamente:', data);
                 fetchData();
                 fetchParkingStatistics(); 
                 fetchAverageParkingTime();
@@ -245,8 +298,6 @@ const ParkingSpaces = () => {
 
                 setParkingSpaceDetails(data.id);
 
-                console.log(setParkingSpaceDetails)
-
                 setConfirmVisible(true); 
             } catch (error) {
                 console.error('Error al obtener los detalles del espacio de parqueo:', error);
@@ -263,6 +314,12 @@ const ParkingSpaces = () => {
 
     const handleCancel = () => {
         setConfirmVisible(false); 
+    };
+
+    const formatTime = (timeInSeconds) => {
+        const minutes = Math.floor(timeInSeconds / 60);
+        const seconds = timeInSeconds % 60;
+        return `${minutes > 0 ? minutes + 'min ' : ''}${seconds}s`;
     };
 
     const getButtonColor = (id) => {
@@ -626,6 +683,33 @@ const ParkingSpaces = () => {
                                 </Card>
                             </Col>
                         </Row>
+                    </div>
+                    <div style={{ position: 'absolute', bottom: 15, right: 15 }}>
+                        <Card 
+                            style={{ width: 385, height: 110 }}
+                        >
+                            <Button 
+                                type="primary" 
+                                shape="circle" 
+                                size="large" 
+                                icon={<ClockCircleOutlined />} 
+                                onClick={() => startTimer()} 
+                                style={{ marginRight: '20px', marginTop: '12.5px' }}
+                            />
+                            <Button
+                                type="primary"
+                                shape="circle"
+                                size="large"
+                                icon={<ReloadOutlined />}
+                                onClick={() => resetTimer()}
+                            />
+                            <Statistic 
+                                title="Cronómetro de búsqueda de Estacionamiento"
+                                value={formatTime(timerValue)}
+                                precision={0} 
+                                style={{ marginLeft: 130, marginTop: -65 }}
+                            />
+                        </Card>
                     </div>
                 </Layout.Content>
             </Layout>
