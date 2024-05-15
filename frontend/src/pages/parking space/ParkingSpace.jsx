@@ -337,6 +337,12 @@ const ParkingSpaces = () => {
                             <Form.Item
                                 name="phone_number"
                                 label="Número de teléfono"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: '¡Por favor ingrese el número telefónico del cliente!',
+                                    },
+                                ]}
                             >
                                 <Input placeholder="Número de teléfono del cliente" />
                             </Form.Item>
@@ -385,7 +391,16 @@ const ParkingSpaces = () => {
                         </Col>
                     </Row>
                     <Col span={12}>
-                        <Form.Item label="Tipo de Vehículo" name="type">
+                        <Form.Item 
+                            label="Tipo de Vehículo" 
+                            name="type"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: '¡Por favor selecciona el tipo de vehículo!',
+                                },
+                            ]}
+                        >
                             <Select placeholder="Tipo de vehículo">
                                 <Option value="SUV">SUV</Option>
                                 <Option value="Pickup">Pickup</Option>
@@ -401,7 +416,16 @@ const ParkingSpaces = () => {
                     </ Col>
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item label="Marca" name="brand">
+                            <Form.Item 
+                                label="Marca" 
+                                name="brand"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: '¡Por favor selecciona la marca del vehículo!',
+                                    },
+                                ]}
+                            >
                                 <Select placeholder="Marca del vehículo">
                                     <Option value="Toyota">Toyota</Option>
                                     <Option value="Mitsubishi">Mitsubishi</Option>
@@ -417,7 +441,16 @@ const ParkingSpaces = () => {
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item label="Color" name="color">
+                            <Form.Item 
+                                label="Color" 
+                                name="color"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: '¡Por favor selecciona el color del vehículo!',
+                                    },
+                                ]}
+                            >
                                 <Select placeholder="Color del vehículo">
                                     <Option value="Rojo">Rojo</Option>
                                     <Option value="Azul">Azul</Option>
@@ -537,7 +570,7 @@ const ParkingSpaces = () => {
                         </Popover>
                     </Modal>
                     <div className="center-right-container-parking">
-                        <Row gutter={20} style={{ marginTop: 50 }}>
+                        <Row gutter={20} style={{ marginTop: 35 }}>
                             <Col span={40}>
                                 <Card bordered={false}>
                                     <Statistic
