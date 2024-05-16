@@ -10,7 +10,8 @@ import {
     RotateRightOutlined,
     SwapOutlined,
     ZoomInOutlined,
-    ZoomOutOutlined
+    ZoomOutOutlined,
+    LockOutlined
 } from '@ant-design/icons';
 
 import TopMenu from '../dashboard/TopMenu.jsx';
@@ -82,14 +83,6 @@ const UserProfile = () => {
         // Resto del código...
     };
 
-    const compareToFirstPassword = (_, value) => {
-        const { form } = _;
-        if (value && value !== form.getFieldValue('password')) {
-            return Promise.reject('Las contraseñas no coinciden');
-        }
-        return Promise.resolve();
-    };
-
     return (
         <Layout>
             <Header className='home-header-dashboard'>
@@ -135,18 +128,7 @@ const UserProfile = () => {
                                         name="password"
                                         rules={[{ required: true, message: 'Por favor ingresa tu contraseña' }]}
                                     >
-                                        <Input.Password prefix={<MailOutlined />} />
-                                    </Form.Item>
-                                    <Form.Item
-                                        label="Confirmación de contraseña: "
-                                        name="confirmPassword"
-                                        dependencies={['password']}
-                                        rules={[
-                                            { required: true, message: 'Por favor ingresa de nuevo tu contraseña' },
-                                            { validator: compareToFirstPassword }
-                                        ]}
-                                    >
-                                        <Input.Password prefix={<MailOutlined />} />
+                                        <Input.Password prefix={<LockOutlined />} />
                                     </Form.Item>
                                     <Dragger beforeUpload={beforeUpload}>
                                         <p className="ant-upload-drag-icon">

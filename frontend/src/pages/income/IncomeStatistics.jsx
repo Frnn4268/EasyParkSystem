@@ -35,7 +35,9 @@ const IncomeStatistics = () => {
                     setMonthlyIncome(data.data);
                     break;
                 case 'year':
-                    setYearlyIncome(data.data);
+                    // Ordenar los ingresos anuales de menor a mayor año
+                    const sortedYearlyIncome = data.data.sort((a, b) => parseInt(a._id.split(" ")[1]) - parseInt(b._id.split(" ")[1]));
+                    setYearlyIncome(sortedYearlyIncome);
                     break;
                 default:
                     break;
