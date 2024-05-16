@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Layout, Button, ConfigProvider, Drawer, Space, Col, Form, Input, Row, Select, Card, Statistic, Typography, Divider, Tag, Modal, Popover, QRCode } from 'antd';
-import { ExclamationCircleOutlined, ClockCircleOutlined, PauseOutlined, ReloadOutlined } from '@ant-design/icons';
+import { ExclamationCircleOutlined, ClockCircleOutlined, SyncOutlined, FileSyncOutlined } from '@ant-design/icons';
 
 import TopMenu from '../dashboard/TopMenu.jsx';
 import LeftMenu from '../dashboard/LeftMenu.jsx';
@@ -602,9 +602,9 @@ const ParkingSpaces = () => {
                         <p>Ha seleccionado el espacio de parqueo número: {selectedButtonId}</p>
                         <Popover
                             overlayInnerStyle={{
-                            padding: 0,
-                            width: 400,
-                            height: 410
+                                padding: 0,
+                                width: 400,
+                                height: 410
                             }}
                             content={
                                 <div>
@@ -623,7 +623,7 @@ const ParkingSpaces = () => {
                                 </div>
                             }
                         > 
-                            <Button type="primary" ghost style={{ position: 'fixed' }}>Código QR Cliente</Button>
+                            <Button type="primary" ghost style={{ position: 'fixed' }}>Ver QR de Cliente</Button>
                         </Popover>
                     </Modal>
                     <div className="center-right-container-parking">
@@ -684,33 +684,38 @@ const ParkingSpaces = () => {
                             </Col>
                         </Row>
                     </div>
-                    <div style={{ position: 'absolute', bottom: 15, right: 15 }}>
-                        <Card 
-                            style={{ width: 385, height: 110 }}
-                        >
-                            <Button 
-                                type="primary" 
-                                shape="circle" 
-                                size="large" 
-                                icon={<ClockCircleOutlined />} 
-                                onClick={() => startTimer()} 
-                                style={{ marginRight: '20px', marginTop: '12.5px' }}
-                            />
-                            <Button
-                                type="primary"
-                                shape="circle"
-                                size="large"
-                                icon={<ReloadOutlined />}
-                                onClick={() => resetTimer()}
-                            />
-                            <Statistic 
-                                title="Cronómetro de búsqueda de Estacionamiento"
-                                value={formatTime(timerValue)}
-                                precision={0} 
-                                style={{ marginLeft: 130, marginTop: -65 }}
-                            />
-                        </Card>
-                    </div>
+                    <Popover
+                        content={
+                            <div>
+                                <Statistic title="Tiempo transcurrido" value={formatTime(timerValue)} prefix={<ClockCircleOutlined />} />
+                                {timerRunning ? (
+                                    <Button type="danger" icon={<SyncOutlined spin/>} disabled>
+                                        Iniciar cronómetro
+                                    </Button>
+                                ) : (
+                                    <Button type="primary" onClick={startTimer} icon={<SyncOutlined />}>
+                                        Iniciar cronómetro
+                                    </Button>
+                                )}
+                                <Button style={{ marginTop: '10px', marginLeft: '10px' }} type="default" onClick={resetTimer} icon={<FileSyncOutlined />}>
+                                    Guardar tiempo
+                                </Button>
+                            </div>
+                        }
+                        title="Cronómetro de búsqueda de Estacionamiento"
+                        placement="bottomRight"
+                    >
+                        <Button 
+                            type="primary" 
+                            style={{ 
+                                position: 'fixed', 
+                                top: 80, 
+                                left: 272.5
+                            }} 
+                            shape="circle" 
+                            icon={<ClockCircleOutlined />} 
+                        />
+                    </Popover>
                 </Layout.Content>
             </Layout>
         </Layout>
