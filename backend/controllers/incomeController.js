@@ -18,29 +18,33 @@ exports.getAllIncomes = async (req, res, next) => {
 exports.getIncomesGroupedByPeriod = async (req, res, next) => {
     try {
         const { period } = req.params;
-
         let groupBy;
         let dateFormat;
 
-        if (period === 'day') {
-            groupBy = { $dateToString: { format: '%Y-%m-%d', date: '$hour_date' } };
-            dateFormat = '%Y-%m-%d';
-        } else if (period === 'week') {
-            groupBy = {
-                $dateToString: {
-                    format: '%Y-%U',
-                    date: '$hour_date'
-                }
-            };
-            dateFormat = '%Y-%U';
-        } else if (period === 'month') {
-            groupBy = { $month: '$hour_date' }; 
-            dateFormat = '%Y-%m';
-        } else if (period === 'year') {
-            groupBy = { $year: '$hour_date' };
-            dateFormat = '%Y';
-        } else {
-            return next(createError(400, 'Período de agrupación no válido'));
+        switch (period) {
+            case 'day':
+                groupBy = { $dateToString: { format: '%Y-%m-%d', date: '$hour_date' } };
+                dateFormat = '%Y-%m-%d';
+                break;
+            case 'week':
+                groupBy = {
+                    $dateToString: {
+                        format: '%Y-%U',
+                        date: '$hour_date'
+                    }
+                };
+                dateFormat = '%Y-%U';
+                break;
+            case 'month':
+                groupBy = { $month: '$hour_date' }; 
+                dateFormat = '%Y-%m';
+                break;
+            case 'year':
+                groupBy = { $year: '$hour_date' };
+                dateFormat = '%Y';
+                break;
+            default:
+                return next(createError(400, 'Período de agrupación no válido'));
         }
 
         let incomes = await Income.aggregate([
@@ -51,36 +55,32 @@ exports.getIncomesGroupedByPeriod = async (req, res, next) => {
                 }
             },
             {
-                $sort: { '_id': 1 }
+                $sort: { '_id': 1 } 
             }
         ]);
 
-        // Format _id to correct date format and add additional logic for week, month, and year
+        if (period === 'week') {
+            incomes = incomes.slice(0, 10);
+        }
+
         incomes.forEach(income => {
-            if (period === 'day') {
-                income._id = new Date(income._id).toISOString().slice(0, 10);
-            } else if (period === 'week') {
-                income._id = `Week ${income._id}`;
-            } else if (period === 'month') {
-                income._id = `Month ${income._id}`;
-            } else if (period === 'year') {
-                income._id = `Year ${income._id}`;
+            switch (period) {
+                case 'day':
+                    income._id = new Date(income._id).toISOString().slice(0, 10);
+                    break;
+                case 'week':
+                    income._id = `Week ${income._id}`;
+                    break;
+                case 'month':
+                    income._id = `Month ${income._id}`;
+                    break;
+                case 'year':
+                    income._id = `Year ${income._id}`;
+                    break;
             }
         });
 
-        // Additional logic for week, month, and year
-        if (period === 'week') {
-            // Ensure at least 8 weeks are returned, even if some are empty
-            const currentWeek = Math.ceil((new Date().getDate() - new Date().getDay()) / 7);
-            const requiredWeeks = 8;
-            let weekIncomes = new Array(requiredWeeks).fill({ _id: null, totalIncome: 0 });
-            for (let i = currentWeek; i >= currentWeek - requiredWeeks + 1; i--) {
-                const weekIndex = i % requiredWeeks;
-                weekIncomes[weekIndex] = incomes.find(income => income._id === `Week ${i}`) || { _id: `Week ${i}`, totalIncome: 0 };
-            }
-            incomes = weekIncomes;
-        } else if (period === 'month') {
-            // Ensure all months are returned from January to December
+        if (period === 'month') {
             const requiredMonths = 12;
             let monthIncomes = new Array(requiredMonths).fill({ _id: null, totalIncome: 0 });
             for (let i = 1; i <= requiredMonths; i++) {
@@ -89,7 +89,6 @@ exports.getIncomesGroupedByPeriod = async (req, res, next) => {
             }
             incomes = monthIncomes;
         } else if (period === 'year') {
-            // Ensure all years from 2015 to current year are returned
             const currentYear = new Date().getFullYear();
             const startYear = 2015;
             const requiredYears = currentYear - startYear + 1;

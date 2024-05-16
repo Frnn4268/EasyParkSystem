@@ -20,6 +20,7 @@ import ParkingSpace from './pages/parking space/ParkingSpace.jsx';
 import ParkingHistory from './pages/parking space/ParkingHistory.jsx'
 import ParkingStatistics from './pages/parking space/ParkingStatistics.jsx';
 import ParkingTime from './pages/parking time/ParkingTime.jsx'
+import TimeParkingSearch from './pages/parking space/TimeParkingSearch.jsx'
 
 // Users 
 import Users from './pages/users/Users.jsx'
@@ -88,6 +89,12 @@ const App = () => {
           path="/parkhistory"
           element={
             isAuthenticated ? <ParkingHistory /> :  <Login />
+          }
+        />
+        <Route
+          path="/time-parking"
+          element={
+            isAuthenticated ? <TimeParkingSearch /> :  <Login />
           }
         />
         <Route

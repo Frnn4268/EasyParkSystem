@@ -17,9 +17,10 @@ const parkingSpaceRoute = require('./routes/parkingSpaceRoute')
 const parkingRoute = require('./routes/parkingEntryRoute')
 const parkingTimeRoute = require('./routes/parkingTimeRoute')
 const parkingTimeCustomerRoute = require('./routes/parkingTimeCustomerRoute')
+const parkingPriceRoute = require('./routes/parkingPriceRoute')
+const timeSearchParkingRoute = require('./routes/timeSearchParkingRoute')
 const vehicleRoute = require('./routes/vehicleRoute')
 const incomeRoute = require('./routes/incomeRoute')
-const parkingPriceRoute = require('./routes/parkingPriceRoute')
 
 // Middlewares
 app.use(cors())
@@ -36,6 +37,7 @@ app.use('/api/parking-space', parkingRoute) // Parking Spaces
 app.use('/api/parking-time', parkingTimeRoute) // Parking Spaces
 app.use('/api/parking-time-customer', parkingTimeCustomerRoute) // Parking Spaces
 app.use('/api/parking-price', parkingPriceRoute) // Parking Price
+app.use('/api/parking-search', timeSearchParkingRoute) // Parking time search
 app.use('/api/vehicle', vehicleRoute) // Vehicle
 app.use('/api/income', incomeRoute) // Income
  

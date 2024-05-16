@@ -43,9 +43,9 @@ const items = [
         getItem('Historial de Vehículos', '9', null, null, null, '/vehicleshistory'),
     ]),
     getItem('Ingresos', 'sub3', <AreaChartOutlined />, [
-        getItem('Estadísticas de Ingresos', '10', null, null, null, '/incomestatistics'),
-        getItem('Ingresos diarios', '11', null, null, null, '/dailyincome'),
-        getItem('Historial de Ingresos', '12', null, null, null, '/incomehistory'),
+        getItem('Ingresos diarios', '10', null, null, null, '/dailyincome'),
+        getItem('Historial de Ingresos', '11', null, null, null, '/incomehistory'),
+        getItem('Estadísticas de Ingresos', '12', null, null, null, '/incomestatistics'),
     ]),
     getItem('Precio Estacionamiento', '13', <DollarOutlined />, null, null, '/module_parking_price'),
     getItem('Información', '14', <InfoCircleOutlined />, null, null, '/module_about'),

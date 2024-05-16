@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Layout, Button, ConfigProvider, Drawer, Space, Col, Form, Input, Row, Select, Card, Statistic, Typography, Divider, Tag, Modal, Popover, QRCode } from 'antd';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { ExclamationCircleOutlined, ClockCircleOutlined, SyncOutlined, FileSyncOutlined } from '@ant-design/icons';
 
 import TopMenu from '../dashboard/TopMenu.jsx';
 import LeftMenu from '../dashboard/LeftMenu.jsx';
@@ -40,6 +40,10 @@ const ParkingSpaces = () => {
     const [totalCustomersToday, setTotalCustomersToday] = useState({
         totalCustomersToday: 0
     });
+
+    const [timerRunning, setTimerRunning] = useState(false);
+    const [timerValue, setTimerValue] = useState(0);
+    const [timerInterval, setTimerInterval] = useState(null);
 
     useEffect(() => {
         fetchData();
@@ -103,8 +107,6 @@ const ParkingSpaces = () => {
             const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE_ENTRY}/average-time`);
             const data = await response.json();
     
-            console.log(data);
-    
             const averageParkingTime = parseFloat(data.averageParkingTime);
             const formattedAverageParkingTime = averageParkingTime.toFixed(2);
     
@@ -131,6 +133,59 @@ const ParkingSpaces = () => {
             }));
         } catch (error) {
             console.error('Error al obtener el total de clientes hoy:', error);
+        }
+    };
+
+    const startTimer = async () => {
+        try {
+            const response = await fetch(import.meta.env.VITE_APP_API_URL_PARKING_TIME_SEARCH, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({}),
+            });
+            
+            if (!response.ok) {
+                throw new Error('Error al iniciar el cronómetro');
+            }
+    
+            setTimerRunning(true);
+            setTimerInterval(setInterval(() => {
+                setTimerValue(prevValue => prevValue + 1);
+            }, 1000));
+        } catch (error) {
+            console.error('Error al iniciar el cronómetro:', error);
+        }
+    };
+
+    const stopTimer = () => {
+        setTimerRunning(false);
+        clearInterval(timerInterval);
+    };
+
+    const resetTimer = async () => {
+        try {
+            const lastTimeResponse = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_TIME_SEARCH}/last-time`);
+            const lastTimeData = await lastTimeResponse.json();
+            const id = lastTimeData.data;
+    
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_TIME_SEARCH}/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({}),
+            });
+            
+            if (!response.ok) {
+                throw new Error('Error al reiniciar el cronómetro');
+            }
+    
+            stopTimer();
+            setTimerValue(0);
+        } catch (error) {
+            console.error('Error al reiniciar el cronómetro:', error);
         }
     };
 
@@ -194,7 +249,6 @@ const ParkingSpaces = () => {
             const data = await response.json();
     
             if (response.ok) {
-                console.log('Datos guardados exitosamente:', data);
                 setDrawerContent(null);
                 form.resetFields();
                 onCloseDrawer();
@@ -222,7 +276,6 @@ const ParkingSpaces = () => {
             const data = await response.json();
     
             if (response.ok) {
-                console.log('Estado del espacio de estacionamiento actualizado exitosamente:', data);
                 fetchData();
                 fetchParkingStatistics(); 
                 fetchAverageParkingTime();
@@ -245,8 +298,6 @@ const ParkingSpaces = () => {
 
                 setParkingSpaceDetails(data.id);
 
-                console.log(setParkingSpaceDetails)
-
                 setConfirmVisible(true); 
             } catch (error) {
                 console.error('Error al obtener los detalles del espacio de parqueo:', error);
@@ -263,6 +314,12 @@ const ParkingSpaces = () => {
 
     const handleCancel = () => {
         setConfirmVisible(false); 
+    };
+
+    const formatTime = (timeInSeconds) => {
+        const minutes = Math.floor(timeInSeconds / 60);
+        const seconds = timeInSeconds % 60;
+        return `${minutes > 0 ? minutes + 'min ' : ''}${seconds}s`;
     };
 
     const getButtonColor = (id) => {
@@ -337,6 +394,12 @@ const ParkingSpaces = () => {
                             <Form.Item
                                 name="phone_number"
                                 label="Número de teléfono"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: '¡Por favor ingrese el número telefónico del cliente!',
+                                    },
+                                ]}
                             >
                                 <Input placeholder="Número de teléfono del cliente" />
                             </Form.Item>
@@ -385,7 +448,16 @@ const ParkingSpaces = () => {
                         </Col>
                     </Row>
                     <Col span={12}>
-                        <Form.Item label="Tipo de Vehículo" name="type">
+                        <Form.Item 
+                            label="Tipo de Vehículo" 
+                            name="type"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: '¡Por favor selecciona el tipo de vehículo!',
+                                },
+                            ]}
+                        >
                             <Select placeholder="Tipo de vehículo">
                                 <Option value="SUV">SUV</Option>
                                 <Option value="Pickup">Pickup</Option>
@@ -401,7 +473,16 @@ const ParkingSpaces = () => {
                     </ Col>
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item label="Marca" name="brand">
+                            <Form.Item 
+                                label="Marca" 
+                                name="brand"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: '¡Por favor selecciona la marca del vehículo!',
+                                    },
+                                ]}
+                            >
                                 <Select placeholder="Marca del vehículo">
                                     <Option value="Toyota">Toyota</Option>
                                     <Option value="Mitsubishi">Mitsubishi</Option>
@@ -417,7 +498,16 @@ const ParkingSpaces = () => {
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item label="Color" name="color">
+                            <Form.Item 
+                                label="Color" 
+                                name="color"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: '¡Por favor selecciona el color del vehículo!',
+                                    },
+                                ]}
+                            >
                                 <Select placeholder="Color del vehículo">
                                     <Option value="Rojo">Rojo</Option>
                                     <Option value="Azul">Azul</Option>
@@ -512,9 +602,9 @@ const ParkingSpaces = () => {
                         <p>Ha seleccionado el espacio de parqueo número: {selectedButtonId}</p>
                         <Popover
                             overlayInnerStyle={{
-                            padding: 0,
-                            width: 400,
-                            height: 410
+                                padding: 0,
+                                width: 400,
+                                height: 410
                             }}
                             content={
                                 <div>
@@ -533,11 +623,11 @@ const ParkingSpaces = () => {
                                 </div>
                             }
                         > 
-                            <Button type="primary" ghost style={{ position: 'fixed' }}>Código QR Cliente</Button>
+                            <Button type="primary" ghost style={{ position: 'fixed' }}>Ver QR de Cliente</Button>
                         </Popover>
                     </Modal>
                     <div className="center-right-container-parking">
-                        <Row gutter={20} style={{ marginTop: 50 }}>
+                        <Row gutter={20} style={{ marginTop: 35 }}>
                             <Col span={40}>
                                 <Card bordered={false}>
                                     <Statistic
@@ -594,6 +684,38 @@ const ParkingSpaces = () => {
                             </Col>
                         </Row>
                     </div>
+                    <Popover
+                        content={
+                            <div>
+                                <Statistic title="Tiempo transcurrido" value={formatTime(timerValue)} prefix={<ClockCircleOutlined />} />
+                                {timerRunning ? (
+                                    <Button type="danger" icon={<SyncOutlined spin/>} disabled>
+                                        Iniciar cronómetro
+                                    </Button>
+                                ) : (
+                                    <Button type="primary" onClick={startTimer} icon={<SyncOutlined />}>
+                                        Iniciar cronómetro
+                                    </Button>
+                                )}
+                                <Button style={{ marginTop: '10px', marginLeft: '10px' }} type="default" onClick={resetTimer} icon={<FileSyncOutlined />}>
+                                    Guardar tiempo
+                                </Button>
+                            </div>
+                        }
+                        title="Cronómetro de búsqueda de Estacionamiento"
+                        placement="bottomRight"
+                    >
+                        <Button 
+                            type="primary" 
+                            style={{ 
+                                position: 'fixed', 
+                                top: 80, 
+                                left: 272.5
+                            }} 
+                            shape="circle" 
+                            icon={<ClockCircleOutlined />} 
+                        />
+                    </Popover>
                 </Layout.Content>
             </Layout>
         </Layout>
