@@ -32,11 +32,11 @@ const InformationComponent = () => {
                                 },
                                 {
                                 title: 'En Progreso...',
-                                description: 'Generación de QR y obtención de Información.',
+                                description: 'Estadísticas de parqueo.',
                                 },
                                 {
                                 title: 'Esperando...',
-                                description: 'Estadísticas del sistema y roles para usuarios.',
+                                description: 'Roles para usuarios y Edición de perfil de usuario.',
                                 },
                             ]}
                             />
@@ -53,19 +53,19 @@ const InformationComponent = () => {
                                 },
                                 {
                                 title: 'Terminado',
-                                description: 'Inicio, Parqueo, Historial de Parqueo, Usuarios, Clientes, Vehículos, Ingresos, Precio de Estacionamiento, Información, Contacto',
+                                description: 'Inicio, Parqueo, Historial de Parqueo, Usuarios, Clientes, Vehículos, Ingresos, Precio de Estacionamiento, Información, Contacto, QR de Cliente y obtención de Información, Estadísticas de Ingresos',
                                 },
                                 {
                                 title: 'En Progreso',
-                                description: 'Generación de QR y obtención de Información',
-                                },
-                                {
-                                title: 'Esperando',
-                                description: 'Estadísticas de Parqueo e Ingresos',
+                                description: 'Estadísticas de Parqueo',
                                 },
                                 {
                                 title: 'Esperando',
                                 description: 'Asignación de roles para usuarios',
+                                },
+                                {
+                                title: 'Esperando',
+                                description: 'Perfil de Usuario',
                                 },
                             ]}
                         />
