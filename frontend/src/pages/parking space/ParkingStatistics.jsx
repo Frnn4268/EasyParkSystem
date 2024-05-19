@@ -107,12 +107,11 @@ const ParkingStatistics = () => {
         try {
             const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE}/average-time-search-parking`);
             const data = await response.json();
-            setAverageParkingSearch(data.averageTimeInSeconds); // Utiliza el valor correcto del objeto de respuesta
+            setAverageParkingSearch(data.averageTimeInSeconds); 
         } catch (error) {
             console.error("Error fetching average parking search time data:", error);
         }
     };
-
 
     const formatDataForChart = (data, label) => {
         const labels = data.map(item => item._id);
