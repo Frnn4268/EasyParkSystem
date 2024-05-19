@@ -17,35 +17,39 @@ import Dashboard from './pages/dashboard/Dashboard.jsx';
 
 // Parking
 import ParkingSpace from './pages/parking space/ParkingSpace.jsx';
-import ParkingHistory from './pages/parking space/ParkingHistory.jsx'
+import ParkingHistory from './pages/parking space/ParkingHistory.jsx';
 import ParkingStatistics from './pages/parking space/ParkingStatistics.jsx';
-import ParkingTime from './pages/parking time/ParkingTime.jsx'
-import TimeParkingSearch from './pages/parking space/TimeParkingSearch.jsx'
+import ParkingTime from './pages/parking time/ParkingTime.jsx';
+import TimeParkingSearch from './pages/parking space/TimeParkingSearch.jsx';
 
 // Users 
-import Users from './pages/users/Users.jsx'
-import UserProfile from './pages/users/UserProfile.jsx'
+import Users from './pages/users/Users.jsx';
+import UserProfile from './pages/users/UserProfile.jsx';
 
 // Customers
-import Customers from './pages/customer/Customers.jsx'
-import UsualCustomers from './pages/customer/UsualCustomers.jsx'
+import Customers from './pages/customer/Customers.jsx';
+import UsualCustomers from './pages/customer/UsualCustomers.jsx';
 
 // Vehicles
-import Vehicles from './pages/vehicle/Vehicles.jsx'
-import VehiclesHistory from './pages/vehicle/VehiclesHistory.jsx'
+import Vehicles from './pages/vehicle/Vehicles.jsx';
+import VehiclesHistory from './pages/vehicle/VehiclesHistory.jsx';
 
 // Income
-import IncomeHistory from './pages/income/IncomeHistory.jsx'
-import DailyIncome from './pages/income/DailyIncome.jsx'
+import IncomeHistory from './pages/income/IncomeHistory.jsx';
+import DailyIncome from './pages/income/DailyIncome.jsx';
 import IncomeStatistics from './pages/income/IncomeStatistics.jsx';
 
 // Components
-import ContactComponent from './../components/ContactComponent.jsx'
-import InformationComponent from './../components/InformationComponent.jsx'
-import ParkingPriceComponent from './../components/ParkingPriceComponent.jsx'
+import ContactComponent from './../components/ContactComponent.jsx';
+import InformationComponent from './../components/InformationComponent.jsx';
+import ParkingPriceComponent from './../components/ParkingPriceComponent.jsx';
+
+// User role error
+import UserRoleError from './pages/error/UserRoleError.jsx';
 
 const App = () => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, userData } = useAuth();
+  const isAdmin = isAuthenticated && userData.role === 'Administrador';
 
   return (
     <Router>
@@ -100,13 +104,21 @@ const App = () => {
         <Route
           path="/parkingstatistics"
           element={
-            isAuthenticated ? <ParkingStatistics /> :  <Login />
+            isAuthenticated ? (
+              isAdmin ? <ParkingStatistics /> : <UserRoleError />
+            ) : (
+              <Navigate to="/login" />
+            )
           }
         />
         <Route
           path="/users"
           element={
-            isAuthenticated ? <Users /> :  <Login />
+            isAuthenticated ? (
+              isAdmin ? <Users /> : <UserRoleError />
+            )  :  (
+              <Navigate to="/login" />
+            )
           }
         />
         <Route
@@ -142,13 +154,21 @@ const App = () => {
         <Route
           path="/incomehistory"
           element={
-            isAuthenticated ? <IncomeHistory /> :  <Login />
+            isAuthenticated ? (
+              isAdmin ? <IncomeHistory /> : <UserRoleError />
+            ) : (
+              <Navigate to="/login" />
+            )
           }
         />
         <Route
           path="/incomestatistics"
           element={
-            isAuthenticated ? <IncomeStatistics /> :  <Login />
+            isAuthenticated ? (
+              isAdmin ? <IncomeStatistics /> :  <UserRoleError />
+            ) : (
+              <Navigate to="/login" />
+            ) 
           }
         />
         <Route
@@ -172,7 +192,17 @@ const App = () => {
         <Route
           path="/module_parking_price"
           element={
-            isAuthenticated ? <ParkingPriceComponent /> :  <Login />
+            isAuthenticated ? (
+              isAdmin ? <ParkingPriceComponent /> :  <UserRoleError />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        />
+        <Route
+          path="/error-page"
+          element={
+            isAuthenticated ? <UserRoleError /> :  <Login />
           }
         />
         <Route

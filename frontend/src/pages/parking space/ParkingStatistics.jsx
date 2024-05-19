@@ -107,12 +107,11 @@ const ParkingStatistics = () => {
         try {
             const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE}/average-time-search-parking`);
             const data = await response.json();
-            setAverageParkingSearch(data.averageTimeInSeconds); // Utiliza el valor correcto del objeto de respuesta
+            setAverageParkingSearch(data.averageTimeInSeconds); 
         } catch (error) {
             console.error("Error fetching average parking search time data:", error);
         }
     };
-
 
     const formatDataForChart = (data, label) => {
         const labels = data.map(item => item._id);
@@ -184,15 +183,15 @@ const ParkingStatistics = () => {
                                     <Row gutter={[16, 16]}>
                                         <Col span={24}>
                                             <div style={{ textAlign: 'center', marginTop: 0 }}>
-                                                <h3>Total de Clientes Diarios</h3>
+                                                <h3>Total de Clientes registrados hoy</h3>
                                                 <p style={{ fontSize: '24px', color: '#82ca9d' }}>{totalDailyCustomers}</p>
                                             </div>
                                             <div style={{ textAlign: 'center', marginTop: 80 }}>
-                                                <h3>Tiempo Promedio de Parqueo (min)</h3>
+                                                <h3>Tiempo Promedio de Vehículos estacionados (min)</h3>
                                                 <p style={{ fontSize: '24px', color: '#ffc658' }}>{averageParkingTime.toFixed(2)} min</p>
                                             </div>
                                             <div style={{ textAlign: 'center', marginTop: 80 }}>
-                                                <h3>Tiempo más largo de estacionamiento (min)</h3>
+                                                <h3>Tiempo más largo de Estacionamiento (min)</h3>
                                                 <p style={{ fontSize: '24px', color: '#FF0000' }}>{longestParkingTime.toFixed(2)} min</p>
                                             </div>
                                             <div style={{ textAlign: 'center', marginTop: 80 }}>

@@ -180,7 +180,7 @@ const IncomeHistory = () => {
                         columns={columns} 
                         rowKey="_id" 
                         pagination={{
-                            pageSize: 9, 
+                            pageSize: 10, 
                             showSizeChanger: false, 
                             pageSizeOptions: ['5', '10', '20'], 
                             showTotal: (total, range) => `${range[0]}-${range[1]} de ${total} filas`,
