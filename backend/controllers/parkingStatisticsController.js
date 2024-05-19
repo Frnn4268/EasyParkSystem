@@ -1,4 +1,5 @@
 const ParkingSpace = require('../models/parkingSpaceModel');
+const TimeSearchParking = require('../models/timeSearchParkingModel');
 
 exports.getTotalCustomersPerDayOfMonth = async (req, res) => {
     try {
@@ -124,6 +125,55 @@ exports.getAverageParkingTime = async (req, res) => {
         ]);
 
         res.json({ averageParkingTime: averageParkingTime[0]?.averageTime || 0 });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+exports.getLongestParkingDurationOfMonth = async (req, res) => {
+    try {
+        const monthStart = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+        const nextMonthStart = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1);
+
+        const longestParkingDuration = await ParkingSpace.aggregate([
+            { $match: { hour_date_entry: { $gte: monthStart, $lt: nextMonthStart }, hour_date_output: { $ne: null } } },
+            {
+                $project: {
+                    parkingDuration: {
+                        $divide: [{ $subtract: ["$hour_date_output", "$hour_date_entry"] }, 1000 * 60]
+                    }
+                }
+            },
+            { $sort: { parkingDuration: -1 } },
+            { $limit: 1 }
+        ]);
+
+        res.json({ longestParkingDuration: longestParkingDuration[0]?.parkingDuration || 0 });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+exports.getAverageTimeSearchParking = async (req, res) => {
+    try {
+        const averageParkingTime = await TimeSearchParking.aggregate([
+            { $match: { hour_date_output: { $ne: null } } },
+            {
+                $project: {
+                    parkingDuration: {
+                        $divide: [{ $subtract: ["$hour_date_output", "$hour_date_entry"] }, 1000] 
+                    }
+                }
+            },
+            {
+                $group: {
+                    _id: null,
+                    averageTime: { $avg: "$parkingDuration" }
+                }
+            }
+        ]);
+
+        res.json({ averageTimeInSeconds: averageParkingTime[0]?.averageTime || 0 });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
