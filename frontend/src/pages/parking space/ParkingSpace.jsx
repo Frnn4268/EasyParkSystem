@@ -710,7 +710,7 @@ const ParkingSpaces = () => {
                             style={{ 
                                 position: 'fixed', 
                                 top: 80, 
-                                left: 272.5
+                                left: 270
                             }} 
                             shape="circle" 
                             icon={<ClockCircleOutlined />} 
