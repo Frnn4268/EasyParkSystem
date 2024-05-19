@@ -183,15 +183,15 @@ const ParkingStatistics = () => {
                                     <Row gutter={[16, 16]}>
                                         <Col span={24}>
                                             <div style={{ textAlign: 'center', marginTop: 0 }}>
-                                                <h3>Total de Clientes Diarios</h3>
+                                                <h3>Total de Clientes registrados hoy</h3>
                                                 <p style={{ fontSize: '24px', color: '#82ca9d' }}>{totalDailyCustomers}</p>
                                             </div>
                                             <div style={{ textAlign: 'center', marginTop: 80 }}>
-                                                <h3>Tiempo Promedio de Parqueo (min)</h3>
+                                                <h3>Tiempo Promedio de Vehículos estacionados (min)</h3>
                                                 <p style={{ fontSize: '24px', color: '#ffc658' }}>{averageParkingTime.toFixed(2)} min</p>
                                             </div>
                                             <div style={{ textAlign: 'center', marginTop: 80 }}>
-                                                <h3>Tiempo más largo de estacionamiento (min)</h3>
+                                                <h3>Tiempo más largo de Estacionamiento (min)</h3>
                                                 <p style={{ fontSize: '24px', color: '#FF0000' }}>{longestParkingTime.toFixed(2)} min</p>
                                             </div>
                                             <div style={{ textAlign: 'center', marginTop: 80 }}>

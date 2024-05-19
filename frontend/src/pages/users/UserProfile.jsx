@@ -1,18 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Layout, Typography, Form, Input, Button, Upload, message, Row, Col, Card, Image, Space } from 'antd';
-import { 
-    UserOutlined, 
-    MailOutlined, 
-    SaveOutlined, 
-    InboxOutlined,
-    DownloadOutlined,
-    RotateLeftOutlined,
-    RotateRightOutlined,
-    SwapOutlined,
-    ZoomInOutlined,
-    ZoomOutOutlined,
-    LockOutlined
-} from '@ant-design/icons';
+import React, { useState } from 'react';
+import { Layout, Typography, Form, Input, Button, Row, Col, Card, Descriptions, Avatar, Space, Tabs, List, Collapse, Badge } from 'antd';
+import { UserOutlined, MailOutlined, SaveOutlined, LockOutlined, EditOutlined, PieChartOutlined, LineChartOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 
 import TopMenu from '../dashboard/TopMenu.jsx';
 import LeftMenu from '../dashboard/LeftMenu.jsx';
@@ -23,64 +11,24 @@ import '../../css/DashboardMenu.css';
 import '../../css/User.css';
 
 const { Header, Content } = Layout;
-const { Dragger } = Upload;
-
-const src = 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png';
+const { TabPane } = Tabs;
+const { Panel } = Collapse;
 
 const UserProfile = () => {
-    const [user, setUser] = useState([]);
-    const [password, setPassword] = useState(''); // Estado para almacenar la contraseña
     const { userData } = useAuth();
     const [form] = Form.useForm();
+    const [activityData, setActivityData] = useState([
+        'Inicio de sesión'
+    ]);
 
-    useEffect(() => {
-        fetchUserData();
-    }, []);
-
-    const fetchUserData = async () => {
-        try {
-            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_USER_PROFILE}/${userData._id}`);
-            if (response.ok) {
-                const data = await response.json();
-                setUser(data.data);
-                setPassword(data.data.password); // Almacenar la contraseña en el estado
-                form.setFieldsValue({
-                    id: response.data.id,
-                    name: response.data.name,
-                    email: response.data.email,
-                    password: response.data.password
-                });
-            } else {
-                console.error('Error getting users');
-            }
-        } catch (error) {
-            console.error(error);
-        }
+    const addActivity = (activity) => {
+        setActivityData((prevActivityData) => [activity, ...prevActivityData]);
     };
 
-    const onFinish = async (values) => {
-        try {
-            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_USER_PROFILE}/${userData._id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(values),
-            });
-            if (response.ok) {
-                await fetchUserData(); 
-                message.success('Usuario editado exitosamente.');
-            } else {
-                console.error('Error updating user');
-            }
-        } catch (error) {
-            console.error('Error processing request:', error);
-        }
-    };
-
-    const beforeUpload = (file) => {
-        // Verificar el tipo y tamaño del archivo
-        // Resto del código...
+    const handleSaveProfile = (values) => {
+        console.log(values);
+        addActivity('Actualización de perfil');
+        addActivity('Contraseña actualizada');
     };
 
     return (
@@ -94,34 +42,48 @@ const UserProfile = () => {
                 </Layout.Sider>
                 <Content className='layout-content-user'>
                     <Typography.Title className='table-title-user' level={2}>
-                        Perfil de Usuario
+                        Editar Perfil
                     </Typography.Title>
                     <Row gutter={[16, 16]}>
                         <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-                            {userData && (
+                            <Card
+                                title={<Space>
+                                    <Avatar
+                                        style={{
+                                            backgroundColor: '#87d068',
+                                        }}
+                                        icon={<UserOutlined />}
+                                    /> 
+                                    Actualizar Perfil
+                                    </Space>}
+                                extra={<EditOutlined />}
+                                bordered={false}
+                            >
                                 <Form
                                     form={form}
                                     name="profile_form"
                                     layout="vertical"
-                                    onFinish={onFinish}
-                                    initialValues={{
-                                        name: userData.name,
-                                        email: userData.email,
-                                    }}
+                                    onFinish={handleSaveProfile}
                                 >
-                                    <Form.Item
+                                   <Form.Item
                                         label="Nombre: "
                                         name="name"
                                         rules={[{ required: true, message: 'Por favor ingresa tu nombre' }]}
                                     >
-                                        <Input prefix={<UserOutlined />} />
+                                        <Input 
+                                            prefix={<UserOutlined />} 
+                                            placeholder={userData.name} 
+                                        />
                                     </Form.Item>
                                     <Form.Item
-                                        label="Correo electrónico: "
+                                    label="Correo electrónico: "
                                         name="email"
                                         rules={[{ required: true, message: 'Por favor ingresa tu correo electrónico' }]}
                                     >
-                                        <Input prefix={<MailOutlined />} />
+                                        <Input 
+                                            prefix={<MailOutlined />} 
+                                            placeholder={userData.email} 
+                                        />
                                     </Form.Item>
                                     <Form.Item
                                         label="Contraseña: "
@@ -130,77 +92,53 @@ const UserProfile = () => {
                                     >
                                         <Input.Password prefix={<LockOutlined />} />
                                     </Form.Item>
-                                    <Dragger beforeUpload={beforeUpload}>
-                                        <p className="ant-upload-drag-icon">
-                                        <InboxOutlined />
-                                        </p>
-                                        <p className="ant-upload-text">Haga clic o arrastre la imagen de perfil a esta área para cargarla.</p>
-                                        <p className="ant-upload-hint">
-                                            Soporte para una carga única o masiva. Está estrictamente prohibido cargar datos de la empresa u otros
-                                            archivos prohibidos.
-                                        </p>
-                                    </Dragger>
                                     <Form.Item>
                                         <Button 
                                             type="primary" 
                                             htmlType="submit"
-                                             icon={<SaveOutlined />} 
-                                             style={{ marginTop: 25 }}
+                                            icon={<SaveOutlined />} 
+                                            style={{ marginTop: 25 }}
                                         >
                                             Guardar Perfil
                                         </Button>
                                     </Form.Item>
                                 </Form>
-                            )}
+                            </Card>
                         </Col>
                         <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-                            <Card>
-                            {userData && (
-                                <div>
-                                    <Typography.Text strong>Id:</Typography.Text>
-                                    <Typography.Text>{userData._id}</Typography.Text>
-                                    <br />
-                                    <Typography.Text strong>Nombre:</Typography.Text>
-                                    <Typography.Text>{userData.name}</Typography.Text>
-                                    <br />
-                                    <Typography.Text strong>Correo electrónico:</Typography.Text>
-                                    <Typography.Text>{userData.email}</Typography.Text>
-                                    <br />
-                                    <Typography.Text strong>Rol:</Typography.Text>
-                                    <Typography.Text>{userData.role}</Typography.Text>
-                                    <br />
-                                    <Typography.Text strong>Estado:</Typography.Text>
-                                    <Typography.Text>{userData.active ? 'Activo' : 'Inactivo'}</Typography.Text>
-                                    <br />
-                                    <Typography.Text strong>Contraseña:</Typography.Text>
-                                    <Typography.Text>{password}</Typography.Text> 
-                                    <br />
-                                    <Image
-                                        width={200}
-                                        src={src}
-                                        preview={{
-                                            toolbarRender: (
-                                            _,
-                                            {
-                                                transform: { scale },
-                                                actions: { onFlipY, onFlipX, onRotateLeft, onRotateRight, onZoomOut, onZoomIn },
-                                            },
-                                            ) => (
-                                            <Space size={12} className="toolbar-wrapper">
-                                                <DownloadOutlined onClick={'onDownload'} />
-                                                <SwapOutlined rotate={90} onClick={onFlipY} />
-                                                <SwapOutlined onClick={onFlipX} />
-                                                <RotateLeftOutlined onClick={onRotateLeft} />
-                                                <RotateRightOutlined onClick={onRotateRight} />
-                                                <ZoomOutOutlined disabled={scale === 1} onClick={onZoomOut} />
-                                                <ZoomInOutlined disabled={scale === 50} onClick={onZoomIn} />
-                                            </Space>
-                                            ),
-                                        }}
+                            <Tabs defaultActiveKey="1">
+                            <TabPane tab={<span><PieChartOutlined />Perfil</span>} key="1">
+                                <Card title="Perfil de Usuario" bordered={false}>
+                                    <Descriptions bordered>
+                                        <Descriptions.Item label="Id" span={3}>{userData._id}</Descriptions.Item>
+                                        <Descriptions.Item label="Nombre" span={3}>{userData.name}</Descriptions.Item>
+                                        <Descriptions.Item label="Correo electrónico" span={3}>{userData.email}</Descriptions.Item>
+                                        <Descriptions.Item label="Rol" span={3}>{userData.role}</Descriptions.Item>
+                                        <Descriptions.Item label="Estado" span={3}>
+                                            <Badge status={userData.active ? "success" : "error"} text={userData.active ? "Activo" : "Inactivo"} />
+                                        </Descriptions.Item>
+                                    </Descriptions>
+                                </Card>
+                            </TabPane>
+                                <TabPane tab={<span><LineChartOutlined />Actividad Reciente</span>} key="2">
+                                    <List
+                                        size="small"
+                                        bordered
+                                        dataSource={activityData}
+                                        renderItem={item => <List.Item>{item}</List.Item>}
                                     />
-                                </div>
-                            )}
-                            </Card>
+                                </TabPane>
+                                <TabPane tab={<span><QuestionCircleOutlined /> Información</span>} key="4">
+                                    <Collapse>
+                                        <Panel header="Información de Privacidad" key="1">
+                                            <p>En esta sección, nos tomamos muy en serio tu privacidad. Por eso, no mostramos información sensible como contraseñas ni datos personales. Puedes estar tranquilo sabiendo que tus datos están protegidos y seguros con nosotros.</p>
+                                        </Panel>
+                                        <Panel header="Información de Notificaciones" key="2">
+                                            <p>Para cualquier problema técnico o duda que tengas sobre EasyPark, no dudes en contactar con tu administrador. Estamos aquí para ayudarte y asegurarnos de que recibas la información que necesitas de la manera que prefieras.</p>
+                                        </Panel>
+                                    </Collapse>
+                                </TabPane>
+                            </Tabs>
                         </Col>
                     </Row>
                 </Content>

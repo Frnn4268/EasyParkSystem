@@ -22,7 +22,7 @@ const UserRoleError = () => {
                 <Result
                     status="403"
                     title="403"
-                    subTitle="Lo sentimos, tu no estás autorizado con rol de Administrador para acceder a esta página."
+                    subTitle="Lo sentimos, tu no estás autorizado con el rol de Administrador para acceder a esta página."
                 />
                 </Layout.Content>
             </Layout>

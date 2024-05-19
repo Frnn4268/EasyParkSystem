@@ -4,12 +4,12 @@ const User = require('../models/userModel');
 const createError = require('../utils/appError');
 const multer = require("multer");
 const path = require("path");
+
 require('dotenv').config();
 
-// Configuración de almacenamiento para imágenes usando Multer
 const storage = multer.diskStorage({
-    destination: './uploads', // Directorio donde se guardarán las imágenes
-    filename: (req, file, cb) => { // Función para generar el nombre de archivo único
+    destination: '../uploads', 
+    filename: (req, file, cb) => { 
         cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`);
     }
 });
@@ -58,7 +58,6 @@ exports.updateUser = async (req, res, next) => {
             updatedUserData.password = hashedPassword;
         }
 
-        // Verifica si hay una imagen en la solicitud
         if (req.file) {
             updatedUserData.image = `/uploads/${req.file.filename}`;
         }
@@ -69,7 +68,6 @@ exports.updateUser = async (req, res, next) => {
             return next(createError(404, 'User not found'));
         }
 
-        // Generar un nuevo token para el usuario actualizado
         const token = jwt.sign({ _id: updatedUser._id }, process.env.SECRET_KEY, {
             expiresIn: '90d',
         });
