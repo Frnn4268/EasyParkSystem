@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { Layout, Row, Col, Card } from 'antd';
 import { BarChart } from '@mui/x-charts/BarChart';
+
 import TopMenu from '../dashboard/TopMenu.jsx';
 import LeftMenu from '../dashboard/LeftMenu.jsx';
 
@@ -10,78 +11,93 @@ import '../../css/ParkingStatistics.css';
 const { Header } = Layout;
 
 const ParkingStatistics = () => {
-    const [parkingStatistics, setParkingStatistics] = useState({
-        usagePercentage: 0,
-        unusedPercentage: 0,
-        freeSpaces: 0,
-        occupiedSpaces: 0
-    });
-    const [averageParkingTime, setParkingAverageTime] = useState(0);
-    const [totalCustomersToday, setTotalCustomersToday] = useState(0);
+    const [dailyCustomers, setDailyCustomers] = useState([]);
+    const [dailyVehicles, setDailyVehicles] = useState([]);
+    const [availableSpaces, setAvailableSpaces] = useState(0);
+    const [occupiedSpaces, setOccupiedSpaces] = useState(0);
+    const [usagePerSpace, setUsagePerSpace] = useState([]);
+    const [totalDailyCustomers, setTotalDailyCustomers] = useState(0);
+    const [averageParkingTime, setAverageParkingTime] = useState(0);
 
     useEffect(() => {
-        fetchParkingStatistics();
-        fetchAverageParkingTime();
-        fetchTotalCustomersToday();
+        fetchCustomerData();
+        fetchVehicleData();
+        fetchSpacesData();
+        fetchUsagePerSpaceData();
+        fetchTotalDailyCustomersData();
+        fetchAverageParkingTimeData();
     }, []);
 
-    const fetchParkingStatistics = async () => {
+    const fetchCustomerData = async () => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE_ENTRY}/state`);
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE}/total-customers-per-month`);
             const data = await response.json();
-            const parkingSpaces = data.parkingSpaces;
-    
-            let occupiedCount = 0;
-            let availableCount = 0;
-    
-            parkingSpaces.forEach(space => {
-                if (space.state === 'Ocupado') {
-                    occupiedCount++;
-                } else if (space.state === 'Disponible') {
-                    availableCount++;
-                }
-            });
-    
-            const totalSpaces = occupiedCount + availableCount;
-    
-            const usagePercentage = ((occupiedCount / totalSpaces) * 100).toFixed(2);
-            const unusedPercentage = ((availableCount / totalSpaces) * 100).toFixed(2);
-    
-            setParkingStatistics({
-                usagePercentage: isNaN(usagePercentage) ? 0 : usagePercentage,
-                unusedPercentage: isNaN(unusedPercentage) ? 0 : unusedPercentage,
-                freeSpaces: availableCount,
-                occupiedSpaces: occupiedCount
-            });
+            setDailyCustomers(data);
         } catch (error) {
-            console.error('Error al obtener las estadísticas del parqueo:', error);
-        }
-    };    
-
-    const fetchAverageParkingTime = async () => {
-        try {
-            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE_ENTRY}/average-time`);
-            const data = await response.json();
-    
-            const averageParkingTime = parseFloat(data.averageParkingTime);
-            const formattedAverageParkingTime = averageParkingTime.toFixed(2);
-    
-            setParkingAverageTime(formattedAverageParkingTime);
-        } catch (error) {
-            console.error('Error al obtener el tiempo promedio de estacionamiento:', error);
+            console.error("Error fetching daily customer data:", error);
         }
     };
 
-    const fetchTotalCustomersToday = async () => {
+    const fetchVehicleData = async () => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE_ENTRY}/total-customers`);
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE}/total-vehicles-per-month`);
             const data = await response.json();
-
-            setTotalCustomersToday(data.totalCustomersToday);
+            setDailyVehicles(data);
         } catch (error) {
-            console.error('Error al obtener el total de clientes hoy:', error);
+            console.error("Error fetching daily vehicle data:", error);
         }
     };
+
+    const fetchSpacesData = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE}/total-state-spaces`);
+            const data = await response.json();
+            setAvailableSpaces(data.availableSpaces);
+            setOccupiedSpaces(data.occupiedSpaces);
+        } catch (error) {
+            console.error("Error fetching parking spaces data:", error);
+        }
+    };
+
+    const fetchUsagePerSpaceData = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE}/total-usage-per-space`);
+            const data = await response.json();
+            setUsagePerSpace(data);
+        } catch (error) {
+            console.error("Error fetching usage per space data:", error);
+        }
+    };
+
+    const fetchTotalDailyCustomersData = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE}/total-daily-customers`);
+            const data = await response.json();
+            setTotalDailyCustomers(data.totalCustomers);
+        } catch (error) {
+            console.error("Error fetching total daily customers data:", error);
+        }
+    };
+
+    const fetchAverageParkingTimeData = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE}/average-parking-time`);
+            const data = await response.json();
+            setAverageParkingTime(data.averageParkingTime);
+        } catch (error) {
+            console.error("Error fetching average parking time data:", error);
+        }
+    };
+
+    const formatDataForChart = (data, label) => {
+        const labels = data.map(item => item._id);
+        const counts = data.map(item => item[label]);
+        return { labels, counts };
+    };
+
+    const customerChartData = formatDataForChart(dailyCustomers, 'totalCustomers');
+    const vehicleChartData = formatDataForChart(dailyVehicles, 'totalVehicles');
+    const usagePerSpaceChartData = formatDataForChart(usagePerSpace, 'usageCount');
 
     return (
         <Layout>
@@ -93,30 +109,65 @@ const ParkingStatistics = () => {
                     <LeftMenu />
                 </Layout.Sider>
                 <Layout.Content>
-                    <div style={{ marginTop: 30, marginLeft: -60 }}>
+                    <div style={{ marginTop: 40, marginLeft: 90 }}>
                         <Row gutter={16} justify="space-around">
-                            <Col span={8} style={{ marginBottom: 45 }}>
-                                <Card title="Ocupación de Espacios" style={{ width: 700 }}>
-                                    <BarChart
-                                        series={[
-                                            { data: [parkingStatistics.usagePercentage], label: 'Ocupado', color: '#8884d8' },
-                                            { data: [parkingStatistics.unusedPercentage], label: 'Disponible', color: '#82ca9d' }
-                                        ]}
-                                        height={250}
-                                        xAxis={[{ data: ['Estado'], scaleType: 'band' }]}
-                                    />
-                                </Card>
+                            <Col span={16}>
+                                <Row gutter={[16, 16]} justify="space-around">
+                                    <Col span={12} style={{ marginBottom: 45 }}>
+                                        <Card title="Clientes por Día del Mes" style={{ width: 600 }}>
+                                            <BarChart
+                                                series={[{ data: customerChartData.counts, color: '#ffa500' }]}
+                                                height={250}
+                                                xAxis={[{ data: customerChartData.labels, scaleType: 'band' }]}
+                                            />
+                                        </Card>
+                                    </Col>
+                                    <Col span={12} style={{ marginBottom: 0 }}>
+                                        <Card title="Vehículos por Día del Mes" style={{ width: 600, marginLeft: 100 }}>
+                                            <BarChart
+                                                series={[{ data: vehicleChartData.counts, color: '#82ca9d' }]}
+                                                height={250}
+                                                xAxis={[{ data: vehicleChartData.labels, scaleType: 'band' }]}
+                                            />
+                                        </Card>
+                                    </Col>
+                                    <Col span={12} style={{ marginBottom: 0 }}>
+                                        <Card title="Espacios Disponibles y Ocupados" style={{ width: 600 }}>
+                                            <BarChart
+                                                series={[
+                                                    { name: 'Disponibles', data: [availableSpaces], color: '#009846' },
+                                                    { name: 'Ocupados', data: [occupiedSpaces], color: '#ff7f0e' }
+                                                ]}
+                                                height={250}
+                                                xAxis={[{ data: ['Espacios'], scaleType: 'band' }]}
+                                            />
+                                        </Card>
+                                    </Col>
+                                    <Col span={12} style={{ marginBottom: 0 }}>
+                                        <Card title="Cantidad total de uso por espacio de parqueo" style={{ width: 600, marginLeft: 100 }}>
+                                            <BarChart
+                                                series={[{ data: usagePerSpaceChartData.counts, color: '#8884d8' }]}
+                                                height={250}
+                                                xAxis={[{ data: usagePerSpaceChartData.labels, scaleType: 'band' }]}
+                                            />
+                                        </Card>
+                                    </Col>
+                                </Row>
                             </Col>
-                            <Col span={8} style={{ marginBottom: 45 }}>
-                                <Card title="Tiempo Promedio de Estacionamiento (minutos)" style={{ width: 700 }}>
-                                    <div style={{ fontSize: '2em', textAlign: 'center' }}>{averageParkingTime}</div>
-                                </Card>
-                            </Col>
-                        </Row>
-                        <Row gutter={16} justify="space-around">
-                            <Col span={8}>
-                                <Card title="Total de Clientes Hoy" style={{ width: 700 }}>
-                                    <div style={{ fontSize: '2em', textAlign: 'center' }}>{totalCustomersToday}</div>
+                            <Col span={8} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                <Card style={{ width: '300px', height: '100%', marginLeft: 160 }}>
+                                    <Row gutter={[16, 16]}>
+                                        <Col span={24}>
+                                            <div style={{ textAlign: 'center', marginTop: 210 }}>
+                                                <h3>Total de Clientes Diarios</h3>
+                                                <p style={{ fontSize: '24px', color: '#82ca9d' }}>{totalDailyCustomers}</p>
+                                            </div>
+                                            <div style={{ textAlign: 'center', marginTop: 100 }}>
+                                                <h3>Tiempo Promedio de Parqueo (min)</h3>
+                                                <p style={{ fontSize: '24px', color: '#ffc658' }}>{averageParkingTime.toFixed(2)} min</p>
+                                            </div>
+                                        </Col>
+                                    </Row>
                                 </Card>
                             </Col>
                         </Row>
@@ -125,6 +176,6 @@ const ParkingStatistics = () => {
             </Layout>
         </Layout>
     );
-};
+}
 
 export default ParkingStatistics;

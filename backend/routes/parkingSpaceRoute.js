@@ -1,5 +1,6 @@
 const express = require('express')
 const parkingSpaceController = require('../controllers/parkingSpaceController')
+const parkingStatisticsController = require('../controllers/parkingStatisticsController.js');
 
 const router = express.Router()
 
@@ -8,5 +9,13 @@ router.get('/', parkingSpaceController.getAllParkingSpaces)
 router.post('/', parkingSpaceController.createParkingSpace)
 router.put('/:id', parkingSpaceController.updateParkingSpace)
 router.delete('/:id', parkingSpaceController.deleteParkingSpace)
+
+// Parking Space statistics routes
+router.get('/total-customers-per-month', parkingStatisticsController.getTotalCustomersPerDayOfMonth);
+router.get('/total-vehicles-per-month', parkingStatisticsController.getTotalVehiclesPerDayOfMonth);
+router.get('/total-state-spaces', parkingStatisticsController.getAvailableAndOccupiedSpaces);
+router.get('/total-usage-per-space', parkingStatisticsController.getTotalUsagePerSpace);
+router.get('/total-daily-customers', parkingStatisticsController.getTotalDailyCustomers);
+router.get('/average-parking-time', parkingStatisticsController.getAverageParkingTime);
 
 module.exports = router
