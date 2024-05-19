@@ -57,7 +57,7 @@ const IncomeStatistics = () => {
                     <LeftMenu />
                 </Layout.Sider>
                 <Layout.Content>
-                    <div style={{ marginTop: 30, marginLeft: -60 }}>
+                    <div style={{ marginTop: 45, marginLeft: -60 }}>
                         <Row gutter={16} justify="space-around">
                             <Col span={8} style={{ marginBottom: 45 }}>
                                 <Card title="Ingresos Diarios" style={{ width: 700 }}>

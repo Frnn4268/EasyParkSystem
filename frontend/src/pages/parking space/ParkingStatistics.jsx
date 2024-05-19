@@ -18,6 +18,8 @@ const ParkingStatistics = () => {
     const [usagePerSpace, setUsagePerSpace] = useState([]);
     const [totalDailyCustomers, setTotalDailyCustomers] = useState(0);
     const [averageParkingTime, setAverageParkingTime] = useState(0);
+    const [longestParkingTime, setLongestParkingtime] = useState(0);
+    const [averageParkingSearch, setAverageParkingSearch] = useState(0);
 
     useEffect(() => {
         fetchCustomerData();
@@ -26,6 +28,8 @@ const ParkingStatistics = () => {
         fetchUsagePerSpaceData();
         fetchTotalDailyCustomersData();
         fetchAverageParkingTimeData();
+        fetchLongestParkingDurationOfMonth();
+        fetchAverageParkingSearchData();
     }, []);
 
     const fetchCustomerData = async () => {
@@ -88,6 +92,27 @@ const ParkingStatistics = () => {
             console.error("Error fetching average parking time data:", error);
         }
     };
+
+    const fetchLongestParkingDurationOfMonth = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE}/longest-parking-duration-of-month`);
+            const data = await response.json();
+            setLongestParkingtime(data.longestParkingDuration);
+        } catch (error) {
+            console.error("Error fetching longest parking duration: ", error);
+        }
+    };
+
+    const fetchAverageParkingSearchData = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE}/average-time-search-parking`);
+            const data = await response.json();
+            setAverageParkingSearch(data.averageTimeInSeconds); // Utiliza el valor correcto del objeto de respuesta
+        } catch (error) {
+            console.error("Error fetching average parking search time data:", error);
+        }
+    };
+
 
     const formatDataForChart = (data, label) => {
         const labels = data.map(item => item._id);
@@ -158,13 +183,21 @@ const ParkingStatistics = () => {
                                 <Card style={{ width: '300px', height: '100%', marginLeft: 160 }}>
                                     <Row gutter={[16, 16]}>
                                         <Col span={24}>
-                                            <div style={{ textAlign: 'center', marginTop: 210 }}>
+                                            <div style={{ textAlign: 'center', marginTop: 0 }}>
                                                 <h3>Total de Clientes Diarios</h3>
                                                 <p style={{ fontSize: '24px', color: '#82ca9d' }}>{totalDailyCustomers}</p>
                                             </div>
-                                            <div style={{ textAlign: 'center', marginTop: 100 }}>
+                                            <div style={{ textAlign: 'center', marginTop: 80 }}>
                                                 <h3>Tiempo Promedio de Parqueo (min)</h3>
                                                 <p style={{ fontSize: '24px', color: '#ffc658' }}>{averageParkingTime.toFixed(2)} min</p>
+                                            </div>
+                                            <div style={{ textAlign: 'center', marginTop: 80 }}>
+                                                <h3>Tiempo más largo de estacionamiento (min)</h3>
+                                                <p style={{ fontSize: '24px', color: '#FF0000' }}>{longestParkingTime.toFixed(2)} min</p>
+                                            </div>
+                                            <div style={{ textAlign: 'center', marginTop: 80 }}>
+                                                <h3>Tiempo Promedio de búsqueda de Estacionamiento (seg)</h3>
+                                                <p style={{ fontSize: '24px', color: '#088F8F' }}>{averageParkingSearch.toFixed(2)} seg</p>
                                             </div>
                                         </Col>
                                     </Row>

@@ -17,5 +17,7 @@ router.get('/total-state-spaces', parkingStatisticsController.getAvailableAndOcc
 router.get('/total-usage-per-space', parkingStatisticsController.getTotalUsagePerSpace);
 router.get('/total-daily-customers', parkingStatisticsController.getTotalDailyCustomers);
 router.get('/average-parking-time', parkingStatisticsController.getAverageParkingTime);
+router.get('/longest-parking-duration-of-month', parkingStatisticsController.getLongestParkingDurationOfMonth);
+router.get('/average-time-search-parking', parkingStatisticsController.getAverageTimeSearchParking);
 
 module.exports = router
