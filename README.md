@@ -85,15 +85,15 @@ EasyPark es un sistema de gestión de parqueo que permite ver en tiempo real los
 
 "Las siguientes imágenes buscan ilustrar el funcionamiento de este proyecto y se muestran algunos de los módulos con los que cuenta el proyecto"
 
-###Parqueo:
+### Parqueo:
 
-######(Vista de los espacios de estacionamiento en el área de parqueo)
+###### (Vista de los espacios de estacionamiento en el área de parqueo)
 
 ![Parqueo](https://drive.google.com/uc?export=download&id=1n3NaY8VWnmxclhAUea0qDQrTGRnUV7pT)
 
-###Vista del cliente: 
+### Vista del cliente: 
 
-######(Interfaz visual generada a partir del escaneo del código QR del cliente)
+###### (Interfaz visual generada a partir del escaneo del código QR del cliente)
 
 ![QR del Cliente](https://drive.google.com/uc?export=download&id=102VzDaNVHTy1UlneWXrnXRLe-gxVkpkB)
 
