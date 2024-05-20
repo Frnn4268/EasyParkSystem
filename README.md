@@ -77,15 +77,20 @@ EasyPark es un sistema de gestión de parqueo que permite ver en tiempo real los
 5. Crea un nuevo* Pull Request.*
 
 ## Contacto
-Nombre:* Fernando José Martínez Medina*
-Correo electrónico: *fmartinezm7@miumg.edu.gt*
-LinkedIn: *https://www.linkedin.com/in/fernando-jose-martinez-medina-97395523a/*
+- Nombre: *Fernando José Martínez Medina*
+- Correo electrónico: *fmartinezm7@miumg.edu.gt*
+- LinkedIn: *https://www.linkedin.com/in/fernando-jose-martinez-medina-97395523a/*
 
 ##Imagenes del Proyecto:
+
+### Espacios de Estacionamiento:
 ![Parqueo](https://drive.google.com/uc?export=download&id=1n3NaY8VWnmxclhAUea0qDQrTGRnUV7pT)
 
+### Página obtenida por el escaneo del QR:
 ![QR del Cliente](https://drive.google.com/uc?export=download&id=102VzDaNVHTy1UlneWXrnXRLe-gxVkpkB)
 
+### Historial de Parqueo:
 ![Historial de Parqueo](https://drive.google.com/uc?export=download&id=1H8u6cXF9gPni56F8NLAgcOJLG4ZmoK9S)
 
+## Estadísticas de Parqueo:
 ![Estadísticas de Parqueo](https://drive.google.com/uc?export=download&id=1kJ1XCm9OGLqAOdUB0lndDa8Wto9Cls28)
