@@ -82,6 +82,7 @@ EasyPark es un sistema de gestión de parqueo que permite ver en tiempo real los
 - LinkedIn: *https://www.linkedin.com/in/fernando-jose-martinez-medina-97395523a/*
 
 ##Imagenes del Proyecto:
+
 Estas son algunas de las imágenes de ejemplo del funcionamiento de este proyecto.
 
 ### Espacios de Estacionamiento:
