@@ -44,19 +44,19 @@ EasyPark es un sistema de gestión de parqueo que permite ver en tiempo real los
 ## Uso
 **1.** **Crear un Usuario:** Regístrate y crea una cuenta.
 
-**2.** **Iniciar Sesión: **Inicia sesión con tus credenciales.
+**2.** **Iniciar Sesión:** Inicia sesión con tus credenciales.
 
-**3.** **Gestión de Parqueo: **Navega a la sección de Parqueo para gestionar espacios y estados.
+**3.** **Gestión de Parqueo:** Navega a la sección de Parqueo para gestionar espacios y estados.
 
 **4.** **Registrar Cliente y Vehículo:** Ingresa un nuevo cliente y su vehículo.
 
-**5.** **Historiales: **Los datos se guardarán automáticamente en el Historial de Parqueo.
+**5.** **Historiales:** Los datos se guardarán automáticamente en el Historial de Parqueo.
 
 **6.** **Ver Clientes y Vehículos:** Revisa los clientes registrados y sus vehículos en las secciones correspondientes.
 
 **7.** **Estadísticas:** Visualiza las estadísticas del parqueo y los ingresos diarios.
 
-**8.** ** Roles de Usuario:** Administra roles de Administrador y Empleados para gestionar permisos.
+**8.** **Roles de Usuario:** Administra roles de Administrador y Empleados para gestionar permisos.
 
 **9.** **QR de Cliente:** El cliente podrá escanear el código QR generado según el ID de espacio de estacionamiento y podrá ver información relacionada con su vehículo y un aproximado del pago a realizar por el servicio.
 
