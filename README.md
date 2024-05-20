@@ -16,7 +16,7 @@ EasyPark es un sistema de gestión de parqueo que permite ver en tiempo real los
 
 - **Interfaz de Usuario Moderna**: Utiliza Material UI y Ant Design para una experiencia de usuario atractiva y funcional.
 
-- **Seguridad**: Implementación de autenticación y autorización mediante JWT.
+- **Seguridad**: Implementación de autenticación y autorización mediante JWT y Bcrypt.
 
 - **Arquitectura Backend**: Desarrollado con Node.js, Express y MongoDB para un backend robusto y escalable.
 
