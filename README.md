@@ -92,5 +92,5 @@ EasyPark es un sistema de gestión de parqueo que permite ver en tiempo real los
 ### Historial de Parqueo:
 ![Historial de Parqueo](https://drive.google.com/uc?export=download&id=1H8u6cXF9gPni56F8NLAgcOJLG4ZmoK9S)
 
-## Estadísticas de Parqueo:
+### Estadísticas de Parqueo:
 ![Estadísticas de Parqueo](https://drive.google.com/uc?export=download&id=1kJ1XCm9OGLqAOdUB0lndDa8Wto9Cls28)
