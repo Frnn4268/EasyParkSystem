@@ -2,10 +2,9 @@
 
 ![EasyPark Logo](https://drive.google.com/uc?export=download&id=1Y43WryguEPVfKyj61UR0fCrfI6HV8fBV)
 
-[![GitHub stars](https://img.shields.io/github/stars/Frnn4268/EasyParkSystem.svg)]
-[![GitHub forks](https://img.shields.io/github/forks/Frnn4268/EasyParkSystem.svg)]
-[![GitHub issues](https://img.shields.io/github/issues/Frnn4268/EasyParkSystem.svg)]
-(https://img.shields.io/github/release/pandao/editor.md.svg) ![
+![GitHub stars](https://img.shields.io/github/stars/Frnn4268/EasyParkSystem.svg)
+![GitHub forks](https://img.shields.io/github/forks/Frnn4268/EasyParkSystem.svg)
+![GitHub issues](https://img.shields.io/github/issues/Frnn4268/EasyParkSystem.svg)
 
 ## Descripción del Proyecto
 
