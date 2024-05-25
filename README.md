@@ -42,21 +42,21 @@ EasyPark is a parking management system that allows you to see the status of par
 > `npm run dev`
 
 ## Use
-**1. ***Create a User:** Sign up and create an account.
+**1. ** **Create a User:** Sign up and create an account.
 
-**2. ***Login:** Log in with your credentials.
+**2. ** **Login:** Log in with your credentials.
 
-**3. ***Parking Management:** Navigate to the Parking section to manage spaces and conditions.
+**3. ** **Parking Management:** Navigate to the Parking section to manage spaces and conditions.
 
-**4. **Register Customer and Vehicle:** A new customer and his vehicle enter.
+**4. ** **Register Customer and Vehicle:** A new customer and his vehicle enter.
 
-**5. ***History:** The data will be automatically saved in the Parking History.
+**5. ** **History:** The data will be automatically saved in the Parking History.
 
-**6. **See Customers and Vehicles:** Check registered customers and their vehicles in the appropriate sections.
+**6. ** **See Customers and Vehicles:** Check registered customers and their vehicles in the appropriate sections.
 
-**7. **Statistics:** View parking statistics and daily income.
+**7. ** **Statistics:** View parking statistics and daily income.
 
-**8. ***User Roles:** Manage Administrator and Employee roles to manage permissions.
+**8. ** **User Roles:** Manage Administrator and Employee roles to manage permissions.
 
 **9. ** **QR of Customer:** The customer will be able to scan the QR code generated according to the parking space ID and will be able to see information related to their vehicle and an approximate payment for the service.
 
