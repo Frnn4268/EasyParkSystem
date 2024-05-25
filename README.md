@@ -6,102 +6,102 @@
 ![GitHub forks](https://img.shields.io/github/forks/Frnn4268/EasyParkSystem.svg)
 ![GitHub issues](https://img.shields.io/github/issues/Frnn4268/EasyParkSystem.svg)
 
-## Descripción del Proyecto
+## Project Description
 
-EasyPark es un sistema de gestión de parqueo que permite ver en tiempo real los estados de los espacios de estacionamiento, facilitando a los empleados la administración completa del parqueo. Además, cuenta con características importantes como gestión de usuarios, gestión de clientes, clientes frecuentes, gestión de vehículos, gestión de ingresos monetarios y gestión de precios de espacios de estacionamiento. También contiene historiales de clientes, vehículos, ingresos, contactos y estadísticas de parqueo e ingresos.
+EasyPark is a parking management system that allows you to see the status of parking spaces in real-time, making it easier for employees to complete parking management. Furthermore, it has important features such as user management, customer management, frequent customers, vehicle management, monetary income management, and parking space price management. It also contains customer histories, vehicles, income, contacts, and parking and income statistics.
 
-## Características Principales
+## Main Features
 
-- **Soporte de Estándares de Markdown**: Compatible con Markdown estándar y GFM (GitHub Flavored Markdown).
+- **Markdown Standards Support**: Compatible with standard Markdown and GFM (GitHub Flavored Markdown).
 
-- **Interfaz de Usuario Moderna**: Utiliza Material UI y Ant Design para una experiencia de usuario atractiva y funcional.
+- **Modern User Interface**: Uses Material UI and Ant Design for an attractive and functional user experience.
 
-- **Seguridad**: Implementación de autenticación y autorización mediante JWT y Bcrypt.
+- **Security**: Implementation of authentication and authorization using JWT and Bcrypt.
 
-- **Arquitectura Backend**: Desarrollado con Node.js, Express y MongoDB para un backend robusto y escalable.
+- **Backend Architecture**: Developed with Node.js, Express, and MongoDB for a robust and scalable backend.
 
-- **Arquitectura Frontend**: Construido con React y Vite.js para un frontend rápido y eficiente.
+- **Frontend Architecture**: Built with React and Vite.js for a fast and efficient frontend.
 
-- **Gestión Completa**: Incluye gestión de usuarios, clientes, vehículos, ingresos monetarios y precios de estacionamiento.
+- **Complete Management**: Includes management of users, clients, vehicles, monetary income, and parking prices.
 
-- **Historiales y Estadísticas**: Seguimiento detallado de historiales de parqueo e ingresos, y visualización de estadísticas.
+- **Histories and Statistics**: Detailed tracking of parking and income histories, and visualization of statistics.
 
-- **Roles y Permisos**: Sistema de roles para administradores y empleados.
+- **Roles and Permissions**: Role system for administrators and employees.
 
-- **Código QR para Clientes**: La generación del código QR le permite a los clientes ver en tiempo real la cantidad monetaria (aproximada) a pagar por el servicio de estacionamiento dependiendo del tiempo de uso del servicio.
+- **QR Code for Customers**: The generation of the QR code allows customers to see in real-time the monetary amount (approximate) to pay for the parking service depending on the time of use of the service.
 
-## Instalación
+## Installation
 
-**1.** Clonar el repositorio:
+**1.** Clone the repository:
 > `https://github.com/Frnn4268/EasyParkSystem.git`
 
-**2.** Instalación de Dependencias (Backend y Frontend):
+**2.** Dependency Installation (Backend and Frontend):
 > `npm install`
 
-**3.** Inicialización del proyecto (Backend y Frontend):
+**3.** Initialization of the Project (Backend and Frontend):
 > `npm run dev`
 
-## Uso
-**1.** **Crear un Usuario:** Regístrate y crea una cuenta.
+## Use
+**1. ***Create a User:** Sign up and create an account.
 
-**2.** **Iniciar Sesión:** Inicia sesión con tus credenciales.
+**2. ***Login:** Log in with your credentials.
 
-**3.** **Gestión de Parqueo:** Navega a la sección de Parqueo para gestionar espacios y estados.
+**3. ***Parking Management:** Navigate to the Parking section to manage spaces and conditions.
 
-**4.** **Registrar Cliente y Vehículo:** Ingresa un nuevo cliente y su vehículo.
+**4. **Register Customer and Vehicle:** A new customer and his vehicle enter.
 
-**5.** **Historiales:** Los datos se guardarán automáticamente en el Historial de Parqueo.
+**5. ***History:** The data will be automatically saved in the Parking History.
 
-**6.** **Ver Clientes y Vehículos:** Revisa los clientes registrados y sus vehículos en las secciones correspondientes.
+**6. **See Customers and Vehicles:** Check registered customers and their vehicles in the appropriate sections.
 
-**7.** **Estadísticas:** Visualiza las estadísticas del parqueo y los ingresos diarios.
+**7. **Statistics:** View parking statistics and daily income.
 
-**8.** **Roles de Usuario:** Administra roles de Administrador y Empleados para gestionar permisos.
+**8. ***User Roles:** Manage Administrator and Employee roles to manage permissions.
 
-**9.** **QR de Cliente:** El cliente podrá escanear el código QR generado según el ID de espacio de estacionamiento y podrá ver información relacionada con su vehículo y un aproximado del pago a realizar por el servicio.
+**9. ** **QR of Customer:** The customer will be able to scan the QR code generated according to the parking space ID and will be able to see information related to their vehicle and an approximate payment for the service.
 
-## Contribución
-¡Contribuciones son bienvenidas! Por favor, sigue los pasos a continuación para contribuir:
+## Contribution
+Contributions are welcome! Please follow the steps below to contribute:
 
-1. Haz un fork del proyecto.
+1. Fork the project.
 
-2. Crea una nueva rama:
+2. Create a new branch:
 >` (git checkout -b feature/your-feature).`
 
-3. Realiza tus cambios y haz un commit 
+3. Make your changes and commit 
 >`(git commit -am 'Añadí una nueva característica').`
 
-4. Sube tus cambios a tu repositorio
+4. Upload your changes to your repository
 >`(git push origin feature/your-feature).`
 
-5. Crea un nuevo* Pull Request.*
+5. Creates a new* Pull Request.*
 
-## Contacto
-- Nombre: *Fernando José Martínez Medina*
-- Correo electrónico: *fmartinezm7@miumg.edu.gt*
+## Contact
+- Name: *Fernando José Martínez Medina*
+- Email: *fmartinezm7@miumg.edu.gt*
 - LinkedIn: *https://www.linkedin.com/in/fernando-jose-martinez-medina-97395523a/*
 
-## Imagenes del Proyecto:
+## Images of the Project:
 
-"Las siguientes imágenes buscan ilustrar el funcionamiento de este proyecto y se muestran algunos de los módulos con los que cuenta el proyecto"
+"The following images seek to illustrate the operation of this project and show some of the modules that the project has"
 
-### Parqueo:
+### Parking:
 
-###### (Vista de los espacios de estacionamiento en el área de parqueo)
+##### (View of parking spaces in the parking area)
 
 ![Parqueo](https://drive.google.com/uc?export=download&id=1n3NaY8VWnmxclhAUea0qDQrTGRnUV7pT)
 
-### Vista del cliente: 
+### View of the client: 
 
-###### (Interfaz visual generada a partir del escaneo del código QR del cliente)
+##### (Visual interface generated from the client’s QR code scan)
 
 ![QR del Cliente](https://drive.google.com/uc?export=download&id=102VzDaNVHTy1UlneWXrnXRLe-gxVkpkB)
 
-### Historial de Parqueo:
+### Parking History:
 ![Historial de Parqueo](https://drive.google.com/uc?export=download&id=1H8u6cXF9gPni56F8NLAgcOJLG4ZmoK9S)
 
-### Estadísticas de Parqueo:
+### Parking Statistics:
 ![Estadísticas de Parqueo](https://drive.google.com/uc?export=download&id=1kJ1XCm9OGLqAOdUB0lndDa8Wto9Cls28)
 
-### Gestión de Usuarios:
+### User Management:
 ![Estadísticas de Parqueo](https://drive.google.com/uc?export=download&id=1dEchgwbp61OqLB5Ad2Z7g1kx7qJU2IEW)
