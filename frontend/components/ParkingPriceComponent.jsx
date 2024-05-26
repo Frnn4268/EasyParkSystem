@@ -37,7 +37,7 @@ const ParkingPriceComponent = () => {
 
     const fetchLastParkingIncome = async () => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE_PRICE}/last-parking-price`); 
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/parking-price/last-parking-price`); 
             const data = await response.json();
             if (data.status === 'success') {
                 setParkingPrice(data.data.price);
@@ -55,7 +55,7 @@ const ParkingPriceComponent = () => {
         try {
             const { price, time_in_hours } = values;
 
-            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE_PRICE}`, { 
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/parking-price`, { 
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

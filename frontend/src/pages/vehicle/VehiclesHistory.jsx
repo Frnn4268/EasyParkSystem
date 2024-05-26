@@ -18,7 +18,7 @@ const VehiclesHistory = () => {
 
     const fetchVehiclesHistory = async () => {
         try {
-            const response = await fetch(import.meta.env.VITE_APP_API_URL_PARKING_SPACE_ENTRY);
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/parking-space`);
             if (response.ok) {
                 const data = await response.json();
 

@@ -19,7 +19,7 @@ const UsualCustomers = () => {
 
     const fetchUsualCustomers = async () => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE_ENTRY}/usual-customers`);
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/parking-space/usual-customers`);
             if (response.ok) {
                 const data = await response.json();
                 setUsualCustomers(data.frequentCustomers);

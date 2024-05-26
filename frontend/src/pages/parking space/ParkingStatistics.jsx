@@ -34,7 +34,7 @@ const ParkingStatistics = () => {
 
     const fetchCustomerData = async () => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE}/total-customers-per-month`);
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/parking_space/total-customers-per-month`);
             const data = await response.json();
             setDailyCustomers(data);
         } catch (error) {
@@ -44,7 +44,7 @@ const ParkingStatistics = () => {
 
     const fetchVehicleData = async () => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE}/total-vehicles-per-month`);
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/parking_space/total-vehicles-per-month`);
             const data = await response.json();
             setDailyVehicles(data);
         } catch (error) {
@@ -54,7 +54,7 @@ const ParkingStatistics = () => {
 
     const fetchSpacesData = async () => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE}/total-state-spaces`);
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/parking_space/total-state-spaces`);
             const data = await response.json();
             setAvailableSpaces(data.availableSpaces);
             setOccupiedSpaces(data.occupiedSpaces);
@@ -65,7 +65,7 @@ const ParkingStatistics = () => {
 
     const fetchUsagePerSpaceData = async () => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE}/total-usage-per-space`);
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/parking_space/total-usage-per-space`);
             const data = await response.json();
             setUsagePerSpace(data);
         } catch (error) {
@@ -75,7 +75,7 @@ const ParkingStatistics = () => {
 
     const fetchTotalDailyCustomersData = async () => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE}/total-daily-customers`);
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/parking_space/total-daily-customers`);
             const data = await response.json();
             setTotalDailyCustomers(data.totalCustomers);
         } catch (error) {
@@ -85,7 +85,7 @@ const ParkingStatistics = () => {
 
     const fetchAverageParkingTimeData = async () => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE}/average-parking-time`);
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/parking_space/average-parking-time`);
             const data = await response.json();
             setAverageParkingTime(data.averageParkingTime);
         } catch (error) {
@@ -95,7 +95,7 @@ const ParkingStatistics = () => {
 
     const fetchLongestParkingDurationOfMonth = async () => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE}/longest-parking-duration-of-month`);
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/parking_space/longest-parking-duration-of-month`);
             const data = await response.json();
             setLongestParkingtime(data.longestParkingDuration);
         } catch (error) {
@@ -105,7 +105,7 @@ const ParkingStatistics = () => {
 
     const fetchAverageParkingSearchData = async () => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE}/average-time-search-parking`);
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/parking_space/average-time-search-parking`);
             const data = await response.json();
             setAverageParkingSearch(data.averageTimeInSeconds); 
         } catch (error) {

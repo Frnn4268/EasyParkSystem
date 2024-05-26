@@ -45,7 +45,7 @@ const DailyIncome = () => {
 
     const fetchLastIncome = async () => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_INCOME}/last-income`);
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/income/last-income`);
             const data = await response.json();
             if (data.status === 'success') {
                 setIncome(data.data.income);
@@ -63,7 +63,7 @@ const DailyIncome = () => {
         try {
             const { income } = values;
 
-            const response = await fetch(import.meta.env.VITE_APP_API_URL_INCOME, {
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/income`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

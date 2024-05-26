@@ -22,7 +22,7 @@ const IncomeStatistics = () => {
 
     const fetchIncomeData = async (period) => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_INCOME}/${period}`);
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/income/${period}`);
             const data = await response.json();
             switch (period) {
                 case 'day':

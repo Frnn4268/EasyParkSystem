@@ -54,7 +54,7 @@ const ParkingSpaces = () => {
 
     const fetchData = async () => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE_ENTRY}/state`);
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/parking-space/state`); 
             const data = await response.json();
             const latestParkingSpaces = data.parkingSpaces;
 
@@ -71,7 +71,7 @@ const ParkingSpaces = () => {
 
     const fetchParkingStatistics = async () => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE_ENTRY}/state`);
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/parking-space/state`);
             const data = await response.json();
             const parkingSpaces = data.parkingSpaces;
     
@@ -104,7 +104,7 @@ const ParkingSpaces = () => {
 
     const fetchAverageParkingTime = async () => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE_ENTRY}/average-time`);
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/parking-space/average-time`);
             const data = await response.json();
     
             const averageParkingTime = parseFloat(data.averageParkingTime);
@@ -121,7 +121,7 @@ const ParkingSpaces = () => {
 
     const fetchTotalCustomersToday = async () => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE_ENTRY}/total-customers`);
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/parking-space/total-customers`);
             const data = await response.json();
 
             const totalCustomersToday = data.totalCustomersToday;
@@ -138,7 +138,7 @@ const ParkingSpaces = () => {
 
     const startTimer = async () => {
         try {
-            const response = await fetch(import.meta.env.VITE_APP_API_URL_PARKING_TIME_SEARCH, {
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/parking-search`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -166,11 +166,11 @@ const ParkingSpaces = () => {
 
     const resetTimer = async () => {
         try {
-            const lastTimeResponse = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_TIME_SEARCH}/last-time`);
+            const lastTimeResponse = await fetch(`${import.meta.env.VITE_APP_API_URL}/parking-search/last-time`);
             const lastTimeData = await lastTimeResponse.json();
             const id = lastTimeData.data;
     
-            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_TIME_SEARCH}/${id}`, {
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/parking-search/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -191,7 +191,7 @@ const ParkingSpaces = () => {
 
     const showDrawer = async (content, id) => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE_ENTRY}/${id}`);
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/parking-space/${id}`);
             const data = await response.json();
 
             setDrawerContent(content);
@@ -238,7 +238,7 @@ const ParkingSpaces = () => {
                 },
             };
     
-            const response = await fetch(import.meta.env.VITE_APP_API_URL_PARKING_SPACE_ENTRY, {
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/parking-space`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -265,7 +265,7 @@ const ParkingSpaces = () => {
     
     const editParkingSpaceState = async (id, newState) => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE_ENTRY}/${id}`, {
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/parking-space/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -293,7 +293,7 @@ const ParkingSpaces = () => {
 
         if (parkingSpaceStates[index] === 'Ocupado') {
             try {
-                const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_TIME_CUSTOMER}/${index}`);
+                const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/parking-time/${index}`);
                 const data = await response.json();
 
                 setParkingSpaceDetails(data.id);

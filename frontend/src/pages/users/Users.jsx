@@ -24,7 +24,7 @@ const Users = () => {
 
     const fetchUsers = async () => {
         try {
-            const response = await fetch(import.meta.env.VITE_APP_API_URL_USER);
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/user`);
             if (response.ok) {
                 const data = await response.json();
                 setUsers(data.data);
@@ -49,7 +49,7 @@ const Users = () => {
             okType: 'danger',
             cancelText: 'Cancelar',
             onOk() {
-                fetch(`${import.meta.env.VITE_APP_API_URL_USER}/${id}`, {
+                fetch(`${import.meta.env.VITE_APP_API_URL}/user/${id}`, {
                     method: 'DELETE',
                 })
                     .then(response => {
@@ -84,7 +84,7 @@ const Users = () => {
 
     const onFinish = async (values) => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_USER}/${selectedUser.id}`, {
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/user/${selectedUser.id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -105,7 +105,7 @@ const Users = () => {
 
     const handleSwitchChange = async (userId, checked) => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_USER}/${userId}`, {
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/user/${userId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
