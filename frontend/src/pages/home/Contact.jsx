@@ -42,7 +42,7 @@ const Contact = () => {
 
     const handleSubmit = async (values) => {
         try {
-            const response = await fetch(import.meta.env.VITE_APP_API_URL_CONTACT, {
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/contact`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

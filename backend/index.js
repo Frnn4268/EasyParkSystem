@@ -26,6 +26,10 @@ const incomeRoute = require('./routes/incomeRoute')
 app.use(cors())
 app.use(express.json())
 
+app.get('/api', (req, res) => {
+  res.send('Hello World F1.F2!');
+})
+
 // Routes
 app.use('/api/auth', authRoute) // Auth
 app.use('/api/contact', contactRoute) // Contact

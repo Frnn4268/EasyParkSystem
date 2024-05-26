@@ -23,7 +23,7 @@ const Customers = () => {
 
     const fetchCustomers = async () => {
         try {
-            const response = await fetch(import.meta.env.VITE_APP_API_URL_CUSTOMER);
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/customer`);
             if (response.ok) {
                 const data = await response.json();
                 setCustomers(data.data);
@@ -49,7 +49,7 @@ const Customers = () => {
             cancelText: 'Cancelar',
             async onOk() {
                 try {
-                    const response = await fetch(`${import.meta.env.VITE_APP_API_URL_CUSTOMER}/${id}`, {
+                    const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/customer/${id}`, {
                         method: 'DELETE',
                     });
                     if (response.ok) {
@@ -83,7 +83,7 @@ const Customers = () => {
 
     const onFinish = async (values) => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_CUSTOMER}/${selectedCustomer.id}`, {
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/customer/${selectedCustomer.id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

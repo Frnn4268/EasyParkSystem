@@ -26,7 +26,7 @@ const useSignup = () => {
 
             const userData = { ...values, active: true } 
 
-            const res = await fetch(import.meta.env.VITE_APP_API_URL_SIGNUP, {
+            const res = await fetch(`${import.meta.env.VITE_APP_API_URL}/auth/signup`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

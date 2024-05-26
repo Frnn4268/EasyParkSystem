@@ -20,7 +20,7 @@ const IncomeHistory = () => {
     useEffect(() => {
         const fetchIncomes = async () => {
             try {
-                const response = await fetch(import.meta.env.VITE_APP_API_URL_INCOME);
+                const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/income`);
                 if (response.ok) {
                     const data = await response.json();
                     setIncomes(data.data);
@@ -48,7 +48,7 @@ const IncomeHistory = () => {
             okType: 'danger',
             cancelText: 'Cancelar',
             onOk() {
-                fetch(`${import.meta.env.VITE_APP_API_URL_INCOME}/${id}`, {
+                fetch(`${import.meta.env.VITE_APP_API_URL}/income/${id}`, {
                     method: 'DELETE',
                 })
                 .then(response => {
@@ -84,7 +84,7 @@ const IncomeHistory = () => {
 
     const onFinish = async (values) => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_INCOME}/${selectedIncome.id}`, {
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/income/${selectedIncome.id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -99,7 +99,7 @@ const IncomeHistory = () => {
                 setIncomes(updatedIncomes);
                 setDrawerVisible(false);
     
-                const updatedResponse = await fetch(import.meta.env.VITE_APP_API_URL_INCOME);
+                const updatedResponse = await fetch(`${import.meta.env.VITE_APP_API_URL}/income`);
 
                 message.success('Ingreso editado exitosamente.');
                 if (updatedResponse.ok) {

@@ -24,7 +24,7 @@ const Vehicles = () => {
 
     const fetchVehicles = async () => {
         try {
-            const response = await fetch(import.meta.env.VITE_APP_API_URL_VEHICLE);
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/vehicle`);
             if (response.ok) {
                 const data = await response.json();
                 setVehicles(data.data);
@@ -50,7 +50,7 @@ const Vehicles = () => {
             cancelText: 'Cancelar',
             async onOk() {
                 try {
-                    const response = await fetch(`${import.meta.env.VITE_APP_API_URL_VEHICLE}/${id}`, {
+                    const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/vehicle/${id}`, {
                         method: 'DELETE',
                     });
                     if (response.ok) {
@@ -94,7 +94,7 @@ const Vehicles = () => {
             
             const mergedValue = `${typePlate}-${licensePlate}`;
 
-            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_VEHICLE}/${selectedVehicle.id}`, {
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/vehicle/${selectedVehicle.id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

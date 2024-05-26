@@ -20,7 +20,7 @@ const ContactComponent = () => {
     useEffect(() => {
         const fetchContacts = async () => {
             try {
-                const response = await fetch(import.meta.env.VITE_APP_API_URL_CONTACT);
+                const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/contact`);
                 if (response.ok) {
                     const data = await response.json();
                     setContacts(data.data);
@@ -48,7 +48,7 @@ const ContactComponent = () => {
             okType: 'danger',
             cancelText: 'Cancelar',
             onOk() {
-                fetch(`${import.meta.env.VITE_APP_API_URL_CONTACT}/${id}`, {
+                fetch(`${import.meta.env.VITE_APP_API_URL}/contact/${id}`, {
                     method: 'DELETE',
                 })
                 .then(response => {
@@ -82,7 +82,7 @@ const ContactComponent = () => {
 
     const onFinish = async (values) => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_CONTACT}/${selectedContact.id}`, {
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/contact/${selectedContact.id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -97,7 +97,7 @@ const ContactComponent = () => {
                 setContacts(updatedContacts);
                 setDrawerVisible(false);
     
-                const updatedResponse = await fetch(import.meta.env.VITE_APP_API_URL_CONTACT);
+                const updatedResponse = await fetch(`${import.meta.env.VITE_APP_API_URL}/contact`);
                 if (updatedResponse.ok) {
                     const updatedData = await updatedResponse.json();
                     setContacts(updatedData.data);

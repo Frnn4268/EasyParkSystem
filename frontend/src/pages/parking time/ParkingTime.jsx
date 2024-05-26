@@ -26,7 +26,7 @@ const ParkingTime = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`${import.meta.env.VITE_APP_API_URL_PARKING_TIME_CUSTOMER_GET}/customer/${id}`);
+                const response = await axios.get(`${import.meta.env.VITE_APP_API_URL}/parking-time-customer/customer/${id}`);
                 setData(response.data);
     
                 setLoading(false);
@@ -42,12 +42,12 @@ const ParkingTime = () => {
                     setElapsedTime(elapsed);
     
                     if (elapsed % 900 === 0) {
-                        const costResponse = await axios.get(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE_PRICE}/${id}`);
+                        const costResponse = await axios.get(`${import.meta.env.VITE_APP_API_URL}/parking-price/${id}`);
                         setParkingCost(costResponse.data);
                     }
                 }, 1000);
     
-                const costResponse = await axios.get(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE_PRICE}/${id}`);
+                const costResponse = await axios.get(`${import.meta.env.VITE_APP_API_URL}/parking-price/${id}`);
                 setParkingCost(costResponse.data);
     
                 return () => clearInterval(intervalId);

@@ -20,7 +20,7 @@ const TimeParkingSearch = () => {
 
     const fetchTimeSearchParking = async () => {
         try {
-            const response = await fetch(import.meta.env.VITE_APP_API_URL_PARKING_TIME_SEARCH);
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/parking-search`);
             if (response.ok) {
                 const data = await response.json();
                 setTimeSearchParking(data.data.map(space => ({
@@ -46,7 +46,7 @@ const TimeParkingSearch = () => {
             cancelText: 'Cancelar',
             async onOk() {
                 try {
-                    const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_TIME_SEARCH}/${id}`, {
+                    const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/parking-search/${id}`, {
                         method: 'DELETE',
                     });
                     if (response.ok) {

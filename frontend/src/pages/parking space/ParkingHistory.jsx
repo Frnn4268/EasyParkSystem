@@ -21,7 +21,7 @@ const ParkingHistory = () => {
 
     const fetchParkingSpaces = async () => {
         try {
-            const response = await fetch(import.meta.env.VITE_APP_API_URL_PARKING_SPACE_ENTRY);
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/parking-space`);
             if (response.ok) {
                 const data = await response.json();
                 setParkingSpaces(data.parkingSpaces.map(space => ({
@@ -47,7 +47,7 @@ const ParkingHistory = () => {
             cancelText: 'Cancelar',
             async onOk() {
                 try {
-                    const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE_ENTRY}/${id}`, {
+                    const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/parking-space/${id}`, {
                         method: 'DELETE',
                     });
                     if (response.ok) {
