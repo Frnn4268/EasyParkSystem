@@ -3,11 +3,11 @@ name: Deploy Web App - Frontend
 on:
   push:
     branches:
-      - main  # Use the branch you use for production
+      - master  # Use the branch you use for production
 
 jobs:
   host-1:
-    runs-on: money-tracker-deploy  
+    runs-on: easy-park-deploy  
     steps:
       - uses: actions/checkout@v3
       
@@ -20,6 +20,10 @@ jobs:
       # Install dependencies
       - name: Install Dependencies
         run: npm install vite react react-dom
+
+      - name: Adding env file
+          run: |
+          echo VITE_APP_API_URL="${{ secrets.BACKEND_URL }}" > .env
       
       # Build the React app
       - name: Build React App
@@ -39,7 +43,9 @@ jobs:
       # Deploy to remote host via SSH
       - name: Deploy to Remote Server
         run: |
-          rsync -av --exclude '.env' -e "ssh -p 22" ./build/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST1 }}:/var/www/html/ --rsync-path="sudo rsync"
+          echo "===== Deploy to production server ====="
+          echo "===== Sync local and remote directory ====="
+          rsync -azPq -e "ssh -o StrictHostKeyChecking=no -o UserKnowHostsFile=/dev/null" --delete ./build/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST1 }}:/var/www/html/ --rsync-path="sudo rsync"
           ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST1 }} 'sudo systemctl restart nginx'
         env:
           SSH_USER: ${{ secrets.SSH_USER }}
@@ -58,6 +64,10 @@ jobs:
       # Install dependencies
       - name: Install Dependencies
         run: npm install
+
+      - name: Adding env file
+          run: |
+          echo VITE_APP_API_URL="${{ secrets.BACKEND_URL }}" > .env
       
       # Build the React app
       - name: Build React App
@@ -77,10 +87,10 @@ jobs:
       # Deploy to remote host via SSH
       - name: Deploy to Remote Server
         run: |
-          rsync -av --exclude '.env' -e "ssh -p 22" ./build/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST1 }}:/var/www/html/ --rsync-path="sudo rsync"
+          echo "===== Deploy to production server ====="
+          echo "===== Sync local and remote directory ====="
+          rsync -azPq -e "ssh -o StrictHostKeyChecking=no -o UserKnowHostsFile=/dev/null" --delete ./build/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST2 }}:/var/www/html/ --rsync-path="sudo rsync"
           ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST2 }} 'sudo systemctl restart nginx'
         env:
           SSH_USER: ${{ secrets.SSH_USER }}
           SSH_HOST: ${{ secrets.SSH_HOST2 }}
-
-  
