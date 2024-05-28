@@ -69,7 +69,7 @@ Contributions are welcome! Please follow the steps below to contribute:
 >` (git checkout -b feature/your-feature).`
 
 3. Make your changes and commit 
->`(git commit -am 'Añadí una nueva característica').`
+>`(git commit -am 'Add a new feature').`
 
 4. Upload your changes to your repository
 >`(git push origin feature/your-feature).`
