@@ -76,11 +76,6 @@ Contributions are welcome! Please follow the steps below to contribute:
 
 5. Creates a new* Pull Request.*
 
-## Contact
-- Name: *Fernando José Martínez Medina*
-- Email: *fmartinezm7@miumg.edu.gt*
-- LinkedIn: *https://www.linkedin.com/in/fernando-jose-martinez-medina-97395523a/*
-
 ## Images of the Project:
 
 "The following images seek to illustrate the operation of this project and show some of the modules that the project has"
