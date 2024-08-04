@@ -49,7 +49,7 @@ import UserRoleError from './pages/error/UserRoleError.jsx';
 
 const App = () => {
   const { isAuthenticated, userData } = useAuth();
-  const isAdmin = isAuthenticated && userData.role === 'Administrador';
+  const isAdmin = isAuthenticated && userData?.role === 'Administrador';
 
   return (
     <Router>
