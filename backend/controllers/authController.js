@@ -6,6 +6,7 @@ const createError = require('../utils/appError')
 require('dotenv').config()
 
 // Register user
+// Register user
 exports.signup = async (req, res, next) => {
     try {
         const adminUser = await User.findOne({ role: 'Administrador' });
@@ -34,9 +35,16 @@ exports.signup = async (req, res, next) => {
         });
 
         res.status(201).json({
-            status: 'succes',
+            status: 'success',
             message: 'Usuario registrado exitosamente',
             token,
+            user: {
+                _id: newUser._id,
+                name: newUser.name,
+                email: newUser.email,
+                role: newUser.role,
+                active: newUser.active
+            }
         });
     } catch (error) {
         next(error);
