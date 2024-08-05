@@ -1,11 +1,11 @@
 import React, { useRef, useState } from 'react';
 import { Layout, Divider, Steps } from 'antd';
 
-import TopMenu from '../src/pages/dashboard/TopMenu.jsx';
-import LeftMenu from '../src/pages/dashboard/LeftMenu.jsx';
+import TopMenu from './TopMenu.jsx';
+import LeftMenu from './LeftMenu.jsx';
 
-import '../src/css/DashboardMenu.css';
-import '../src/css/InformationComponent.css';
+import '../../css/DashboardMenu.css';
+import '../../css/InformationComponent.css';
 
 const { Header } = Layout;
 

@@ -41,8 +41,8 @@ import IncomeStatistics from './pages/income/IncomeStatistics.jsx';
 import ParkingPriceComponent from './pages/income/ParkingPriceComponent.jsx';
 
 // Components
-import ContactComponent from './../components/ContactComponent.jsx';
-import InformationComponent from './../components/InformationComponent.jsx';
+import ContactComponent from './pages/dashboard/ContactComponent.jsx';
+import InformationComponent from './pages/dashboard/InformationComponent.jsx';
 
 // User role error
 import UserRoleError from './pages/error/UserRoleError.jsx';
