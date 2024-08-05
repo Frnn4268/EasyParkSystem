@@ -38,11 +38,11 @@ import VehiclesHistory from './pages/vehicle/VehiclesHistory.jsx';
 import IncomeHistory from './pages/income/IncomeHistory.jsx';
 import DailyIncome from './pages/income/DailyIncome.jsx';
 import IncomeStatistics from './pages/income/IncomeStatistics.jsx';
+import ParkingPriceComponent from './pages/income/ParkingPriceComponent.jsx';
 
 // Components
 import ContactComponent from './../components/ContactComponent.jsx';
 import InformationComponent from './../components/InformationComponent.jsx';
-import ParkingPriceComponent from './../components/ParkingPriceComponent.jsx';
 
 // User role error
 import UserRoleError from './pages/error/UserRoleError.jsx';

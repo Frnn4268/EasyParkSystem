@@ -3,11 +3,11 @@ import { Row, Col, Button, Form, Layout, Card, Typography, message, InputNumber,
 import { ArrowUpOutlined } from '@ant-design/icons';
 import moment from 'moment'; 
 
-import TopMenu from '../src/pages/dashboard/TopMenu.jsx';
-import LeftMenu from '../src/pages/dashboard/LeftMenu.jsx';
+import TopMenu from '../dashboard/TopMenu.jsx'
+import LeftMenu from '../dashboard/LeftMenu.jsx';
 
-import '../src/css/DashboardMenu.css';
-import '../src/css/ParkingPriceComponent.css';
+import '../../css/DashboardMenu.css'
+import '../../css/ParkingPriceComponent.css';
 
 const { Header } = Layout;
 const { useForm } = Form;
