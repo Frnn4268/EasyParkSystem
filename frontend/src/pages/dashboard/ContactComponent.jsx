@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import { Layout, Table, Tag, Typography, Button, Space, Modal, Form, Input, Drawer, message } from 'antd';
 import { DeleteOutlined, SyncOutlined } from '@ant-design/icons';
 
-import TopMenu from '../src/pages/dashboard/TopMenu.jsx';
-import LeftMenu from '../src/pages/dashboard/LeftMenu.jsx';
+import TopMenu from './TopMenu.jsx';
+import LeftMenu from './LeftMenu.jsx';
 
-import '../src/css/DashboardMenu.css';
-import '../src/css/ContactComponent.css';
+import '../../css/DashboardMenu.css';
+import '../../css/ContactComponent.css';
 
 const { Header } = Layout;
 const { confirm } = Modal;
