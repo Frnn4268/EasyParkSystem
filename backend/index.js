@@ -1,9 +1,24 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const winston = require('winston');
+
 require('dotenv').config();
 require('./config/mongoDBConnection');
 
 const app = express();
+
+// Configuración del logger
+const logger = winston.createLogger({
+    level: 'info',
+    format: winston.format.combine(
+        winston.format.timestamp(),
+        winston.format.json()
+    ),
+    transports: [
+        new winston.transports.Console(),
+        new winston.transports.File({ filename: 'logs/server.log' })
+    ],
+});
 
 // Security Middlewares
 app.use(require('./middlewares/helmetMiddleware'));
@@ -46,11 +61,34 @@ app.use('/api/vehicle', vehicleRoute);
 app.use('/api/income', incomeRoute);
 
 // Global error handler middleware
-const errorHandler = require('./middlewares/errorHandlerMiddleware');
-app.use(errorHandler);
+app.use(require('./middlewares/errorHandlerMiddleware'));
 
-// Server
-const PORT = process.env.PORT;
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}!`);
+// Server initialization
+const PORT = process.env.PORT || 3000;
+
+const startServer = async () => {
+    try {
+        // Start server
+        app.listen(PORT, () => {
+            logger.info(`Server running on port ${PORT} in ${process.env.NODE_ENV || 'development'} mode!`);
+        });
+    } catch (err) {
+        logger.error('Failed to start server:', err);
+        process.exit(1);
+    }
+};
+
+// Unhandled promise rejections
+process.on('unhandledRejection', (err) => {
+    logger.error('Unhandled Rejection:', err);
+    process.exit(1);
 });
+
+// Uncaught exceptions
+process.on('uncaughtException', (err) => {
+    logger.error('Uncaught Exception:', err);
+    process.exit(1);
+});
+
+// Connect to the database and then start the server
+startServer();

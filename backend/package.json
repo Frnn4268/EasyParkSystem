@@ -26,6 +26,7 @@
     "mongoose": "^8.5.2",
     "mongoose-unique-validation": "^0.1.0",
     "multer": "^1.4.5-lts.1",
+    "winston": "^3.14.2",
     "xss-clean": "^0.1.4"
   },
   "devDependencies": {
