@@ -14,6 +14,8 @@ import { useAuth } from './contexts/AuthContext.jsx';
 
 // Dashboard
 import Dashboard from './pages/dashboard/Dashboard.jsx';
+import ContactComponent from './pages/dashboard/ContactComponent.jsx';
+import InformationComponent from './pages/dashboard/InformationComponent.jsx';
 
 // Parking
 import ParkingSpace from './pages/parking space/ParkingSpace.jsx';
@@ -39,10 +41,6 @@ import IncomeHistory from './pages/income/IncomeHistory.jsx';
 import DailyIncome from './pages/income/DailyIncome.jsx';
 import IncomeStatistics from './pages/income/IncomeStatistics.jsx';
 import ParkingPriceComponent from './pages/income/ParkingPriceComponent.jsx';
-
-// Components
-import ContactComponent from './pages/dashboard/ContactComponent.jsx';
-import InformationComponent from './pages/dashboard/InformationComponent.jsx';
 
 // User role error
 import UserRoleError from './pages/error/UserRoleError.jsx';
