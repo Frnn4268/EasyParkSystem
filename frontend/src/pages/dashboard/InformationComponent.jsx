@@ -32,11 +32,11 @@ const InformationComponent = () => {
                                 },
                                 {
                                 title: 'En Progreso...',
-                                description: 'Estadísticas de parqueo.',
+                                description: 'Edición de perfil de usuario.',
                                 },
                                 {
                                 title: 'Esperando...',
-                                description: 'Roles para usuarios y Edición de perfil de usuario.',
+                                description: '...',
                                 },
                             ]}
                             />
@@ -53,19 +53,15 @@ const InformationComponent = () => {
                                 },
                                 {
                                 title: 'Terminado',
-                                description: 'Inicio, Parqueo, Historial de Parqueo, Usuarios, Clientes, Vehículos, Ingresos, Precio de Estacionamiento, Información, Contacto, QR de Cliente y obtención de Información, Estadísticas de Ingresos',
+                                description: 'Inicio, Parqueo, Historial de Parqueo, Usuarios, Clientes, Vehículos, Ingresos, Precio de Estacionamiento, Información, Contacto, QR de Cliente y obtención de Información, Estadísticas de Ingresos, Estadísticas de parqueo, Roles para usuarios',
                                 },
                                 {
                                 title: 'En Progreso',
-                                description: 'Estadísticas de Parqueo',
-                                },
-                                {
-                                title: 'Esperando',
-                                description: 'Asignación de roles para usuarios',
-                                },
-                                {
-                                title: 'Esperando',
                                 description: 'Perfil de Usuario',
+                                },
+                                {
+                                title: 'Esperando',
+                                description: '...',
                                 },
                             ]}
                         />
