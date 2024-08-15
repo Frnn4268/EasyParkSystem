@@ -1,6 +1,6 @@
-const Vehicle = require('../models/vehicleModel');
+const Vehicle = require('../models/vehicleModel.js');
 const ParkingSpace = require('../models/parkingSpaceModel.js');
-const createError = require('../utils/appError');
+const createError = require('../utils/appError.js');
 
 // Get all vehicles
 exports.getAllVehicles = async (req, res, next) => {

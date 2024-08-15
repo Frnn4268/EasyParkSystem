@@ -6,7 +6,6 @@ const createError = require('../utils/appError')
 require('dotenv').config()
 
 // Register user
-// Register user
 exports.signup = async (req, res, next) => {
     try {
         const adminUser = await User.findOne({ role: 'Administrador' });
