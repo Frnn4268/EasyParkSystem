@@ -1,38 +1,38 @@
 const express = require('express');
 
 require('dotenv').config();
-require('./config/mongoDBConnection');
+require('./src/config/mongoDBConnection');
 
 const app = express();
 
 // Logger Middleware
-const logger = require('./middlewares/loggerMiddleware');
+const logger = require('./src/middlewares/loggerMiddleware');
 logger.info('Logger initialized');
 
 // Security Middlewares
-app.use(require('./middlewares/helmetMiddleware'));
-app.use(require('./middlewares/corsMiddleware'));
-app.use(require('./middlewares/rateLimiterMiddleware'));
-require('./middlewares/sanitizeMiddleware')(app);
-app.use(require('./middlewares/hppMiddleware'));
+app.use(require('./src/middlewares/helmetMiddleware'));
+app.use(require('./src/middlewares/corsMiddleware'));
+app.use(require('./src/middlewares/rateLimiterMiddleware'));
+require('./src/middlewares/sanitizeMiddleware')(app);
+app.use(require('./src/middlewares/hppMiddleware'));
 
 // General Middlewares
 app.use(express.json());
 
 // Routes
-const authRoute = require('./routes/authRoute');
-const contactRoute = require('./routes/contactRoute');
-const userRoute = require('./routes/userRoute');
-const userProfileRoute = require('./routes/userProfileRoute');
-const customerRoute = require('./routes/CustomerRoute');
-const parkingSpaceRoute = require('./routes/parkingSpaceRoute');
-const parkingRoute = require('./routes/parkingEntryRoute');
-const parkingTimeRoute = require('./routes/parkingTimeRoute');
-const parkingTimeCustomerRoute = require('./routes/parkingTimeCustomerRoute');
-const parkingPriceRoute = require('./routes/parkingPriceRoute');
-const timeSearchParkingRoute = require('./routes/timeSearchParkingRoute');
-const vehicleRoute = require('./routes/vehicleRoute');
-const incomeRoute = require('./routes/incomeRoute');
+const authRoute = require('./src/routes/authRoute');
+const contactRoute = require('./src/routes/contactRoute');
+const userRoute = require('./src/routes/userRoute');
+const userProfileRoute = require('./src/routes/userProfileRoute');
+const customerRoute = require('./src/routes/CustomerRoute');
+const parkingSpaceRoute = require('./src/routes/parkingSpaceRoute');
+const parkingRoute = require('./src/routes/parkingEntryRoute');
+const parkingTimeRoute = require('./src/routes/parkingTimeRoute');
+const parkingTimeCustomerRoute = require('./src/routes/parkingTimeCustomerRoute');
+const parkingPriceRoute = require('./src/routes/parkingPriceRoute');
+const timeSearchParkingRoute = require('./src/routes/timeSearchParkingRoute');
+const vehicleRoute = require('./src/routes/vehicleRoute');
+const incomeRoute = require('./src/routes/incomeRoute');
 
 // Use routes
 app.use('/api/auth', authRoute);
@@ -50,10 +50,10 @@ app.use('/api/vehicle', vehicleRoute);
 app.use('/api/income', incomeRoute);
 
 // Global error handler middleware
-app.use(require('./middlewares/errorHandlerMiddleware'));
+app.use(require('./src/middlewares/errorHandlerMiddleware'));
 
 // Error handling for unhandled rejections and uncaught exceptions
-require('./middlewares/errorHandlingMiddleware')(logger);
+require('./src/middlewares/errorHandlingMiddleware')(logger);
 
 // Server initialization
 const PORT = process.env.PORT || 3000;
