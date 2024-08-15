@@ -1,24 +1,14 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const winston = require('winston');
 
 require('dotenv').config();
 require('./config/mongoDBConnection');
 
 const app = express();
 
-// Configuración del logger
-const logger = winston.createLogger({
-    level: 'info',
-    format: winston.format.combine(
-        winston.format.timestamp(),
-        winston.format.json()
-    ),
-    transports: [
-        new winston.transports.Console(),
-        new winston.transports.File({ filename: 'logs/server.log' })
-    ],
-});
+// Logger Middleware
+const logger = require('./middlewares/loggerMiddleware');
+logger.info('Logger initialized');
 
 // Security Middlewares
 app.use(require('./middlewares/helmetMiddleware'));
@@ -63,6 +53,9 @@ app.use('/api/income', incomeRoute);
 // Global error handler middleware
 app.use(require('./middlewares/errorHandlerMiddleware'));
 
+// Error handling for unhandled rejections and uncaught exceptions
+require('./middlewares/errorHandlingMiddleware')(logger);
+
 // Server initialization
 const PORT = process.env.PORT || 3000;
 
@@ -77,18 +70,6 @@ const startServer = async () => {
         process.exit(1);
     }
 };
-
-// Unhandled promise rejections
-process.on('unhandledRejection', (err) => {
-    logger.error('Unhandled Rejection:', err);
-    process.exit(1);
-});
-
-// Uncaught exceptions
-process.on('uncaughtException', (err) => {
-    logger.error('Uncaught Exception:', err);
-    process.exit(1);
-});
 
 // Connect to the database and then start the server
 startServer();
