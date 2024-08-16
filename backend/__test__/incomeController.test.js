@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Income = require('../src/models/incomeModel');
 const creatError = require('../src/utils/appError');
 const incomeController = require('../src/controllers/incomeController');
