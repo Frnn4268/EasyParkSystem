@@ -1,7 +1,7 @@
 const Customer = require('../src/models/customerModel'); 
 const ParkingSpace = require('../src/models/parkingSpaceModel.js'); 
 const createError = require('../src/utils/appError');
-const customerController = require('../src/controllers/customerController'); // Importa el controlador correctamente
+const customerController = require('../src/controllers/customerController');
 
 // Mock the required modules
 jest.mock('../src/models/customerModel');
