@@ -1,6 +1,6 @@
 const Vehicle = require('../models/vehicleModel.js');
 const ParkingSpace = require('../models/parkingSpaceModel.js');
-const createError = require('../utils/appError.js');
+const creatError = require('../utils/appError.js');
 
 // Get all vehicles
 exports.getAllVehicles = async (req, res, next) => {
@@ -27,7 +27,7 @@ exports.updateVehicle = async (req, res, next) => {
             color,
         }, { new: true });
         if (!updatedVehicle) {
-            return next(createError(404, 'Vehicle not found'));
+            return next(creatError(404, 'Vehicle not found'));
         }
         res.status(200).json({
             status: 'success',
@@ -47,13 +47,13 @@ exports.deleteVehicle = async (req, res, next) => {
         const vehicleInParkingSpace = await ParkingSpace.findOne({ vehicle: id });
 
         if (vehicleInParkingSpace) {
-            return next(new createError('No se puede eliminar este vehículo porque está asociado a un espacio de estacionamiento.', 400));
+            return next(new creatError('No se puede eliminar este vehículo porque está asociado a un espacio de estacionamiento.', 400));
         }
 
         const deletedVehicle = await Vehicle.findByIdAndDelete(id);
 
         if (!deletedVehicle) {
-            return next(createError(404, 'Vehículo no encontrado'));
+            return next(creatError(404, 'Vehículo no encontrado'));
         }
 
         res.status(204).json({
