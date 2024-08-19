@@ -68,17 +68,21 @@ describe('getIncomesGroupedByPeriod', () => {
   });
 
   it('should handle an invalid period', async () => {
+    // Mock the createError function to return an Error object
+    const error = new Error('Período de agrupación no válido');
+    createError.mockReturnValue(error);
+
     // Setting an invalid period in the request parameters
     req.params.period = 'invalidPeriod';
 
     // Calling the controller method with the invalid period
     await getIncomesGroupedByPeriod(req, res, next);
 
-    // Verifying that createError was called with a 400 status and an error message
+    // Verifying that createError was called with a 400 status and the error message
     expect(createError).toHaveBeenCalledWith(400, 'Período de agrupación no válido');
     
-    // Verifying that the next function was called with an Error object
-    expect(next).toHaveBeenCalledWith(expect.any(Error));
+    // Verifying that the next function was called with the mocked Error object
+    expect(next).toHaveBeenCalledWith(error);
   });
 
   it('should call next with an error if an exception occurs', async () => {
