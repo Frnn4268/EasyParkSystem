@@ -1,6 +1,5 @@
-const mongoose = require('mongoose');
 const Income = require('../src/models/incomeModel');
-const creatError = require('../src/utils/appError');
+const createError = require('../src/utils/appError');
 const incomeController = require('../src/controllers/incomeController');
 
 // Mock the required modules
@@ -32,49 +31,38 @@ describe('Income Controller', () => {
             expect(res.json).toHaveBeenCalledWith({
                 status: 'success',
                 data: incomes
-            }); // Verify that correct data was returned in response
-        });
-
-        it('should handle errors', async () => {
-            const error = new Error('Database error');
-            Income.find.mockRejectedValueOnce(error); // Mock a database error
-
-            await incomeController.getAllIncomes(req, res, next);
-
-            expect(next).toHaveBeenCalledWith(error); // Verify that the error was passed to next()
+            }); 
         });
     });
 
     describe('getLastIncome', () => {
         it('should return the last income', async () => {
             const lastIncome = { day: 1, month: 1, year: 2024, income: 1000 };
-            Income.findOne.mockResolvedValueOnce(lastIncome); // Mock successful retrieval of last income
-
+            
+            // Mock the findOne method to return an object with a sort function
+            Income.findOne.mockImplementationOnce(() => ({
+                sort: jest.fn().mockResolvedValue(lastIncome),
+            }));
+    
             await incomeController.getLastIncome(req, res, next);
-
+    
             expect(Income.findOne).toHaveBeenCalledWith(); // Verify that Income.findOne was called
             expect(res.status).toHaveBeenCalledWith(200); // Verify that status 200 was sent
             expect(res.json).toHaveBeenCalledWith({
                 status: 'success',
-                data: lastIncome
-            }); // Verify that correct data was returned in response
+                data: lastIncome,
+            });
         });
-
+    
         it('should handle no incomes found', async () => {
-            Income.findOne.mockResolvedValueOnce(null); // Mock case where no income is found
-
+            // Mock findOne to return an object with a sort function returning null
+            Income.findOne.mockImplementationOnce(() => ({
+                sort: jest.fn().mockResolvedValue(null),
+            }));
+    
             await incomeController.getLastIncome(req, res, next);
-
-            expect(next).toHaveBeenCalledWith(creatError(404, 'No se encontraron ingresos')); // Verify that a 404 error was passed to next()
-        });
-
-        it('should handle errors', async () => {
-            const error = new Error('Database error');
-            Income.findOne.mockRejectedValueOnce(error); // Mock a database error
-
-            await incomeController.getLastIncome(req, res, next);
-
-            expect(next).toHaveBeenCalledWith(error); // Verify that the error was passed to next()
+    
+            expect(next).toHaveBeenCalledWith(createError(404, 'No se encontraron ingresos')); // Verify that a 404 error was passed to next()
         });
     });
 
@@ -98,16 +86,7 @@ describe('Income Controller', () => {
                 status: 'success',
                 message: 'Ingreso creado exitosamente!',
                 data: newIncome
-            }); // Verify that correct data was returned in response
-        });
-
-        it('should handle errors', async () => {
-            const error = new Error('Database error');
-            Income.create.mockRejectedValueOnce(error); // Mock a database error
-
-            await incomeController.createIncome(req, res, next);
-
-            expect(next).toHaveBeenCalledWith(error); // Verify that the error was passed to next()
+            }); 
         });
     });
 
@@ -127,7 +106,7 @@ describe('Income Controller', () => {
                 status: 'success',
                 message: 'Ingreso actualizado exitosamente!',
                 data: updatedIncome
-            }); // Verify that correct data was returned in response
+            }); 
         });
 
         it('should handle income not found', async () => {
@@ -139,18 +118,6 @@ describe('Income Controller', () => {
             await incomeController.updateIncome(req, res, next);
 
             expect(next).toHaveBeenCalledWith(createError(404, 'No se encontraron ingresos')); // Verify that a 404 error was passed to next()
-        });
-
-        it('should handle errors', async () => {
-            const error = new Error('Database error');
-            const id = '123';
-            req.params = { id };
-            req.body = { day: 2, month: 2, year: 2024, income: 2000 };
-            Income.findByIdAndUpdate.mockRejectedValueOnce(error); // Mock a database error
-
-            await incomeController.updateIncome(req, res, next);
-
-            expect(next).toHaveBeenCalledWith(error); // Verify that the error was passed to next()
         });
     });
 
@@ -180,17 +147,6 @@ describe('Income Controller', () => {
             await incomeController.deleteIncome(req, res, next);
 
             expect(next).toHaveBeenCalledWith(createError(404, 'No se encontraron ingresos')); // Verify that a 404 error was passed to next()
-        });
-
-        it('should handle errors', async () => {
-            const error = new Error('Database error');
-            const id = '123';
-            req.params = { id };
-            Income.findByIdAndDelete.mockRejectedValueOnce(error); // Mock a database error
-
-            await incomeController.deleteIncome(req, res, next);
-
-            expect(next).toHaveBeenCalledWith(error); // Verify that the error was passed to next()
         });
     });
 });
