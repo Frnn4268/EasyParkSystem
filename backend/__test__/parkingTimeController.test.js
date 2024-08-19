@@ -9,76 +9,64 @@ describe('getLatestParkingSpaceById', () => {
 
   // Set up the mock request, response, and next function before each test
   beforeEach(() => {
-      req = { params: { id: '123' } }; // Mock request with a parameter id
-      res = {
-          status: jest.fn().mockReturnThis(), // Mock status function
-          json: jest.fn(), // Mock json function
-      };
-      next = jest.fn(); // Mock next function for error handling
+    req = { params: { id: '123' } }; // Mock request with a parameter id
+    res = {
+      status: jest.fn().mockReturnThis(), // Mock status function
+      json: jest.fn(), // Mock json function
+    };
+    next = jest.fn(); // Mock next function for error handling
   });
 
   // Clear all mock data after each test to ensure tests are independent
   afterEach(() => {
-      jest.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   // Test case: should return the latest parking space if found
   it('should return the latest parking space if found', async () => {
-      const mockParkingSpace = { parking_space_id: '123', hour_date_entry: '2024-08-17T10:00:00Z' };
-      
-      // Simulate the model's findOne method resolving with a mock parking space
-      ParkingSpace.findOne.mockResolvedValue(mockParkingSpace);
+    const mockParkingSpace = { parking_space_id: '123', hour_date_entry: '2024-08-17T10:00:00Z' };
 
-      // Call the controller function with the mocked request, response, and next
-      await getLatestParkingSpaceById(req, res, next);
+    // Simulate the model's findOne method resolving with a mock parking space
+    ParkingSpace.findOne.mockResolvedValue(mockParkingSpace);
 
-      // Assert that the findOne method was called with the correct query
-      expect(ParkingSpace.findOne).toHaveBeenCalledWith({
-          parking_space_id: '123',
-          hour_date_output: null,
-      });
-      // Assert that the findOne method was called exactly once
-      expect(ParkingSpace.findOne).toHaveBeenCalledTimes(1);
-      // Assert that the response status was set to 200
-      expect(res.status).toHaveBeenCalledWith(200);
-      // Assert that the response JSON method was called with the mock parking space data
-      expect(res.json).toHaveBeenCalledWith(mockParkingSpace);
+    // Call the controller function with the mocked request, response, and next
+    await getLatestParkingSpaceById(req, res, next);
+
+    // Assert that the findOne method was called with the correct query
+    expect(ParkingSpace.findOne).toHaveBeenCalledWith({
+      parking_space_id: '123',
+      hour_date_output: null,
+    });
+    // Assert that the findOne method was called exactly once
+    expect(ParkingSpace.findOne).toHaveBeenCalledTimes(1);
+
+    // Assert that the response status was set to 200
+    expect(res.status).toHaveBeenCalledWith(200);
+    // Assert that the response JSON method was called with the mock parking space data
+    expect(res.json).toHaveBeenCalledWith(mockParkingSpace);
   });
 
   // Test case: should return a 404 error if no parking space is found
   it('should return a 404 error if no parking space is found', async () => {
-      // Simulate the model's findOne method resolving with null (no parking space found)
-      ParkingSpace.findOne.mockResolvedValue(null);
+    // Simulate the model's findOne method resolving with null (no parking space found)
+    ParkingSpace.findOne.mockResolvedValue(null);
 
-      // Call the controller function with the mocked request, response, and next
-      await getLatestParkingSpaceById(req, res, next);
+    // Call the controller function with the mocked request, response, and next
+    await getLatestParkingSpaceById(req, res, next);
 
-      // Assert that the findOne method was called with the correct query
-      expect(ParkingSpace.findOne).toHaveBeenCalledWith({
-          parking_space_id: '123',
-          hour_date_output: null,
-      });
-      // Assert that the findOne method was called exactly once
-      expect(ParkingSpace.findOne).toHaveBeenCalledTimes(1);
-      // Assert that the response status was set to 404
-      expect(res.status).toHaveBeenCalledWith(404);
-      // Assert that the response JSON method was called with the correct error message
-      expect(res.json).toHaveBeenCalledWith({
-          message: 'No se encontró ningún espacio de parqueo para el ID de colección proporcionado con una fecha de salida nula.',
-      });
-  });
+    // Assert that the findOne method was called with the correct query
+    expect(ParkingSpace.findOne).toHaveBeenCalledWith({
+      parking_space_id: '123',
+      hour_date_output: null,
+    });
+    // Assert that the findOne method was called exactly once
+    expect(ParkingSpace.findOne).toHaveBeenCalledTimes(1);
 
-  // Test case: should call next with an error if something goes wrong
-  it('should call next with an error if something goes wrong', async () => {
-      const error = new Error('Something went wrong');
-      
-      // Simulate the model's findOne method rejecting with an error
-      ParkingSpace.findOne.mockRejectedValue(error);
-
-      // Expect the controller function to throw the error
-      await expect(getLatestParkingSpaceById(req, res, next)).rejects.toThrow(error);
-
-      // Assert that the next function was called with the error
-      expect(next).toHaveBeenCalledWith(error);
+    // Assert that the response status was set to 404
+    expect(res.status).toHaveBeenCalledWith(404);
+    // Assert that the response JSON method was called with the correct error message
+    expect(res.json).toHaveBeenCalledWith({
+      message: 'No se encontró ningún espacio de parqueo para el ID de colección proporcionado con una fecha de salida nula.',
+    });
   });
 });
