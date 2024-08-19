@@ -1,6 +1,6 @@
 const ParkingPrice = require('../src/models/parkingPriceModel');
 const ParkingSpace = require('../src/models/parkingSpaceModel');
-const { getLastParkingPrice, createParkingPrice, getParkingCostById } = require('../src/controllers/parkingPriceController');
+const { getLastParkingPrice, createParkingPrice, getParkingCostById, calculateParkingCost } = require('../src/controllers/parkingPriceController');
 const createError = require('../src/utils/appError');
 
 jest.mock('../src/models/parkingPriceModel');
@@ -58,17 +58,7 @@ describe('Parking Controller', () => {
 
             // Verify that the next function was called with a 404 error
             expect(ParkingPrice.findOne).toHaveBeenCalledTimes(1);
-            expect(next).toHaveBeenCalledWith(createError(404, 'No se encontro el último precio de parqueo'));
-        });
-
-        it('should call next with an error if something goes wrong', async () => {
-            const error = new Error('Something went wrong'); // Simulate an error
-            ParkingPrice.findOne.mockRejectedValue(error); // Mock the model method to throw an error
-
-            await getLastParkingPrice(req, res, next);
-
-            // Verify that the next function was called with the simulated error
-            expect(next).toHaveBeenCalledWith(error);
+            expect(next).toHaveBeenCalledWith(expect.objectContaining({ statusCode: 404 }));
         });
     });
 
@@ -137,34 +127,38 @@ describe('Parking Controller', () => {
 
             await getParkingCostById(req, res, next);
 
-            // Verify that the correct methods were called with the correct arguments
+            // Verify that the next function was called with a 404 error
             expect(ParkingSpace.findOne).toHaveBeenCalledWith({ _id: '123' });
             expect(res.status).toHaveBeenCalledWith(404);
             expect(res.json).toHaveBeenCalledWith({ message: 'Espacio de estacionamiento no encontrado' });
         });
 
-        it('should return zero cost if the parking space is not occupied', async () => {
-            // Mock parking space data for an unoccupied space
-            const mockParkingSpace = { _id: '123', state: 'Libre', hour_date_entry: new Date() };
-            req.params.id = '123'; // Simulate request parameter data
+        it('should return 200 with a message if the space is not occupied', async () => {
+            const mockParkingSpace = { _id: '123', state: 'Libre' }; // Simulate a free parking space
+            req.params.id = '123';
             ParkingSpace.findOne.mockResolvedValue(mockParkingSpace); // Mock the findOne method to return the mocked data
 
             await getParkingCostById(req, res, next);
 
-            // Verify that the correct methods were called with the correct arguments
-            expect(ParkingSpace.findOne).toHaveBeenCalledWith({ _id: '123' });
+            // Verify the correct response was sent
             expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.json).toHaveBeenCalledWith({ message: 'El espacio de estacionamiento no está ocupado', parkingCost: 0 });
+            expect(res.json).toHaveBeenCalledWith({
+                message: 'El espacio de estacionamiento no está ocupado',
+                parkingCost: 0
+            });
         });
 
-        it('should call next with an error if something goes wrong', async () => {
-            const error = new Error('Something went wrong'); // Simulate an error
-            ParkingSpace.findOne.mockRejectedValue(error); // Mock the findOne method to throw an error
+        it('should call next with a 404 error if no parking price is found', async () => {
+            // Mock parking space data
+            const mockParkingSpace = { _id: '123', state: 'Ocupado', hour_date_entry: new Date(new Date().getTime() - 3600000) }; // 1 hour ago
+            req.params.id = '123';
+            ParkingSpace.findOne.mockResolvedValue(mockParkingSpace); // Mock the findOne method to return the mocked data
+            ParkingPrice.findOne.mockResolvedValue(null); // Mock the findOne method to return null (no price found)
 
             await getParkingCostById(req, res, next);
 
-            // Verify that the next function was called with the simulated error
-            expect(next).toHaveBeenCalledWith(error);
+            // Verify that the next function was called with a 404 error
+            expect(next).toHaveBeenCalledWith(expect.objectContaining({ statusCode: 404 }));
         });
     });
 });

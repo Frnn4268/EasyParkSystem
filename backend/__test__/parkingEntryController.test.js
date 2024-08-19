@@ -1,7 +1,5 @@
 const request = require('supertest');
 const express = require('express');
-const mongoose = require('mongoose');
-const moment = require('moment');
 const ParkingSpace = require('../src/models/parkingSpaceModel.js');
 const Customer = require('../src/models/customerModel.js');
 const Vehicle = require('../src/models/vehicleModel.js');
