@@ -48,17 +48,20 @@ describe('Login Component', () => {
     cy.get('input.ant-select-selection-search-input').should('be.visible')
     cy.wait(2000)
 
-    cy.get('input[placeholder="Ingresa tu contraseña"]').type('password123')
+    cy.get('input.ant-select-selection-search-input').type('test@test.com')
+    cy.wait(2000)
+
+    cy.get('input[placeholder="Ingresa tu contraseña"]').type('123')
     cy.wait(2000)
 
     // Click the login button
     cy.get('.btn').click()
-    cy.wait(2000)
-
-    // Verify that the spinner is displayed while the form is submitting
-    cy.get('.btn').find('.ant-spin').should('be.visible')
+    
+    // Wait for the loading spinner to appear
+    cy.get('.btn').find('.ant-spin', { timeout: 10000 }).should('be.visible')
     cy.wait(2000)
   })
+
 
   it('should navigate to the registration page', () => {
     // Click on the registration link
