@@ -1,14 +1,14 @@
 [
     {
       "id": 1,
-      "firstname_owner": "John",
-      "lastname_owner": "Doe",
+      "firstname_owner": "Fernando",
+      "lastname_owner": "Martínez",
       "phone_number": "1234567890"
     },
     {
       "id": 2,
-      "firstname_owner": "Jane",
-      "lastname_owner": "Smith",
+      "firstname_owner": "José",
+      "lastname_owner": "Medina",
       "phone_number": "0987654321"
     }
 ]
