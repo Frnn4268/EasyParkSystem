@@ -219,7 +219,16 @@ const Vehicles = () => {
                 <Form form={form} onFinish={onFinish}>
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item label="Placa" name="license_plate">
+                            <Form.Item 
+                                label="Placa" 
+                                name="license_plate"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: '¡Por favor ingresa el número de placa!',
+                                    },
+                                ]}
+                            >
                                 <Input />
                             </Form.Item>
                         </Col>
@@ -246,7 +255,16 @@ const Vehicles = () => {
                             </Form.Item>
                         </Col>
                     </Row>
-                    <Form.Item label="Tipo de Vehículo" name="type">
+                    <Form.Item 
+                        label="Tipo de Vehículo" 
+                        name="type"
+                        rules={[
+                            {
+                                required: true,
+                                message: '¡Por favor ingresa el tipo de vehículo!',
+                            },
+                        ]}
+                    >
                         <Select>
                             <Option value="SUV">SUV</Option>
                             <Option value="Pickup">Pickup</Option>
@@ -261,7 +279,16 @@ const Vehicles = () => {
                     </Form.Item>
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item label="Marca" name="brand">
+                            <Form.Item 
+                                label="Marca" 
+                                name="brand"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: '¡Por favor ingresa la marca del vehículo!',
+                                    },
+                                ]}
+                            >
                                 <Select>
                                     <Option value="Toyota">Toyota</Option>
                                     <Option value="Mitsubishi">Mitsubishi</Option>
@@ -277,7 +304,16 @@ const Vehicles = () => {
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item label="Color" name="color">
+                            <Form.Item 
+                                label="Color" 
+                                name="color"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: '¡Por favor ingresa el color del vehículo!',
+                                    },
+                                ]}
+                            >
                                 <Select>
                                     <Option value="Rojo">Rojo</Option>
                                     <Option value="Azul">Azul</Option>
