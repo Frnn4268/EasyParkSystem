@@ -75,6 +75,7 @@
 .alert-layout {
     position: absolute;
     bottom: 20px; 
+    font-size: 16px;
 }
 .logo-dashboard {
     width: 500px;
