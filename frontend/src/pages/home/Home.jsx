@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { FacebookFilled } from '@ant-design/icons';
 
 import MainMenu from './MainMenu.jsx';
-import MyCarousel from './Carousel.jsx';
+import HomeCarousel from './Carousel.jsx';
 
 import '../../css/Home.css';
 import logo_card from '../../assets/home/logo_card.png'
@@ -98,7 +98,7 @@ const Home = () => {
               </Card>
             </Col>
           </Row>
-          <MyCarousel />
+          <HomeCarousel />
       </Content>
       { /* Footer section */}
       <Footer className='home-footer'>Restaurante y Pastelería Florencia - 2024 ©EasyPark</Footer>
