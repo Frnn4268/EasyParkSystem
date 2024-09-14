@@ -1,4 +1,4 @@
-import { React, useState, useEffect} from 'react';
+import { useState, useEffect} from 'react';
 import { Layout, Alert, Row, Statistic, Col, Card } from 'antd';
 import Marquee from 'react-fast-marquee';
 
@@ -68,10 +68,11 @@ const Dashboard = () => {
                     <img src={logo_dashboard} className='logo-dashboard' />
                     <Alert
                         banner
+                        type="info"
                         className='alert-layout'
                         message={
                             <Marquee pauseOnHover gradient={false}>
-                                Bienvenido a Easy Park - Restaurante y Pastelería Florencia
+                                Bienvenido a Easy Park - Restaurante y Pastelería Florencia © {new Date().getFullYear()}
                             </Marquee>
                         }
                     />

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Card, Button, Typography, Divider, Col, Row, Carousel } from 'antd';
+import { Layout, Card, Button, Typography, Divider, Col, Row } from 'antd';
 import { Link } from 'react-router-dom';
 import { FacebookFilled } from '@ant-design/icons';
 
