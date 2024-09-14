@@ -181,13 +181,40 @@ const ContactComponent = () => {
                 visible={drawerVisible}
             >
                 <Form form={form} onFinish={onFinish}>
-                    <Form.Item label="Nombre" name="name">
+                    <Form.Item 
+                        label="Nombre" 
+                        name="name"
+                        rules={[
+                            {
+                                required: true,
+                                message: '¡Por favor ingresa el nombre del contacto!',
+                            },
+                        ]}
+                    >
                         <Input />
                     </Form.Item>
-                    <Form.Item label="Email" name="email">
+                    <Form.Item 
+                        label="Email" 
+                        name="email"
+                        rules={[
+                            {
+                                required: true,
+                                message: '¡Por favor ingresa el email del contacto!',
+                            },
+                        ]}
+                    >
                         <Input />
                     </Form.Item>
-                    <Form.Item label="Mensaje" name="message">
+                    <Form.Item 
+                        label="Mensaje" 
+                        name="message"
+                        rules={[
+                            {
+                                required: true,
+                                message: '¡Por favor ingresa el mensaje del contacto!',
+                            },
+                        ]}
+                    >
                         <Input />
                     </Form.Item>
                     <Form.Item>
