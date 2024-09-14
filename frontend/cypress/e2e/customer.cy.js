@@ -1,6 +1,6 @@
 describe('Customers Component', () => {
   beforeEach(() => {
-    cy.visit('/customers') // Asegúrate de que la ruta coincide con la de tu aplicación
+    cy.visit('/customers')
   })
 
   it('should render the Customers component correctly', () => {
@@ -16,7 +16,7 @@ describe('Customers Component', () => {
 
 describe('Customers Editing', () => {
   beforeEach(() => {
-    cy.intercept('GET', 'http://localhost:3001/api/customer/', {
+    cy.intercept('GET', `${Cypress.env("VITE_APP_API_URL")}/customers`, {
       fixture: 'customers.json',
     }).as('getCustomers')
 
@@ -37,7 +37,7 @@ describe('Customers Editing', () => {
 
   it('should submit the form and close the drawer on successful update', () => {
     // Mock de la respuesta de actualización
-    cy.intercept('PUT', 'http://localhost:3001/api/customer//*', {
+    cy.intercept('PUT', `${Cypress.env("VITE_APP_API_URL")}/customers`, {
       statusCode: 200,
     }).as('updateCustomer')
     cy.wait(1000)
@@ -72,7 +72,7 @@ describe('Customers Editing', () => {
 
 describe('Customer Deletion', () => {
   beforeEach(() => {
-    cy.intercept('GET', 'http://localhost:3001/api/customer/', {
+    cy.intercept('GET', `${Cypress.env("VITE_APP_API_URL")}/customers`, {
       fixture: 'customers.json',
     }).as('getCustomers')
 
@@ -83,7 +83,7 @@ describe('Customer Deletion', () => {
 
   it('should delete a customer when clicking the delete button', () => {
     // Mock de la respuesta de eliminación
-    cy.intercept('DELETE', 'http://localhost:3001/api/customer//*', {
+    cy.intercept('DELETE', `${Cypress.env("VITE_APP_API_URL")}/customers`, {
       statusCode: 200,
     }).as('deleteCustomer')
     cy.wait(1000)
@@ -108,7 +108,7 @@ describe('Customer Deletion', () => {
 
 describe('Customer Data', () => {
   beforeEach(() => {
-    cy.intercept('GET', 'http://localhost:3001/api/customer/', {
+    cy.intercept('GET', `${Cypress.env("VITE_APP_API_URL")}/customers`, {
       fixture: 'customers.json',
     }).as('getCustomers')
 

@@ -208,13 +208,34 @@ const Users = () => {
                 visible={drawerVisible}
             >
                 <Form form={form} onFinish={onFinish}>
-                    <Form.Item label="Nombre" name="name">
+                    <Form.Item 
+                        label="Nombre" 
+                        name="name"
+                        rules={[
+                            {
+                                required: true,
+                                message: '¡Por favor ingrese el nombre del usuario!',
+                            },
+                        ]}
+                    >
                         <Input />
                     </Form.Item>
-                    <Form.Item label="Email" name="email">
+                    <Form.Item 
+                        label="Email" 
+                        name="email"
+                        rules={[
+                            {
+                                required: true,
+                                message: '¡Por favor ingrese el email del usuario!',
+                            },
+                        ]}
+                    >
                         <Input />
                     </Form.Item>
-                    <Form.Item label="Rol" name="role">
+                    <Form.Item 
+                        label="Rol" 
+                        name="role"
+                    >
                         <Radio.Group onChange={(e) => setSelectedRole(e.target.value)}>
                             <Radio.Button value="Empleado">Empleado</Radio.Button>
                             <Radio.Button value="Administrador">Administrador</Radio.Button>
