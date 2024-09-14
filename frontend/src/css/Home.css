@@ -104,7 +104,9 @@ body {
     font-family: 'Poppins', sans-serif;
 }
 .home-carousel {
-    margin: 30px 0 0 0;
+    font-weight: bold;
+    font-size: 24px;
+    background: linear-gradient(to bottom, white, #f4f4f4);
 }
 .home-footer {
     text-align: center;
