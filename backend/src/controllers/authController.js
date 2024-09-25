@@ -11,7 +11,7 @@ exports.signup = async (req, res, next) => {
         const adminUser = await User.findOne({ role: 'Administrador' });
 
         if (adminUser && req.body.role === 'Administrador') {
-            return next(new createError('Ya existe un administrador asignado. No se pueden registrar más administradores.', 403))
+            return next(new createError('Ya existe un administrador asignado. No se pueden registrar más administradores.', 403));
         } 
 
         const user = await User.findOne({ email: req.body.email });
