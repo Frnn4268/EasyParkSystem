@@ -3,7 +3,7 @@ class createError extends Error {
         super(message)
 
         this.statusCode = statusCode
-        this.status = `${statusCode}`.startsWith('2') ? 'fail' : 'error'
+        this.status = `${statusCode}`.startsWith('4') ? 'fail' : 'error'
 
         Error.captureStackTrace(this, this.constructor)
     }

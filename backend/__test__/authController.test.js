@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../src/models/userModel');
 const { signup, login } = require('../src/controllers/authController');
-const createError = require('../src/utils/appError');
+const createError = require('../src/utils/appError.js');
 
 // Mock dependencies for testing
 jest.mock('bcrypt');
@@ -21,7 +21,7 @@ describe('Auth Controller - signup', () => {
                 name: 'Test User',
                 email: 'test@example.com',
                 password: 'password123',
-                role: 'Usuario',
+                role: 'Administrador',
             }
         };
         res = {
@@ -65,9 +65,18 @@ describe('Auth Controller - signup', () => {
         }));
     });
 
+    // Test that an error is returned if the user already exists role (Administrador)
+    it('should return an error if the user already exists with role "Administrador"', async () => {
+        User.findOne.mockResolvedValueOnce({}); // Mocking User.findOne to return an existing user
+
+        await signup(req, res, next); // Call the signup function
+
+        expect(next).toHaveBeenCalledWith(expect.any(createError)); // Assert the expected behavior
+    });
+
     // Test that an error is returned if the user already exists
     it('should return an error if the user already exists', async () => {
-        User.findOne.mockResolvedValueOnce({}); // Mocking User.findOne to return an existing user
+        User.findOne.mockResolvedValueOnce({ role: 'Usuario' }); // Mocking User.findOne to return an existing user
 
         await signup(req, res, next); // Call the signup function
 
