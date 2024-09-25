@@ -17,7 +17,7 @@ exports.getTotalCustomersPerDayOfMonth = async (req, res) => {
             { $sort: { '_id': 1 } }
         ]);
 
-        res.json(customersPerDay);
+        res.status(200).json(customersPerDay);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -39,7 +39,7 @@ exports.getTotalVehiclesPerDayOfMonth = async (req, res) => {
             { $sort: { '_id': 1 } }
         ]);
 
-        res.json(vehiclesPerDay);
+        res.status(200).json(vehiclesPerDay);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -59,7 +59,7 @@ exports.getAvailableAndOccupiedSpaces = async (req, res) => {
         const availableSpaces = latestStates.filter(space => space.latestState.state === 'Disponible').length;
         const occupiedSpaces = latestStates.filter(space => space.latestState.state === 'Ocupado').length;
 
-        res.json({ availableSpaces, occupiedSpaces });
+        res.status(200).json({ availableSpaces, occupiedSpaces });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -81,7 +81,7 @@ exports.getTotalUsagePerSpace = async (req, res) => {
             { $sort: { '_id': 1 } }
         ]);
 
-        res.json(usagePerSpace);
+        res.status(200).json(usagePerSpace);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -99,7 +99,7 @@ exports.getTotalDailyCustomers = async (req, res) => {
             hour_date_entry: { $gte: todayStart, $lt: tomorrowStart }
         });
 
-        res.json({ totalCustomers: dailyCustomers });
+        res.status(200).json({ totalCustomers: dailyCustomers });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -124,7 +124,7 @@ exports.getAverageParkingTime = async (req, res) => {
             }
         ]);
 
-        res.json({ averageParkingTime: averageParkingTime[0]?.averageTime || 0 });
+        res.status(200).json({ averageParkingTime: averageParkingTime[0]?.averageTime || 0 });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -148,7 +148,7 @@ exports.getLongestParkingDurationOfMonth = async (req, res) => {
             { $limit: 1 }
         ]);
 
-        res.json({ longestParkingDuration: longestParkingDuration[0]?.parkingDuration || 0 });
+        res.status(200).json({ longestParkingDuration: longestParkingDuration[0]?.parkingDuration || 0 });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -173,7 +173,7 @@ exports.getAverageTimeSearchParking = async (req, res) => {
             }
         ]);
 
-        res.json({ averageTimeInSeconds: averageParkingTime[0]?.averageTime || 0 });
+        res.status(200).json({ averageTimeInSeconds: averageParkingTime[0]?.averageTime || 0 });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

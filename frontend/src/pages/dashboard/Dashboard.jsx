@@ -24,7 +24,7 @@ const Dashboard = () => {
 
     const fetchParkingStatistics = async () => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_APP_API_URL_PARKING_SPACE_ENTRY}/state`);
+            const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/parking-space/state`);
             const data = await response.json();
             const parkingSpaces = data.parkingSpaces;
     
