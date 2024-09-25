@@ -115,13 +115,16 @@ describe('Parking Controller', () => {
             res.status = jest.fn().mockReturnValue(res);
             res.json = jest.fn();
         
+            calculateParkingCost.mockReturnValue('10.00'); // Mock the calculateParkingCost function
+
             await getParkingCostById(req, res, next);
         
             // Calculate the expected cost based on the mock data
-            const expectedCost = (10 * (3600 / 3600)).toFixed(2); // 1 hour at $10/hour
+            const expectedCost = '10.00'; // 1 hour at $10/hour
             // Verify the correct methods were called with the correct arguments
             expect(ParkingSpace.findOne).toHaveBeenCalledWith({ _id: '123' });
             expect(ParkingPrice.findOne).toHaveBeenCalledTimes(1);
+            expect(calculateParkingCost).toHaveBeenCalledWith(10, 3600);
             expect(res.status).toHaveBeenCalledWith(200);
             expect(res.json).toHaveBeenCalledWith({
                 status: 'success',
