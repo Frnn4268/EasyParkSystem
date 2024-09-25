@@ -8,7 +8,7 @@
     "start": "cross-env NODE_ENV=production node index.js",
     "test": "jest"
   },
-  "author": "",
+  "author": "Frnn4268",
   "license": "ISC",
   "dependencies": {
     "@sentry/node": "^7.109.0",
