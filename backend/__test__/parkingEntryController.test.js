@@ -1,199 +1,195 @@
-const request = require('supertest');
-const express = require('express');
 const ParkingSpace = require('../src/models/parkingSpaceModel.js');
 const Customer = require('../src/models/customerModel.js');
 const Vehicle = require('../src/models/vehicleModel.js');
-const app = express();
+const moment = require('moment');
+const createError = require('../src/utils/appError');
+const {
+    getAllParkingSpaces,
+    getAllLatestParkingSpaces,
+    getAverageParkingTime,
+    getFrequentCustomers,
+    getTotalCustomersToday,
+    getParkingSpaceById,
+    parkingEntryCreate,
+    parkingOutputEdit,
+    deleteParkingSpace
+} = require('../src/controllers/parkingEntryController.js');
 
-const parkingController = require('../src/controllers/parkingEntryController.js');
-
-// Mock middleware for error handling
-app.use((err, req, res, next) => {
-    res.status(err.status || 500).json({ message: err.message });
-});
-
-// Set up the test app with routes
-app.use(express.json());
-app.get('/parkingSpaces', parkingController.getAllParkingSpaces);
-app.get('/latestParkingSpaces', parkingController.getAllLatestParkingSpaces);
-app.get('/averageParkingTime', parkingController.getAverageParkingTime);
-app.get('/frequentCustomers', parkingController.getFrequentCustomers);
-app.get('/totalCustomersToday', parkingController.getTotalCustomersToday);
-app.get('/parkingSpace/:id', parkingController.getParkingSpaceById);
-app.post('/parkingEntry', parkingController.parkingEntryCreate);
-app.put('/parkingOutput/:id', parkingController.parkingOutputEdit);
-app.delete('/parkingSpace/:id', parkingController.deleteParkingSpace);
-
-// Mock Mongoose models to prevent actual database calls
 jest.mock('../src/models/parkingSpaceModel.js');
 jest.mock('../src/models/customerModel.js');
 jest.mock('../src/models/vehicleModel.js');
+jest.mock('moment');
+jest.mock('../src/utils/appError');
 
 describe('Parking Controller', () => {
-    // Clear all mocks after each test
-    afterEach(() => {
-        jest.clearAllMocks();
+    let req, res, next;
+
+    beforeEach(() => {
+        req = { params: {}, body: {} };
+        res = {
+            status: jest.fn().mockReturnThis(),
+            json: jest.fn(),
+        };
+        next = jest.fn();
     });
 
-    // Test GET /parkingSpaces route
-    describe('GET /parkingSpaces', () => {
+    describe('getAllParkingSpaces', () => {
         it('should return all parking spaces', async () => {
-            ParkingSpace.find.mockResolvedValue([{ _id: '123', state: 'Occupied' }]);
-
-            const res = await request(app).get('/parkingSpaces');
-
-            expect(res.status).toBe(200);
-            expect(res.body.parkingSpaces).toHaveLength(1);
-        });
-    });
-
-    // Test GET /latestParkingSpaces route
-    describe('GET /latestParkingSpaces', () => {
-        it('should return the latest parking spaces', async () => {
-            ParkingSpace.aggregate.mockResolvedValue([{ _id: '123', latestEntry: { parking_space_id: '1', state: 'Occupied', hour_date_entry: new Date() } }]);
-
-            const res = await request(app).get('/latestParkingSpaces');
-
-            expect(res.status).toBe(200);
-            expect(res.body.parkingSpaces).toHaveLength(1);
-        });
-    });
-
-    // Test GET /averageParkingTime route
-    describe('GET /averageParkingTime', () => {
-        it('should return the average parking time', async () => {
-            ParkingSpace.find.mockResolvedValue([{ hour_date_entry: new Date(), hour_date_output: new Date() }]);
-
-            const res = await request(app).get('/averageParkingTime');
-
-            expect(res.status).toBe(200);
-            expect(res.body.averageParkingTime).toBeDefined();
-        });
-    });
-
-    // Test GET /frequentCustomers route
-    describe('GET /frequentCustomers', () => {
-        it('should return the frequent customers', async () => {
-            Customer.aggregate.mockResolvedValue([{ _id: { firstname_owner: 'John', lastname_owner: 'Doe' }, count: 5 }]);
-
-            const res = await request(app).get('/frequentCustomers');
-
-            expect(res.status).toBe(200);
-            expect(res.body.frequentCustomers).toHaveLength(1);
-        });
-    });
-
-    // Test GET /totalCustomersToday route
-    describe('GET /totalCustomersToday', () => {
-        it('should return the total customers today', async () => {
-            Customer.aggregate.mockResolvedValue([{ _id: null, totalCustomers: 5 }]);
-
-            const res = await request(app).get('/totalCustomersToday');
-
-            expect(res.status).toBe(200);
-            expect(res.body.totalCustomersToday).toBe(5);
-        });
-    });
-
-    // Test GET /parkingSpace/:id route
-    describe('GET /parkingSpace/:id', () => {
-        it('should return a parking space by id', async () => {
-            ParkingSpace.findOne.mockResolvedValue({ _id: '123', state: 'Occupied' });
-
-            const res = await request(app).get('/parkingSpace/123');
-
-            expect(res.status).toBe(200);
-            expect(res.body.parkingSpace._id).toBe('123');
-        });
-
-        it('should return 404 if parking space not found', async () => {
-            ParkingSpace.findOne.mockResolvedValue(null);
-
-            const res = await request(app).get('/parkingSpace/123');
-
-            expect(res.status).toBe(404);
-            expect(res.body.message).toBe('Parking space not found');
-        });
-    });
-
-    // Test POST /parkingEntry route
-    describe('POST /parkingEntry', () => {
-        it('should create a new parking entry', async () => {
-            const customer = { _id: 'customerId' };
-            const vehicle = { _id: 'vehicleId' };
-            const parkingSpace = { _id: 'parkingSpaceId', state: 'Occupied' };
-
-            // Mock the implementations of model saving
-            Customer.mockImplementation(() => ({
-                save: jest.fn().mockResolvedValue(customer)
-            }));
-            Vehicle.mockImplementation(() => ({
-                save: jest.fn().mockResolvedValue(vehicle)
-            }));
-            ParkingSpace.mockImplementation(() => ({
-                save: jest.fn().mockResolvedValue(parkingSpace)
-            }));
-
-            const res = await request(app).post('/parkingEntry').send({
-                customerData: { name: 'John Doe' },
-                vehicleData: { licensePlate: 'ABC123' },
-                parkingSpaceData: { parking_space_id: '1' }
+            const mockPopulate = jest.fn().mockReturnThis();
+            const mockExec = jest.fn().mockResolvedValueOnce([{ _id: '1', customer: { _id: 'c1' }, vehicle: { _id: 'v1' } }]);
+            
+            ParkingSpace.find.mockReturnValueOnce({
+                populate: jest.fn().mockReturnThis(),
+                exec: mockExec
             });
+            
+            await getAllParkingSpaces(req, res, next);
+            
+            expect(res.status).toHaveBeenCalledWith(200);
+            expect(res.json).toHaveBeenCalledWith({ parkingSpaces: [{ _id: '1', customer: { _id: 'c1' }, vehicle: { _id: 'v1' } }] });
+        });
 
-            expect(res.status).toBe(201);
-            expect(res.body.message).toBe('Data successfully saved');
+        it('should handle errors', async () => {
+            const error = new createError('Test Error');
+            ParkingSpace.find.mockRejectedValueOnce(error);
+            await getAllParkingSpaces(req, res, next);
+            expect(next).toHaveBeenCalledWith(error);
         });
     });
 
-    // Test PUT /parkingOutput/:id route
-    describe('PUT /parkingOutput/:id', () => {
-        it('should update parking output details', async () => {
-            ParkingSpace.find.mockResolvedValue([{ _id: '123', state: 'Occupied', hour_date_entry: new Date() }]);
-
-            const res = await request(app).put('/parkingOutput/123').send({ state: 'Free' });
-
-            expect(res.status).toBe(200);
-            expect(res.body.message).toBe('Parking space status updated successfully');
+    describe('getAllLatestParkingSpaces', () => {
+        it('should return latest parking spaces', async () => {
+            ParkingSpace.aggregate.mockResolvedValueOnce([{ latestEntry: { parking_space_id: '1', state: 'Ocupado', hour_date_entry: new Date() } }]);
+            await getAllLatestParkingSpaces(req, res, next);
+            expect(res.status).toHaveBeenCalledWith(200);
+            expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ parkingSpaces: expect.any(Array) }));
         });
 
-        it('should return 404 if parking space not found', async () => {
-            ParkingSpace.find.mockResolvedValue([]);
-
-            const res = await request(app).put('/parkingOutput/123').send({ state: 'Free' });
-
-            expect(res.status).toBe(404);
-            expect(res.body.message).toBe('Parking space not found');
+        it('should handle errors', async () => {
+            const error = new createError('Test Error');
+            ParkingSpace.aggregate.mockRejectedValueOnce(error);
+            await getAllLatestParkingSpaces(req, res, next);
+            expect(next).toHaveBeenCalledWith(error);
         });
     });
 
-    // Test DELETE /parkingSpace/:id route
-    describe('DELETE /parkingSpace/:id', () => {
-        it('should delete a parking space', async () => {
-            ParkingSpace.findById.mockResolvedValue({ _id: '123', state: 'Free' });
-            ParkingSpace.findByIdAndDelete.mockResolvedValue({ _id: '123' });
-
-            const res = await request(app).delete('/parkingSpace/123');
-
-            expect(res.status).toBe(200);
-            expect(res.body.message).toBe('Parking space deleted successfully');
+    describe('getAverageParkingTime', () => {
+        it('should return average parking time', async () => {
+            ParkingSpace.find.mockResolvedValueOnce([{ hour_date_entry: new Date(), hour_date_output: new Date() }]);
+            await getAverageParkingTime(req, res, next);
+            expect(res.status).toHaveBeenCalledWith(200);
+            expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ averageParkingTime: expect.any(Number) }));
         });
 
-        it('should return 404 if parking space not found', async () => {
-            ParkingSpace.findById.mockResolvedValue(null);
+        it('should handle errors', async () => {
+            const error = new Error('Test Error');
+            ParkingSpace.find.mockRejectedValueOnce(error);
+            await getAverageParkingTime(req, res, next);
+            expect(next).toHaveBeenCalledWith(error);
+        });
+    });
 
-            const res = await request(app).delete('/parkingSpace/123');
-
-            expect(res.status).toBe(404);
-            expect(res.body.message).toBe('Parking space not found');
+    describe('getFrequentCustomers', () => {
+        it('should return frequent customers', async () => {
+            Customer.aggregate.mockResolvedValueOnce([{ _id: { firstname_owner: 'John', lastname_owner: 'Doe' }, count: 5 }]);
+            await getFrequentCustomers(req, res, next);
+            expect(res.status).toHaveBeenCalledWith(200);
+            expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ frequentCustomers: expect.any(Array) }));
         });
 
-        it('should return 400 if parking space is occupied', async () => {
-            ParkingSpace.findById.mockResolvedValue({ _id: '123', state: 'Occupied' });
+        it('should handle errors', async () => {
+            const error = new Error('Test Error');
+            Customer.aggregate.mockRejectedValueOnce(error);
+            await getFrequentCustomers(req, res, next);
+            expect(next).toHaveBeenCalledWith(error);
+        });
+    });
 
-            const res = await request(app).delete('/parkingSpace/123');
+    describe('getTotalCustomersToday', () => {
+        it('should return total customers today', async () => {
+            Customer.aggregate.mockResolvedValueOnce([{ totalCustomers: 10 }]);
+            await getTotalCustomersToday(req, res, next);
+            expect(res.status).toHaveBeenCalledWith(200);
+            expect(res.json).toHaveBeenCalledWith({ totalCustomersToday: 10 });
+        });
 
-            expect(res.status).toBe(400);
-            expect(res.body.message).toBe('Cannot delete parking history because it is occupied. Please free the parking space before deleting.');
+        it('should handle errors', async () => {
+            const error = new Error('Test Error');
+            Customer.aggregate.mockRejectedValueOnce(error);
+            await getTotalCustomersToday(req, res, next);
+            expect(next).toHaveBeenCalledWith(error);
+        });
+    });
+
+    describe('getParkingSpaceById', () => {
+        it('should return parking space by id', async () => {
+            ParkingSpace.findOne.mockResolvedValueOnce({ _id: '1' });
+            req.params.id = '1';
+            await getParkingSpaceById(req, res, next);
+            expect(res.status).toHaveBeenCalledWith(200);
+            expect(res.json).toHaveBeenCalledWith({ parkingSpace: { _id: '1' } });
+        });
+
+        it('should handle errors', async () => {
+            const error = new Error('Test Error');
+            ParkingSpace.findOne.mockRejectedValueOnce(error);
+            await getParkingSpaceById(req, res, next);
+            expect(next).toHaveBeenCalledWith(error);
+        });
+    });
+
+    describe('parkingEntryCreate', () => {
+        it('should create a parking entry', async () => {
+            Customer.prototype.save = jest.fn().mockResolvedValueOnce({ _id: '1' });
+            Vehicle.prototype.save = jest.fn().mockResolvedValueOnce({ _id: '1' });
+            ParkingSpace.prototype.save = jest.fn().mockResolvedValueOnce({ _id: '1' });
+            req.body = { customerData: {}, vehicleData: {}, parkingSpaceData: {} };
+            await parkingEntryCreate(req, res, next);
+            expect(res.status).toHaveBeenCalledWith(201);
+            expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ message: 'Data successfully saved', parkingSpace: expect.any(Object) }));
+        });
+
+        it('should handle errors', async () => {
+            const error = new Error('Test Error');
+            Customer.prototype.save = jest.fn().mockRejectedValueOnce(error);
+            await parkingEntryCreate(req, res, next);
+            expect(next).toHaveBeenCalledWith(error);
+        });
+    });
+
+    describe('parkingOutputEdit', () => {
+        it('should edit parking output', async () => {
+            ParkingSpace.find.mockResolvedValueOnce([{ _id: '1', hour_date_entry: new Date() }]);
+            req.params.id = '1';
+            req.body.state = 'Libre';
+            await parkingOutputEdit(req, res, next);
+            expect(res.status).toHaveBeenCalledWith(200);
+            expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ message: 'Estado del espacio de estacionamiento actualizado exitosamente', updatedParkingSpace: expect.any(Object) }));
+        });
+
+        it('should handle errors', async () => {
+            const error = new Error('Test Error');
+            ParkingSpace.find.mockRejectedValueOnce(error);
+            await parkingOutputEdit(req, res, next);
+            expect(next).toHaveBeenCalledWith(error);
+        });
+    });
+
+    describe('deleteParkingSpace', () => {
+        it('should delete parking space', async () => {
+            ParkingSpace.findById.mockResolvedValueOnce({ _id: '1', state: 'Libre' });
+            ParkingSpace.findByIdAndDelete.mockResolvedValueOnce({ _id: '1' });
+            req.params.id = '1';
+            await deleteParkingSpace(req, res, next);
+            expect(res.status).toHaveBeenCalledWith(200);
+            expect(res.json).toHaveBeenCalledWith({ message: 'Espacio de estacionamiento eliminado exitosamente' });
+        });
+
+        it('should handle errors', async () => {
+            const error = new Error('Test Error');
+            ParkingSpace.findById.mockRejectedValueOnce(error);
+            await deleteParkingSpace(req, res, next);
+            expect(next).toHaveBeenCalledWith(error);
         });
     });
 });

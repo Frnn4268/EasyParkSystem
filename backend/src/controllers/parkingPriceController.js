@@ -14,7 +14,7 @@ exports.getLastParkingPrice = async (req, res, next) => {
     try {
         const lastParkingPrice = await ParkingPrice.findOne().sort({ _id: -1 });
         if (!lastParkingPrice) {
-            return next(createError(404, 'No se encontro el último precio de parqueo'));
+            return next(new createError(404, 'No se encontro el último precio de parqueo'));
         }
         res.status(200).json({
             status: 'success',
@@ -85,3 +85,5 @@ exports.getParkingCostById = async (req, res, next) => {
         next(error);
     }
 };
+
+module.exports.calculateParkingCost = calculateParkingCost;
