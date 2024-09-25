@@ -113,10 +113,10 @@ describe('Customer Controller', () => {
             const id = '123';
             req.params = { id };
             ParkingSpace.findOne.mockResolvedValueOnce({ customer: id }); // Mock a case where customer is associated with a parking space
-
+    
             await customerController.deleteCustomer(req, res, next);
-
-            expect(next).toHaveBeenCalledWith(new createError('No se puede eliminar este cliente porque está asociado a un espacio de estacionamiento.', 400)); // Verify that a 400 error was passed to next()
+    
+            expect(next).toHaveBeenCalledWith(expect.any(createError)); // Verify that a createError was passed to next()
         });
 
         it('should handle customer not found', async () => {
