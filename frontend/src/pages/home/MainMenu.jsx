@@ -3,8 +3,6 @@ import { Menu, Popover } from 'antd';
 import { Link } from 'react-router-dom';
 import { HomeOutlined, InfoCircleOutlined, PhoneOutlined, UserOutlined } from '@ant-design/icons';
 
-import logo_home from '../../assets/home/logo_home.png';
-
 const popoverContent = (
   <div>
     <p>Inicia sesión en nuestra web!</p>
@@ -16,7 +14,7 @@ const MainMenu = () => {
     <div style={{ position: 'fixed', width: '100%', zIndex: 1000 }}>
       <Menu theme='dark' mode="horizontal" defaultSelectedKeys={['2']} style={{ display: 'flex' }}>
         <Menu.Item className='login-menu-image' key="1" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: 200 }}>
-          <img src={logo_home} style={{ width: 45, height: 35, display: 'flex', alignItems: 'center', justifyContent: 'center' }} alt="Logo" />
+          <img src="https://i.postimg.cc/jdmr9Lkp/logo-home.png" style={{ width: 45, height: 35, display: 'flex', alignItems: 'center', justifyContent: 'center' }} alt="Logo" />
           <Link to="/" ></Link>
         </Menu.Item>
         <Menu.Item key="2" icon={<HomeOutlined />}>

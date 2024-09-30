@@ -7,18 +7,13 @@ import MainMenu from './MainMenu.jsx';
 import HomeCarousel from './Carousel.jsx';
 
 import '../../css/Home.css';
-import logo_card from '../../assets/home/logo_card.png'
-import form_home from '../../assets/home/form_card.png'
-import card_image1 from '../../assets/home/card_image1.jpg'
-import card_image2 from '../../assets/home/card_image2.jpg'
-import card_image3 from '../../assets/home/card_image3.jpg'
 
 const { Title, Text } = Typography;
 const { Header, Content, Footer } = Layout;
 const { Meta } = Card;
 
 const backgroundStyle = {
-  backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1.5)), url(${form_home})`,
+  backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1.5)), url('https://i.postimg.cc/8cyTs44c/form-card.png')`,
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   position: 'relative',
@@ -48,7 +43,7 @@ const Home = () => {
             <Title level={2} className="home-welcome-text" style={{ fontSize: 55 }}>Bienvenido a EasyPark</Title>
             <Text level={3} className="home-welcome-message">Por favor, inicia sesión o regístrate para continuar.</Text>
           </div>
-            <img src={logo_card} alt="EasyPark Logo" className='logo-card' />
+            <img src="https://i.postimg.cc/Y2X76XNq/logo-card.png" alt="EasyPark Logo" className='logo-card' />
         </div>
         <div className="home-buttons-container">
           <Link to="/login">
@@ -71,7 +66,7 @@ const Home = () => {
               <Card
                 hoverable
                 style={cardStyle}
-                cover={<img alt="example" src={card_image1} />}
+                cover={<img alt="example" src="https://i.postimg.cc/1Xyz8fZC/card-image1.jpg" />}
               >
                 <Meta title="Búsqueda de Estacionamiento" description=" "/>
                 Los empleados pueden buscar y reservar espacios de estacionamiento disponibles en áreas específicas utilizando el sitio web de EasyPark.
@@ -81,7 +76,7 @@ const Home = () => {
               <Card
                 hoverable
                 style={cardStyle}
-                cover={<img alt="example" src={card_image2}  />}
+                cover={<img alt="example" src="https://i.postimg.cc/fTTLZtCk/card-image2.jpg"  />}
               >
                 <Meta title="Tiempo de Estacionamiento" description=" " />
                 EasyPark permite a los conductores ver por anticipado su tiempo de estacionamiento de manera conveniente a través del sitio web.
@@ -91,7 +86,7 @@ const Home = () => {
               <Card
                 hoverable
                 style={cardStyle}
-                cover={<img alt="example" src={card_image3}  />}
+                cover={<img alt="example" src="https://i.postimg.cc/ZRxbz4yr/card-image3.jpg"  />}
               >
                 <Meta title="Recordatorio" description=" " />
                 EasyPark es un sistema de gestión de parqueo que tiene como principal función optimizar tus tareas diarias.

@@ -7,16 +7,16 @@ import { useAuth } from '../../contexts/AuthContext.jsx';
 
 import '../../css/DashboardMenu.css'
 
-import icon_1 from '../../assets/icons/icon_1.png';
-import icon_2 from '../../assets/icons/icon_2.png';
-import icon_3 from '../../assets/icons/icon_3.png';
-import icon_4 from '../../assets/icons/icon_4.png';
-import icon_5 from '../../assets/icons/icon_5.png';
-
 const TopMenu = () => {
     const { logout, userData } = useAuth();
 
-    const avatarImages = [icon_1, icon_2, icon_3, icon_4, icon_5];
+    const avatarImages = [
+        'https://i.postimg.cc/R0z1gL1N/icon-1.png', 
+        'https://i.postimg.cc/hGbL6QMM/icon-2.png', 
+        'https://i.postimg.cc/Qt8Q3NyD/icon-3.png', 
+        'https://i.postimg.cc/63Md5skv/icon-4.png', 
+        'https://i.postimg.cc/Kj4t1qbs/icon-5.png'
+    ];
 
     const randomAvatarIndex = Math.floor(Math.random() * avatarImages.length);
     const avatarSrc = avatarImages[randomAvatarIndex];

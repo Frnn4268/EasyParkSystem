@@ -6,7 +6,6 @@ import TopMenu from './TopMenu.jsx';
 import LeftMenu from './LeftMenu.jsx';
 
 import '../../css/DashboardMenu.css';
-import logo_dashboard from '../../assets/home/logo_card.png';
 
 const { Header } = Layout;
 
@@ -65,7 +64,7 @@ const Dashboard = () => {
                     <LeftMenu />
                 </Layout.Sider>
                 <Layout.Content className='layout-content-dashboard'>
-                    <img src={logo_dashboard} className='logo-dashboard' />
+                    <img src='https://i.postimg.cc/Y2X76XNq/logo-card.png' className='logo-dashboard' />
                     <Alert
                         banner
                         type="info"

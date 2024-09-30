@@ -4,14 +4,12 @@ import { Card, Flex, Typography, Form, Input, Button, Alert, Spin, Select, AutoC
 import { HomeFilled, InfoCircleFilled, PhoneFilled } from '@ant-design/icons';
 
 import '../../css/Auth.css';
-import form_card from '../../assets/home/form_card2.png';
-import registerImage from '../../assets/register_logo1.jpg';
 
 import useSignup from '../../hooks/useSingup';
 import { useAuth } from '../../contexts/AuthContext.jsx';
 
 const backgroundStyle = {
-  backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 3)), url(${form_card})`,
+  backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 3)), url('https://i.postimg.cc/vZ5HtrHq/form-card2.png')`,
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   position: 'relative',
@@ -181,7 +179,7 @@ const Register = () => {
 
               {/* Image */}
               <Flex flex={1}>
-                <img src={registerImage} className='auth-image'></img>
+                <img src='https://i.postimg.cc/nzrJgBpt/register-logo1.jpg' className='auth-image'></img>
               </Flex>
             </Flex>
           </Card>

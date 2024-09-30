@@ -4,13 +4,11 @@ import { Card, Flex, Typography, Form, Input, Button, Alert, Spin, AutoComplete,
 import { HomeFilled, InfoCircleFilled, PhoneFilled } from '@ant-design/icons';
 
 import '../../css/Auth.css'
-import form_card from '../../assets/home/form_card2.png'
-import loginImage from '../../assets/login_logo1.jpg'
 
 import useLogin from '../../hooks/useLogin.jsx'
 
 const backgroundStyle = {
-  backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 3)), url(${form_card})`,
+  backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 3)), url('https://i.postimg.cc/vZ5HtrHq/form-card2.png')`,
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   position: 'relative',
@@ -64,7 +62,7 @@ const Login = () => {
             <Flex gap='large' align='center'>
               {/* Image */}
               <Flex flex={1}>
-                <img src={loginImage} className='auth-image'></img>
+                <img src='https://i.postimg.cc/fbZW2VVw/login-logo1.jpg' className='auth-image'></img>
               </Flex>
 
               {/* Form */}
