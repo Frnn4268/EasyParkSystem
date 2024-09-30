@@ -5,12 +5,11 @@ import { Map, Marker, NavigationControl } from 'mapbox-gl';
 import MainMenu from './MainMenu'; 
 
 import '../../css/Home.css';
-import form_home from '../../assets/home/form_card1.png'
 
 const { Header, Content } = Layout;
 
 const backgroundStyle = {
-    backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1.5)), url(${form_home})`,
+    backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1.5)), url('https://i.postimg.cc/3wBGn5Jc/form-card1.png')`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     position: 'relative',
