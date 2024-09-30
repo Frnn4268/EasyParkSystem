@@ -1,20 +1,7 @@
 const mongoose = require('mongoose');
-const winston = require('winston');
+const logger = require('../middlewares/loggerMongoMiddleware');
 
 const { MONGO_DB_URI } = process.env;
-
-// Logger configuration
-const logger = winston.createLogger({
-    level: 'info',
-    format: winston.format.combine(
-        winston.format.timestamp(),
-        winston.format.json()
-    ),
-    transports: [
-        new winston.transports.Console(),
-        new winston.transports.File({ filename: 'logs/db.log' })
-    ],
-});
 
 // Connect to MongoDB 
 mongoose.connect(MONGO_DB_URI)
