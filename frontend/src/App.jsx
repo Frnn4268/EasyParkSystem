@@ -73,7 +73,7 @@ const App = () => {
         <Route
           path="/parking-time/:id"
           element={
-            <ParkingTime />
+            !isAuthenticated ? <ParkingTime /> : <Navigate to="/parking-time/:id" />
           }
         />
         <Route
