@@ -42,6 +42,7 @@
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@vitejs/plugin-react": "^4.2.1",
+    "cpy-cli": "^5.0.0",
     "cypress": "^13.13.3",
     "eslint": "^8.57.0",
     "eslint-plugin-react": "^7.34.1",
