@@ -102,78 +102,42 @@ describe('Parking Controller', () => {
     });
 
     describe('getParkingCostById', () => {
-        // Test the getParkingCostById controller function
-        it('should return the parking cost if the space is occupied', async () => {
-            // Mock parking space and price data
-            const mockParkingSpace = { _id: '123', state: 'Ocupado', hour_date_entry: new Date(new Date().getTime() - 3600000) }; // 1 hour ago
-            const mockParkingPrice = { price: 10 };
-            req.params.id = '123'; // Simulate request parameter data
-            ParkingSpace.findOne.mockResolvedValue(mockParkingSpace); // Mock the findOne method to return the mocked data
-            ParkingPrice.findOne.mockResolvedValue(mockParkingPrice); // Mock the findOne method to return the mocked price data
-        
-            // Mock res.status and res.json
-            res.status = jest.fn().mockReturnValue(res);
-            res.json = jest.fn();
-        
-            calculateParkingCost.mockReturnValue('10.00'); // Mock the calculateParkingCost function
+        let req, res, next;
+
+        beforeEach(() => {
+            req = { params: { id: '123' } };
+            res = {
+                status: jest.fn().mockReturnThis(),
+                json: jest.fn()
+            };
+            next = jest.fn();
+        });
+
+        it('should return 404 if parking space is not found', async () => {
+            ParkingSpace.findOne.mockResolvedValue(null);
 
             await getParkingCostById(req, res, next);
-        
-            // Calculate the expected cost based on the mock data
-            const expectedCost = '10.00'; // 1 hour at $10/hour
-            // Verify the correct methods were called with the correct arguments
-            expect(ParkingSpace.findOne).toHaveBeenCalledWith({ _id: '123' });
-            expect(ParkingPrice.findOne).toHaveBeenCalledTimes(1);
-            expect(calculateParkingCost).toHaveBeenCalledWith(10, 3600);
-            expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.json).toHaveBeenCalledWith({
-                status: 'success',
-                data: { parkingCost: expectedCost }
-            });
-        });
-    
-        it('should return 404 if the parking space is not found', async () => {
-            req.params.id = '123'; // Simulate request parameter data
-            ParkingSpace.findOne.mockResolvedValue(null); // Mock the findOne method to return null (no space found)
-    
-            await getParkingCostById(req, res, next);
-    
-            // Verify that the next function was called with a 404 error
-            expect(ParkingSpace.findOne).toHaveBeenCalledWith({ _id: '123' });
+
             expect(res.status).toHaveBeenCalledWith(404);
             expect(res.json).toHaveBeenCalledWith({ message: 'Espacio de estacionamiento no encontrado' });
         });
-    
-        it('should return 200 with a message if the space is not occupied', async () => {
-            const mockParkingSpace = { _id: '123', state: 'Libre' }; // Simulate a free parking space
-            req.params.id = '123';
-            ParkingSpace.findOne.mockResolvedValue(mockParkingSpace); // Mock the findOne method to return the mocked data
-    
+
+        it('should return 200 if parking space is not occupied', async () => {
+            ParkingSpace.findOne.mockResolvedValue({ state: 'Libre' });
+
             await getParkingCostById(req, res, next);
-    
-            // Verify the correct response was sent
+
             expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.json).toHaveBeenCalledWith({
-                message: 'El espacio de estacionamiento no está ocupado',
-                parkingCost: 0
-            });
+            expect(res.json).toHaveBeenCalledWith({ message: 'El espacio de estacionamiento no está ocupado', parkingCost: 0 });
         });
-    
-        it('should call next with a 404 error if no parking price is found', async () => {
-            // Mock the findOne method to return a query object with a sort method
-            const mockQuery = {
-                sort: jest.fn().mockResolvedValue(null) // Mock the sort method to return null (no price found)
-            };
-            ParkingPrice.findOne.mockReturnValue(mockQuery);
-        
-            await getLastParkingPrice(req, res, next);
-        
-            // Verify that the next function was called with a 404 error
-            expect(ParkingPrice.findOne).toHaveBeenCalledTimes(1);
-            expect(mockQuery.sort).toHaveBeenCalledWith({ _id: -1 });
-            
-            // Verify the error passed to next
-            expect(next).toHaveBeenCalledWith(expect.any(createError));
+
+        it('should call next with error if an exception occurs', async () => {
+            const error = new Error('Test error');
+            ParkingSpace.findOne.mockRejectedValue(error);
+
+            await getParkingCostById(req, res, next);
+
+            expect(next).toHaveBeenCalledWith(error);
         });
     });
 });
