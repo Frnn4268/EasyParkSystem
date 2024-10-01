@@ -9,17 +9,18 @@ jest.mock('../src/utils/appError');
 
 const vehicleController = require('../src/controllers/vehicleController');
 
-describe('Vehicle Controller', () => {
+// Test suite for the Vehicle Controller
+describe('vehicleController Unit Testing - Vehicle Controller', () => {
     let req, res, next;
 
     // Set up mocks for each test
     beforeEach(() => {
         req = { params: {}, body: {} };
         res = {
-            status: jest.fn().mockReturnThis(),
-            json: jest.fn()
+            status: jest.fn().mockReturnThis(), // Mock the status method to allow chaining
+            json: jest.fn() // Mock the json method to verify responses
         };
-        next = jest.fn();
+        next = jest.fn(); // Mock the next function to verify error handling
     });
 
     // Clear all mocks after each test
@@ -27,38 +28,43 @@ describe('Vehicle Controller', () => {
         jest.clearAllMocks();
     });
 
-  describe('getAllVehicles', () => {
-      it('should return all vehicles with a 200 status', async () => {
-          // Mock data to be returned
-          const mockVehicles = [{ _id: 1, license_plate: 'ABC123' }, { _id: 2, license_plate: 'XYZ789' }];
-          Vehicle.find.mockResolvedValue(mockVehicles);
+    // Test suite for getAllVehicles function
+    describe('vehicleController - getAllVehicles', () => {
+        // Test successful retrieval of all vehicles
+        it('should return all vehicles with a 200 status', async () => {
+            // Mock data to be returned
+            const mockVehicles = [{ _id: 1, license_plate: 'ABC123' }, { _id: 2, license_plate: 'XYZ789' }];
+            Vehicle.find.mockResolvedValue(mockVehicles);
 
-          // Call the controller method
-          await vehicleController.getAllVehicles(req, res, next);
+            // Call the controller method
+            await vehicleController.getAllVehicles(req, res, next);
 
-          // Check if the correct methods were called with expected arguments
-          expect(Vehicle.find).toHaveBeenCalled();
-          expect(res.status).toHaveBeenCalledWith(200);
-          expect(res.json).toHaveBeenCalledWith({
-              status: 'success',
-              data: mockVehicles
-          });
-      });
+            // Check if the correct methods were called with expected arguments
+            expect(Vehicle.find).toHaveBeenCalled();
+            expect(res.status).toHaveBeenCalledWith(200);
+            expect(res.json).toHaveBeenCalledWith({
+                status: 'success',
+                data: mockVehicles
+            });
+        });
 
-      it('should call next with an error if one occurs', async () => {
-          // Mock an error to be thrown
-          const error = new Error('Test Error');
-          Vehicle.find.mockRejectedValue(error);
+        // Test error handling during retrieval of all vehicles
+        it('should call next with an error if one occurs', async () => {
+            // Mock an error to be thrown
+            const error = new Error('Test Error');
+            Vehicle.find.mockRejectedValue(error);
 
-          // Call the controller method
-          await vehicleController.getAllVehicles(req, res, next);
+            // Call the controller method
+            await vehicleController.getAllVehicles(req, res, next);
 
-          // Check if the error is passed to the next middleware
-          expect(next).toHaveBeenCalledWith(error);
-      });
-  });
+            // Check if the error is passed to the next middleware
+            expect(next).toHaveBeenCalledWith(error);
+        });
+    });
 
-    describe('updateVehicle', () => {
+    // Test suite for updateVehicle function
+    describe('vehicleController - updateVehicle', () => {
+        // Test successful update of a vehicle
         it('should update a vehicle and return a 200 status with the updated vehicle', async () => {
             // Mock data for the updated vehicle
             const mockVehicle = { _id: 1, license_plate: 'ABC123', type: 'SUV', brand: 'Toyota', color: 'Red' };
@@ -72,9 +78,9 @@ describe('Vehicle Controller', () => {
 
             // Check if the correct methods were called with expected arguments
             expect(Vehicle.findByIdAndUpdate).toHaveBeenCalledWith(
-              '1',
-              { license_plate: 'DEF456', type: 'SUV', brand: 'Honda', color: 'Blue' },
-              { new: true }
+                '1',
+                { license_plate: 'DEF456', type: 'SUV', brand: 'Honda', color: 'Blue' },
+                { new: true }
             );
             expect(res.status).toHaveBeenCalledWith(200);
             expect(res.json).toHaveBeenCalledWith({
@@ -84,16 +90,10 @@ describe('Vehicle Controller', () => {
             });
         });
 
+        // Test handling of vehicle not found during update
         it('should call next with a 404 error if the vehicle is not found', async () => {
             req.params.id = 'nonexistent-id';
             Vehicle.findByIdAndUpdate.mockResolvedValue(null);
-
-            const res = {
-                status: jest.fn().mockReturnThis(),
-                json: jest.fn()
-            };
-
-            const next = jest.fn();
 
             const error = new Error('Vehicle not found');
             createError.mockReturnValue(error); // Mock createError to return an error
@@ -106,6 +106,7 @@ describe('Vehicle Controller', () => {
             expect(next).toHaveBeenCalledWith(error);
         });
 
+        // Test error handling during update of a vehicle
         it('should call next with an error if one occurs', async () => {
             // Mock an error to be thrown
             const error = new Error('Test Error');
@@ -119,18 +120,13 @@ describe('Vehicle Controller', () => {
         });
     });
 
-    describe('deleteVehicle', () => {
+    // Test suite for deleteVehicle function
+    describe('vehicleController - deleteVehicle', () => {
+        // Test successful deletion of a vehicle
         it('should delete a vehicle and return a 204 status', async () => {
             req.params.id = '1';
             Vehicle.findByIdAndDelete.mockResolvedValue(true);
             ParkingSpace.findOne.mockResolvedValue(null);
-
-            const res = {
-                status: jest.fn().mockReturnThis(),
-                json: jest.fn()
-            };
-
-            const next = jest.fn();
 
             // Call the controller method
             await vehicleController.deleteVehicle(req, res, next);
@@ -146,16 +142,10 @@ describe('Vehicle Controller', () => {
             });
         });
 
+        // Test handling of vehicle associated with a parking space
         it('should call next with a 400 error if the vehicle is associated with a parking space', async () => {
             req.params.id = '1';
             ParkingSpace.findOne.mockResolvedValue({ _id: '1', vehicle: '1' });
-
-            const res = {
-                status: jest.fn().mockReturnThis(),
-                json: jest.fn()
-            };
-
-            const next = jest.fn();
 
             const error = new Error('No se puede eliminar este vehículo porque está asociado a un espacio de estacionamiento.');
             createError.mockReturnValue(error); // Mock createError to return an error
@@ -172,16 +162,10 @@ describe('Vehicle Controller', () => {
             expect(next).toHaveBeenCalledWith(error);
         });
 
+        // Test handling of vehicle not found during deletion
         it('should call next with a 404 error if the vehicle is not found', async () => {
             req.params.id = 'nonexistent-id';
             Vehicle.findByIdAndDelete.mockResolvedValue(null);
-
-            const res = {
-                status: jest.fn().mockReturnThis(),
-                json: jest.fn()
-            };
-
-            const next = jest.fn();
 
             const error = new Error('Vehículo no encontrado');
             createError.mockReturnValue(error); // Mock createError to return an error
@@ -194,17 +178,11 @@ describe('Vehicle Controller', () => {
             expect(next).toHaveBeenCalledWith(error);
         });
 
+        // Test error handling during deletion of a vehicle
         it('should call next with an error if one occurs', async () => {
             // Mock an error to be thrown
             const error = new Error('Vehículo no encontrado');
             Vehicle.findByIdAndDelete.mockRejectedValue(error);
-
-            const res = {
-                status: jest.fn().mockReturnThis(),
-                json: jest.fn()
-            };
-
-            const next = jest.fn();
 
             // Call the controller method
             await vehicleController.deleteVehicle(req, res, next);
