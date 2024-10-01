@@ -6,11 +6,12 @@ const incomeController = require('../src/controllers/incomeController');
 jest.mock('../src/models/incomeModel');
 jest.mock('../src/utils/appError');
 
-describe('Income Controller', () => {
+// Test suite for the Income Controller
+describe('incomeController Unit Testing - Income Controller', () => {
     let req, res, next;
 
+    // Setup mock request, response, and next function for each test
     beforeEach(() => {
-        // Setup mock request, response, and next function for each test
         req = {};
         res = {
             status: jest.fn().mockReturnThis(), // Mock status method and enable chaining
@@ -19,8 +20,10 @@ describe('Income Controller', () => {
         next = jest.fn(); // Mock next function for error handling
     });
 
-    describe('getAllIncomes', () => {
-        it('should return all incomes', async () => {
+    // Test suite for getAllIncomes function
+    describe('incomeController - getAllIncomes', () => {
+        // Test successful retrieval of all incomes
+        it('should retrieve and return all incomes', async () => {
             const incomes = [{ day: 1, month: 1, year: 2024, income: 1000 }];
             Income.find.mockResolvedValueOnce(incomes); // Mock successful database retrieval
 
@@ -31,12 +34,24 @@ describe('Income Controller', () => {
             expect(res.json).toHaveBeenCalledWith({
                 status: 'success',
                 data: incomes
-            }); 
+            }); // Verify that correct data was returned in response
+        });
+
+        // Test error handling during retrieval of incomes
+        it('should handle errors during retrieval of incomes', async () => {
+            const error = new Error('Database error');
+            Income.find.mockRejectedValueOnce(error); // Mock a database error
+
+            await incomeController.getAllIncomes(req, res, next);
+
+            expect(next).toHaveBeenCalledWith(error); // Verify that the error was passed to next()
         });
     });
 
-    describe('getLastIncome', () => {
-        it('should return the last income', async () => {
+    // Test suite for getLastIncome function
+    describe('incomeController - getLastIncome', () => {
+        // Test successful retrieval of the last income
+        it('should retrieve and return the last income', async () => {
             const lastIncome = { day: 1, month: 1, year: 2024, income: 1000 };
             
             // Mock the findOne method to return an object with a sort function
@@ -54,6 +69,7 @@ describe('Income Controller', () => {
             });
         });
     
+        // Test handling of no incomes found
         it('should handle no incomes found', async () => {
             // Mock findOne to return an object with a sort function returning null
             Income.findOne.mockImplementationOnce(() => ({
@@ -66,8 +82,10 @@ describe('Income Controller', () => {
         });
     });
 
-    describe('createIncome', () => {
-        it('should create a new income', async () => {
+    // Test suite for createIncome function
+    describe('incomeController - createIncome', () => {
+        // Test successful creation of a new income
+        it('should create a new income and return it', async () => {
             const newIncome = { day: 1, month: 1, year: 2024, income: 1000, hour_date: new Date() };
             req.body = { day: 1, month: 1, year: 2024, income: 1000 };
             Income.create.mockResolvedValueOnce(newIncome); // Mock successful creation of income
@@ -86,11 +104,25 @@ describe('Income Controller', () => {
                 status: 'success',
                 message: 'Ingreso creado exitosamente!',
                 data: newIncome
-            }); 
+            }); // Verify that correct data was returned in response
+        });
+
+        // Test error handling during creation of a new income
+        it('should handle errors during creation of a new income', async () => {
+            const error = new Error('Database error');
+            Income.create.mockRejectedValueOnce(error); // Mock a database error during income creation
+
+            req.body = { day: 1, month: 1, year: 2024, income: 1000 };
+
+            await incomeController.createIncome(req, res, next);
+
+            expect(next).toHaveBeenCalledWith(error); // Verify that the error was passed to next()
         });
     });
 
-    describe('updateIncome', () => {
+    // Test suite for updateIncome function
+    describe('incomeController - updateIncome', () => {
+        // Test successful update of an existing income
         it('should update an existing income and return it', async () => {
             const updatedIncome = { day: 2, month: 2, year: 2024, income: 2000, hour_date: new Date() };
             const id = '123';
@@ -106,10 +138,11 @@ describe('Income Controller', () => {
                 status: 'success',
                 message: 'Ingreso actualizado exitosamente!',
                 data: updatedIncome
-            }); 
+            }); // Verify that correct data was returned in response
         });
 
-        it('should handle income not found', async () => {
+        // Test handling of income not found during update
+        it('should handle income not found during update', async () => {
             const id = '123';
             req.params = { id };
             req.body = { day: 2, month: 2, year: 2024, income: 2000 };
@@ -119,9 +152,24 @@ describe('Income Controller', () => {
 
             expect(next).toHaveBeenCalledWith(createError(404, 'No se encontraron ingresos')); // Verify that a 404 error was passed to next()
         });
+
+        // Test error handling during update of an income
+        it('should handle errors during update of an income', async () => {
+            const error = new Error('Database error');
+            const id = '123';
+            req.params = { id };
+            req.body = { day: 2, month: 2, year: 2024, income: 2000 };
+            Income.findByIdAndUpdate.mockRejectedValueOnce(error); // Mock a database error during income update
+
+            await incomeController.updateIncome(req, res, next);
+
+            expect(next).toHaveBeenCalledWith(error); // Verify that the error was passed to next()
+        });
     });
 
-    describe('deleteIncome', () => {
+    // Test suite for deleteIncome function
+    describe('incomeController - deleteIncome', () => {
+        // Test successful deletion of an income
         it('should delete an income and return success', async () => {
             const id = '123';
             req.params = { id };
@@ -139,7 +187,8 @@ describe('Income Controller', () => {
             }); // Verify that correct response was returned
         });
 
-        it('should handle income not found', async () => {
+        // Test handling of income not found during deletion
+        it('should handle income not found during deletion', async () => {
             const id = '123';
             req.params = { id };
             Income.findByIdAndDelete.mockResolvedValueOnce(null); // Mock case where income is not found
@@ -147,6 +196,18 @@ describe('Income Controller', () => {
             await incomeController.deleteIncome(req, res, next);
 
             expect(next).toHaveBeenCalledWith(createError(404, 'No se encontraron ingresos')); // Verify that a 404 error was passed to next()
+        });
+
+        // Test error handling during deletion of an income
+        it('should handle errors during deletion of an income', async () => {
+            const error = new Error('Database error');
+            const id = '123';
+            req.params = { id };
+            Income.findByIdAndDelete.mockRejectedValueOnce(error); // Mock a database error during income deletion
+
+            await incomeController.deleteIncome(req, res, next);
+
+            expect(next).toHaveBeenCalledWith(error); // Verify that the error was passed to next()
         });
     });
 });
