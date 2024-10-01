@@ -1,5 +1,5 @@
 const ParkingSpace = require('../src/models/parkingSpaceModel');
-const TimeSearchParking = require('../src/models/timeSearchParkingModel');
+const ParkingStatisticsController = require('../src/controllers/parkingStatisticsController');
 
 jest.mock('../src/models/parkingSpaceModel');
 jest.mock('../src/models/timeSearchParkingModel');
@@ -33,7 +33,7 @@ describe('parkingStatisticsController Unit Testing - Parking Statistics Controll
             ];
             ParkingSpace.aggregate.mockResolvedValue(mockCustomersPerDay);
     
-            await require('../src/controllers/parkingStatisticsController').getTotalCustomersPerDayOfMonth(req, res, next);
+            await ParkingStatisticsController.getTotalCustomersPerDayOfMonth(req, res, next);
     
             // Verify that the aggregation pipeline is correct
             expect(ParkingSpace.aggregate).toHaveBeenCalledWith([
@@ -54,7 +54,7 @@ describe('parkingStatisticsController Unit Testing - Parking Statistics Controll
         it('should return a 500 status if an error occurs', async () => {
             ParkingSpace.aggregate.mockRejectedValue(new Error('Test Error'));
       
-            await require('../src/controllers/parkingStatisticsController').getTotalCustomersPerDayOfMonth(req, res, next);
+            await ParkingStatisticsController.getTotalCustomersPerDayOfMonth(req, res, next);
       
             expect(res.status).toHaveBeenCalledWith(500);
             expect(res.json).toHaveBeenCalledWith({ message: 'Test Error' });
@@ -71,7 +71,7 @@ describe('parkingStatisticsController Unit Testing - Parking Statistics Controll
             ];
             ParkingSpace.aggregate.mockResolvedValue(mockVehiclesPerDay);
       
-            await require('../src/controllers/parkingStatisticsController').getTotalVehiclesPerDayOfMonth(req, res, next);
+            await ParkingStatisticsController.getTotalVehiclesPerDayOfMonth(req, res, next);
       
             // Verify that the aggregation pipeline is correct
             expect(ParkingSpace.aggregate).toHaveBeenCalledWith([
@@ -92,7 +92,7 @@ describe('parkingStatisticsController Unit Testing - Parking Statistics Controll
         it('should return a 500 status if an error occurs', async () => {
             ParkingSpace.aggregate.mockRejectedValue(new Error('Test Error'));
         
-            await require('../src/controllers/parkingStatisticsController').getTotalVehiclesPerDayOfMonth(req, res, next);
+            await ParkingStatisticsController.getTotalVehiclesPerDayOfMonth(req, res, next);
         
             expect(res.status).toHaveBeenCalledWith(500);
             expect(res.json).toHaveBeenCalledWith({ message: 'Test Error' });
@@ -110,7 +110,7 @@ describe('parkingStatisticsController Unit Testing - Parking Statistics Controll
             ];
             ParkingSpace.aggregate.mockResolvedValue(mockLatestStates);
       
-            await require('../src/controllers/parkingStatisticsController').getAvailableAndOccupiedSpaces(req, res, next);
+            await ParkingStatisticsController.getAvailableAndOccupiedSpaces(req, res, next);
       
             // Verify that the aggregation pipeline is correct
             expect(ParkingSpace.aggregate).toHaveBeenCalledWith([
@@ -129,7 +129,7 @@ describe('parkingStatisticsController Unit Testing - Parking Statistics Controll
         it('should return a 500 status if an error occurs', async () => {
             ParkingSpace.aggregate.mockRejectedValue(new Error('Test Error'));
       
-            await require('../src/controllers/parkingStatisticsController').getAvailableAndOccupiedSpaces(req, res, next);
+            await ParkingStatisticsController.getAvailableAndOccupiedSpaces(req, res, next);
       
             expect(res.status).toHaveBeenCalledWith(500);
             expect(res.json).toHaveBeenCalledWith({ message: 'Test Error' });
@@ -146,7 +146,7 @@ describe('parkingStatisticsController Unit Testing - Parking Statistics Controll
             ];
             ParkingSpace.aggregate.mockResolvedValue(mockUsagePerSpace);
       
-            await require('../src/controllers/parkingStatisticsController').getTotalUsagePerSpace(req, res, next);
+            await ParkingStatisticsController.getTotalUsagePerSpace(req, res, next);
       
             // Verify that the aggregation pipeline is correct
             expect(ParkingSpace.aggregate).toHaveBeenCalledWith([
@@ -167,7 +167,7 @@ describe('parkingStatisticsController Unit Testing - Parking Statistics Controll
         it('should return a 500 status if an error occurs', async () => {
             ParkingSpace.aggregate.mockRejectedValue(new Error('Test Error'));
       
-            await require('../src/controllers/parkingStatisticsController').getTotalUsagePerSpace(req, res, next);
+            await ParkingStatisticsController.getTotalUsagePerSpace(req, res, next);
       
             expect(res.status).toHaveBeenCalledWith(500);
             expect(res.json).toHaveBeenCalledWith({ message: 'Test Error' });
@@ -180,7 +180,7 @@ describe('parkingStatisticsController Unit Testing - Parking Statistics Controll
         it('should return total customers for today with a 200 status', async () => {
             ParkingSpace.countDocuments.mockResolvedValue(10);
       
-            await require('../src/controllers/parkingStatisticsController').getTotalDailyCustomers(req, res, next);
+            await ParkingStatisticsController.getTotalDailyCustomers(req, res, next);
       
             // Verify that the countDocuments method is called with the correct query
             expect(ParkingSpace.countDocuments).toHaveBeenCalledWith({
@@ -194,7 +194,7 @@ describe('parkingStatisticsController Unit Testing - Parking Statistics Controll
         it('should return a 500 status if an error occurs', async () => {
             ParkingSpace.countDocuments.mockRejectedValue(new Error('Test Error'));
       
-            await require('../src/controllers/parkingStatisticsController').getTotalDailyCustomers(req, res, next);
+            await ParkingStatisticsController.getTotalDailyCustomers(req, res, next);
       
             expect(res.status).toHaveBeenCalledWith(500);
             expect(res.json).toHaveBeenCalledWith({ message: 'Test Error' });
@@ -208,7 +208,7 @@ describe('parkingStatisticsController Unit Testing - Parking Statistics Controll
             const mockAverageParkingTime = [{ averageTime: 60 }];
             ParkingSpace.aggregate.mockResolvedValue(mockAverageParkingTime);
       
-            await require('../src/controllers/parkingStatisticsController').getAverageParkingTime(req, res, next);
+            await ParkingStatisticsController.getAverageParkingTime(req, res, next);
       
             // Verify that the aggregation pipeline is correct
             expect(ParkingSpace.aggregate).toHaveBeenCalledWith([
@@ -235,7 +235,7 @@ describe('parkingStatisticsController Unit Testing - Parking Statistics Controll
         it('should return a 500 status if an error occurs', async () => {
             ParkingSpace.aggregate.mockRejectedValue(new Error('Test Error'));
         
-            await require('../src/controllers/parkingStatisticsController').getAverageParkingTime(req, res, next);
+            await ParkingStatisticsController.getAverageParkingTime(req, res, next);
         
             expect(res.status).toHaveBeenCalledWith(500);
             expect(res.json).toHaveBeenCalledWith({ message: 'Test Error' });
