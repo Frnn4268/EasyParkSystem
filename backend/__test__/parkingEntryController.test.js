@@ -20,7 +20,7 @@ jest.mock('../src/models/customerModel.js');
 jest.mock('../src/models/vehicleModel.js');
 jest.mock('moment', () => {
     const originalMoment = jest.requireActual('moment');
-    return () => originalMoment('2023-01-01T00:00:00.000Z');
+    return () => originalMoment('2024-01-01T00:00:00.000Z');
 });
 
 describe('parkingEntryController Unit Testing - Parking Entry Controller', () => {
@@ -39,20 +39,20 @@ describe('parkingEntryController Unit Testing - Parking Entry Controller', () =>
         jest.clearAllMocks();
     });
 
-    describe('getAllParkingSpaces', () => {
+    describe('parkingEntryController - getAllParkingSpaces', () => {
         it('should return all parking spaces', async () => {
             const mockParkingSpaces = [{ _id: '1', state: 'Ocupado' }];
             ParkingSpace.find.mockResolvedValue(mockParkingSpaces);
-
+    
             await getAllParkingSpaces(req, res, next);
-
+    
             expect(ParkingSpace.find).toHaveBeenCalled();
             expect(res.status).toHaveBeenCalledWith(200);
             expect(res.json).toHaveBeenCalledWith({ parkingSpaces: mockParkingSpaces });
         });
     });
 
-    describe('getAllLatestParkingSpaces', () => {
+    describe('parkingEntryController - getAllLatestParkingSpaces', () => {
         it('should return all latest parking spaces', async () => {
             const mockParkingSpaces = [
                 { _id: '1', latestEntry: { parking_space_id: '1', state: 'Ocupado', hour_date_entry: new Date() } }
@@ -75,7 +75,7 @@ describe('parkingEntryController Unit Testing - Parking Entry Controller', () =>
         });
     });
 
-    describe('getAverageParkingTime', () => {
+    describe('parkingEntryController - getAverageParkingTime', () => {
         it('should return the average parking time', async () => {
             const mockParkingSpaces = [
                 { hour_date_entry: new Date('2023-01-01T00:00:00.000Z'), hour_date_output: new Date('2023-01-01T01:00:00.000Z') }
@@ -90,7 +90,7 @@ describe('parkingEntryController Unit Testing - Parking Entry Controller', () =>
         });
     });
 
-    describe('getFrequentCustomers', () => {
+    describe('parkingEntryController - getFrequentCustomers', () => {
         it('should return frequent customers', async () => {
             const mockCustomers = [
                 { _id: { firstname_owner: 'John', lastname_owner: 'Doe' }, count: 5 }
@@ -105,7 +105,7 @@ describe('parkingEntryController Unit Testing - Parking Entry Controller', () =>
         });
     });
 
-    describe('getTotalCustomersToday', () => {
+    describe('parkingEntryController - getTotalCustomersToday', () => {
         it('should return total customers today', async () => {
             const mockTotalCustomersToday = [{ totalCustomers: 10 }];
             Customer.aggregate.mockResolvedValue(mockTotalCustomersToday);
@@ -118,19 +118,23 @@ describe('parkingEntryController Unit Testing - Parking Entry Controller', () =>
         });
     });
 
-    describe('getParkingSpaceById', () => {
+    describe('parkingEntryController - getParkingSpaceById', () => {
         it('should return a parking space by ID', async () => {
-            const mockParkingSpace = { _id: '1', parking_space_id: '1', state: 'Ocupado' };
-            ParkingSpace.findOne.mockResolvedValue(mockParkingSpace);
+        const mockParkingSpace = { _id: '1', parking_space_id: '1', state: 'Ocupado' };
+        ParkingSpace.findOne.mockResolvedValue(mockParkingSpace);
 
-            req.params = { id: '1' };
+        req.params = { id: '1' };
 
-            await getParkingSpaceById(req, res, next);
+        await getParkingSpaceById(req, res, next);
 
-            expect(ParkingSpace.findOne).toHaveBeenCalledWith({ parking_space_id: '1' });
-            expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.json).toHaveBeenCalledWith({ parkingSpace: mockParkingSpace });
-        });
+        console.log('ParkingSpace.findOne called:', ParkingSpace.findOne.mock.calls.length);
+        console.log('res.status called:', res.status.mock.calls.length);
+        console.log('res.json called:', res.json.mock.calls.length);
+
+        expect(ParkingSpace.findOne).toHaveBeenCalledWith({ parking_space_id: '1' });
+        expect(res.status).toHaveBeenCalledWith(200);
+        expect(res.json).toHaveBeenCalledWith({ parkingSpace: mockParkingSpace });
+    });
 
         it('should return 404 if parking space not found', async () => {
             ParkingSpace.findOne.mockResolvedValue(null);
@@ -145,7 +149,7 @@ describe('parkingEntryController Unit Testing - Parking Entry Controller', () =>
         });
     });
 
-    describe('parkingEntryCreate', () => {
+    describe('parkingEntryController - parkingEntryCreate', () => {
         it('should create a new parking entry', async () => {
             const mockCustomer = { _id: '1', firstname_owner: 'John', lastname_owner: 'Doe' };
             const mockVehicle = { _id: '1', license_plate: 'ABC123' };
@@ -203,41 +207,49 @@ describe('parkingEntryController Unit Testing - Parking Entry Controller', () =>
         });
     });
 
-    describe('parkingOutputEdit', () => {
+    describe('parkingEntryController - parkingOutputEdit', () => {
         it('should update the parking space state and output time', async () => {
             const mockParkingSpace = { _id: '1', parking_space_id: '1', state: 'Ocupado', hour_date_entry: new Date() };
-            ParkingSpace.find.mockResolvedValue([mockParkingSpace]);
-
-            req.params = { id: '1' };
-            req.body = { state: 'Libre' };
-
+            const updatedParkingSpace = { ...mockParkingSpace, state: 'Disponible', hour_date_exit: new Date() };
+    
+            ParkingSpace.findOneAndUpdate.mockResolvedValue(updatedParkingSpace);
+    
+            req.body = { parking_space_id: '1', state: 'Disponible' };
+    
             await parkingOutputEdit(req, res, next);
-
-            expect(ParkingSpace.find).toHaveBeenCalledWith({ parking_space_id: '1' });
+    
+            expect(ParkingSpace.findOneAndUpdate).toHaveBeenCalledWith(
+                { parking_space_id: '1' },
+                { state: 'Disponible', hour_date_exit: expect.any(Date) },
+                { new: true }
+            );
             expect(res.status).toHaveBeenCalledWith(200);
             expect(res.json).toHaveBeenCalledWith({
                 message: 'Estado del espacio de estacionamiento actualizado exitosamente',
-                updatedParkingSpace: expect.objectContaining({ state: 'Libre' })
+                updatedParkingSpace: expect.objectContaining({ state: 'Disponible' })
             });
         });
 
         it('should return 404 if parking space not found', async () => {
-            ParkingSpace.find.mockResolvedValue([]);
-
-            req.params = { id: '1' };
-            req.body = { state: 'Libre' };
-
+            ParkingSpace.findOneAndUpdate.mockResolvedValue(null);
+    
+            req.body = { parking_space_id: '1', state: 'Disponible' };
+    
             await parkingOutputEdit(req, res, next);
-
-            expect(ParkingSpace.find).toHaveBeenCalledWith({ parking_space_id: '1' });
+    
+            expect(ParkingSpace.findOneAndUpdate).toHaveBeenCalledWith(
+                { parking_space_id: '1' },
+                { state: 'Disponible', hour_date_exit: expect.any(Date) },
+                { new: true }
+            );
             expect(res.status).toHaveBeenCalledWith(404);
             expect(res.json).toHaveBeenCalledWith({ message: 'Espacio de estacionamiento no encontrado' });
         });
     });
 
-    describe('deleteParkingSpace', () => {
+    describe('parkingEntryController - deleteParkingSpace', () => {
         it('should delete a parking space', async () => {
-            const mockParkingSpace = { _id: '1', state: 'Libre' };
+            const mockParkingSpace = { _id: '1', state: 'Disponible' };
             ParkingSpace.findById.mockResolvedValue(mockParkingSpace);
             ParkingSpace.findByIdAndDelete.mockResolvedValue(mockParkingSpace);
 
