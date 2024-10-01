@@ -6,11 +6,12 @@ const createError = require('../src/utils/appError');
 jest.mock('../src/models/parkingPriceModel');
 jest.mock('../src/models/parkingSpaceModel');
 
-describe('Parking Controller', () => {
+// Test suite for the Parking Controller
+describe('parkingPriceController Unit Testing - Parking Price Controller', () => {
     let req, res, next;
 
+    // Initialize the req, res, and next objects before each test
     beforeEach(() => {
-        // Initialize the req, res, and next objects before each test
         req = { params: {}, body: {} };
         res = {
             status: jest.fn().mockReturnThis(), // Mock the status method to allow chaining
@@ -19,12 +20,13 @@ describe('Parking Controller', () => {
         next = jest.fn(); // Mock the next function to verify error handling
     });
 
+    // Clear all mocks after each test to ensure no residual state
     afterEach(() => {
-        // Clear all mocks after each test to ensure no residual state
         jest.clearAllMocks();
     });
 
-    describe('calculateParkingCost', () => {
+    // Test suite for calculateParkingCost function
+    describe('parkingPriceController - calculateParkingCost', () => {
         // Test the calculateParkingCost helper function
         it('should calculate the correct parking cost based on time and price', () => {
             const parkingPrice = 10; // Example price per hour
@@ -34,7 +36,8 @@ describe('Parking Controller', () => {
         });
     });
 
-    describe('getLastParkingPrice', () => {
+    // Test suite for getLastParkingPrice function
+    describe('parkingPriceController - getLastParkingPrice', () => {
         // Test the getLastParkingPrice controller function
         it('should return the last parking price if found', async () => {
             const mockParkingPrice = { price: 10, time_in_hours: 1 }; // Mocked parking price data
@@ -53,6 +56,7 @@ describe('Parking Controller', () => {
             });
         });
 
+        // Test handling of no parking price found
         it('should return 404 if no parking price is found', async () => {
             ParkingPrice.findOne.mockReturnValueOnce({
                 sort: jest.fn().mockResolvedValueOnce(null)
@@ -66,9 +70,10 @@ describe('Parking Controller', () => {
         });
     });
 
-    describe('createParkingPrice', () => {
+    // Test suite for createParkingPrice function
+    describe('parkingPriceController - createParkingPrice', () => {
         // Test the createParkingPrice controller function
-        it('should create a new parking price', async () => {
+        it('should create a new parking price and return it', async () => {
             const mockParkingPrice = { price: 10, time_in_hours: 1, hour_date: new Date() }; // Mocked parking price data
             req.body = { price: 10, time_in_hours: 1 }; // Simulate request body data
             ParkingPrice.create.mockResolvedValue(mockParkingPrice); // Mock the create method to return the mocked data
@@ -90,6 +95,7 @@ describe('Parking Controller', () => {
             });
         });
 
+        // Test error handling during creation of a new parking price
         it('should call next with an error if something goes wrong', async () => {
             const error = new Error('Something went wrong'); // Simulate an error
             ParkingPrice.create.mockRejectedValue(error); // Mock the create method to throw an error
@@ -101,9 +107,9 @@ describe('Parking Controller', () => {
         });
     });
 
-    describe('getParkingCostById', () => {
-        let req, res, next;
-
+    // Test suite for getParkingCostById function
+    describe('parkingPriceController - getParkingCostById', () => {
+        // Initialize the req, res, and next objects before each test
         beforeEach(() => {
             req = { params: { id: '123' } };
             res = {
@@ -113,6 +119,7 @@ describe('Parking Controller', () => {
             next = jest.fn();
         });
 
+        // Test handling of parking space not found
         it('should return 404 if parking space is not found', async () => {
             ParkingSpace.findOne.mockResolvedValue(null);
 
@@ -122,6 +129,7 @@ describe('Parking Controller', () => {
             expect(res.json).toHaveBeenCalledWith({ message: 'Espacio de estacionamiento no encontrado' });
         });
 
+        // Test handling of parking space not occupied
         it('should return 200 if parking space is not occupied', async () => {
             ParkingSpace.findOne.mockResolvedValue({ state: 'Libre' });
 
@@ -131,6 +139,7 @@ describe('Parking Controller', () => {
             expect(res.json).toHaveBeenCalledWith({ message: 'El espacio de estacionamiento no está ocupado', parkingCost: 0 });
         });
 
+        // Test error handling during retrieval of parking cost by ID
         it('should call next with error if an exception occurs', async () => {
             const error = new Error('Test error');
             ParkingSpace.findOne.mockRejectedValue(error);
