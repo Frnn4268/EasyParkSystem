@@ -6,7 +6,7 @@ const userController = require('../src/controllers/userController');
 jest.mock('../src/models/userModel');
 jest.mock('../src/utils/appError');
 
-describe('User Controller', () => {
+describe('userController Unit Testing - User Controller', () => {
     let req, res, next;
 
     // Setup mock objects before each test
@@ -24,7 +24,7 @@ describe('User Controller', () => {
         jest.clearAllMocks();
     });
 
-    describe('getAllUsers', () => {
+    describe('userController - getAllUsers', () => {
         it('should return all users with a 200 status', async () => {
           // Mock data for successful response
           const mockUsers = [
@@ -54,7 +54,7 @@ describe('User Controller', () => {
         });
     });
 
-    describe('createUser', () => {
+    describe('userController - createUser', () => {
         it('should create a new user and return a 201 status', async () => {
             // Mock data for successful creation
             const mockUser = { _id: '1', name: 'John Doe', email: 'john@example.com', role: 'admin', active: true };
@@ -79,7 +79,7 @@ describe('User Controller', () => {
         });
     });
 
-    describe('updateUser', () => {
+    describe('userController - updateUser', () => {
         it('should update a user and return a 200 status with the updated user', async () => {
             // Mock data for successful update
             const mockUser = { _id: '1', name: 'John Doe', email: 'john@example.com', role: 'admin', active: true };
@@ -141,7 +141,7 @@ describe('User Controller', () => {
         });
     });
 
-    describe('deleteUser', () => {
+    describe('userController - deleteUser', () => {
         it('should delete a user and return a 204 status', async () => {
             // Mock data for successful deletion
             req.params.id = '1';
