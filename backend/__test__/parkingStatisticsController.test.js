@@ -4,23 +4,28 @@ const TimeSearchParking = require('../src/models/timeSearchParkingModel');
 jest.mock('../src/models/parkingSpaceModel');
 jest.mock('../src/models/timeSearchParkingModel');
 
-describe('Parking Statistics Controller', () => {
+// Test suite for the Parking Statistics Controller
+describe('parkingStatisticsController Unit Testing - Parking Statistics Controller', () => {
     let req, res, next;
   
+    // Initialize the req, res, and next objects before each test
     beforeEach(() => {
         req = {};
         res = {
-          status: jest.fn().mockReturnThis(),
-          json: jest.fn()
+          status: jest.fn().mockReturnThis(), // Mock the status method to allow chaining
+          json: jest.fn() // Mock the json method to verify responses
         };
-        next = jest.fn();
+        next = jest.fn(); // Mock the next function to verify error handling
     });
   
+    // Clear all mocks after each test to ensure no residual state
     afterEach(() => {
         jest.clearAllMocks();
     });
   
-    describe('getTotalCustomersPerDayOfMonth', () => {
+    // Test suite for getTotalCustomersPerDayOfMonth function
+    describe('parkingStatisticsController - getTotalCustomersPerDayOfMonth', () => {
+        // Test successful retrieval of total customers per day of the current month
         it('should return total customers per day of the current month with a 200 status', async () => {
             const mockCustomersPerDay = [
                 { _id: 1, totalCustomers: 2 },
@@ -30,6 +35,7 @@ describe('Parking Statistics Controller', () => {
     
             await require('../src/controllers/parkingStatisticsController').getTotalCustomersPerDayOfMonth(req, res, next);
     
+            // Verify that the aggregation pipeline is correct
             expect(ParkingSpace.aggregate).toHaveBeenCalledWith([
                 { $match: { hour_date_entry: { $gte: expect.any(Date), $lt: expect.any(Date) } } },
                 {
@@ -44,6 +50,7 @@ describe('Parking Statistics Controller', () => {
             expect(res.json).toHaveBeenCalledWith(mockCustomersPerDay);
         });
   
+        // Test error handling during retrieval of total customers per day
         it('should return a 500 status if an error occurs', async () => {
             ParkingSpace.aggregate.mockRejectedValue(new Error('Test Error'));
       
@@ -54,17 +61,20 @@ describe('Parking Statistics Controller', () => {
         });
     });
   
-      describe('getTotalVehiclesPerDayOfMonth', () => {
-          it('should return total vehicles per day of the current month with a 200 status', async () => {
-              const mockVehiclesPerDay = [
+    // Test suite for getTotalVehiclesPerDayOfMonth function
+    describe('parkingStatisticsController - getTotalVehiclesPerDayOfMonth', () => {
+        // Test successful retrieval of total vehicles per day of the current month
+        it('should return total vehicles per day of the current month with a 200 status', async () => {
+            const mockVehiclesPerDay = [
                 { _id: 1, totalVehicles: 3 },
                 { _id: 2, totalVehicles: 2 }
-              ];
-              ParkingSpace.aggregate.mockResolvedValue(mockVehiclesPerDay);
+            ];
+            ParkingSpace.aggregate.mockResolvedValue(mockVehiclesPerDay);
       
-              await require('../src/controllers/parkingStatisticsController').getTotalVehiclesPerDayOfMonth(req, res, next);
+            await require('../src/controllers/parkingStatisticsController').getTotalVehiclesPerDayOfMonth(req, res, next);
       
-              expect(ParkingSpace.aggregate).toHaveBeenCalledWith([
+            // Verify that the aggregation pipeline is correct
+            expect(ParkingSpace.aggregate).toHaveBeenCalledWith([
                 { $match: { hour_date_entry: { $gte: expect.any(Date), $lt: expect.any(Date) } } },
                 {
                     $group: {
@@ -73,32 +83,36 @@ describe('Parking Statistics Controller', () => {
                     }
                 },
                 { $sort: { '_id': 1 } }
-              ]);
-              expect(res.status).toHaveBeenCalledWith(200);
-              expect(res.json).toHaveBeenCalledWith(mockVehiclesPerDay);
-          });
+            ]);
+            expect(res.status).toHaveBeenCalledWith(200);
+            expect(res.json).toHaveBeenCalledWith(mockVehiclesPerDay);
+        });
       
-          it('should return a 500 status if an error occurs', async () => {
-              ParkingSpace.aggregate.mockRejectedValue(new Error('Test Error'));
+        // Test error handling during retrieval of total vehicles per day
+        it('should return a 500 status if an error occurs', async () => {
+            ParkingSpace.aggregate.mockRejectedValue(new Error('Test Error'));
         
-              await require('../src/controllers/parkingStatisticsController').getTotalVehiclesPerDayOfMonth(req, res, next);
+            await require('../src/controllers/parkingStatisticsController').getTotalVehiclesPerDayOfMonth(req, res, next);
         
-              expect(res.status).toHaveBeenCalledWith(500);
-              expect(res.json).toHaveBeenCalledWith({ message: 'Test Error' });
-          });
-      });
+            expect(res.status).toHaveBeenCalledWith(500);
+            expect(res.json).toHaveBeenCalledWith({ message: 'Test Error' });
+        });
+    });
   
-    describe('getAvailableAndOccupiedSpaces', () => {
+    // Test suite for getAvailableAndOccupiedSpaces function
+    describe('parkingStatisticsController - getAvailableAndOccupiedSpaces', () => {
+        // Test successful retrieval of available and occupied spaces
         it('should return available and occupied spaces with a 200 status', async () => {
             const mockLatestStates = [
-              { _id: '1', latestState: { state: 'Disponible' } },
-              { _id: '2', latestState: { state: 'Ocupado' } },
-              { _id: '3', latestState: { state: 'Disponible' } }
+                { _id: '1', latestState: { state: 'Disponible' } },
+                { _id: '2', latestState: { state: 'Ocupado' } },
+                { _id: '3', latestState: { state: 'Disponible' } }
             ];
             ParkingSpace.aggregate.mockResolvedValue(mockLatestStates);
       
             await require('../src/controllers/parkingStatisticsController').getAvailableAndOccupiedSpaces(req, res, next);
       
+            // Verify that the aggregation pipeline is correct
             expect(ParkingSpace.aggregate).toHaveBeenCalledWith([
                 {
                     $group: {
@@ -111,6 +125,7 @@ describe('Parking Statistics Controller', () => {
             expect(res.json).toHaveBeenCalledWith({ availableSpaces: 2, occupiedSpaces: 1 });
         });
     
+        // Test error handling during retrieval of available and occupied spaces
         it('should return a 500 status if an error occurs', async () => {
             ParkingSpace.aggregate.mockRejectedValue(new Error('Test Error'));
       
@@ -121,16 +136,19 @@ describe('Parking Statistics Controller', () => {
         });
     });
   
-    describe('getTotalUsagePerSpace', () => {
+    // Test suite for getTotalUsagePerSpace function
+    describe('parkingStatisticsController - getTotalUsagePerSpace', () => {
+        // Test successful retrieval of total usage per space for the current month
         it('should return total usage per space for the current month with a 200 status', async () => {
             const mockUsagePerSpace = [
-              { _id: '1', usageCount: 4 },
-              { _id: '2', usageCount: 5 }
+                { _id: '1', usageCount: 4 },
+                { _id: '2', usageCount: 5 }
             ];
             ParkingSpace.aggregate.mockResolvedValue(mockUsagePerSpace);
       
             await require('../src/controllers/parkingStatisticsController').getTotalUsagePerSpace(req, res, next);
       
+            // Verify that the aggregation pipeline is correct
             expect(ParkingSpace.aggregate).toHaveBeenCalledWith([
                 { $match: { hour_date_entry: { $gte: expect.any(Date), $lt: expect.any(Date) } } },
                 {
@@ -140,11 +158,12 @@ describe('Parking Statistics Controller', () => {
                     }
                 },
                 { $sort: { '_id': 1 } }
-              ]);
-              expect(res.status).toHaveBeenCalledWith(200);
-              expect(res.json).toHaveBeenCalledWith(mockUsagePerSpace);
+            ]);
+            expect(res.status).toHaveBeenCalledWith(200);
+            expect(res.json).toHaveBeenCalledWith(mockUsagePerSpace);
         });   
     
+        // Test error handling during retrieval of total usage per space
         it('should return a 500 status if an error occurs', async () => {
             ParkingSpace.aggregate.mockRejectedValue(new Error('Test Error'));
       
@@ -155,12 +174,15 @@ describe('Parking Statistics Controller', () => {
         });
     });
   
-    describe('getTotalDailyCustomers', () => {
+    // Test suite for getTotalDailyCustomers function
+    describe('parkingStatisticsController - getTotalDailyCustomers', () => {
+        // Test successful retrieval of total customers for today
         it('should return total customers for today with a 200 status', async () => {
             ParkingSpace.countDocuments.mockResolvedValue(10);
       
             await require('../src/controllers/parkingStatisticsController').getTotalDailyCustomers(req, res, next);
       
+            // Verify that the countDocuments method is called with the correct query
             expect(ParkingSpace.countDocuments).toHaveBeenCalledWith({
                 hour_date_entry: { $gte: expect.any(Date), $lt: expect.any(Date) }
             });
@@ -168,6 +190,7 @@ describe('Parking Statistics Controller', () => {
             expect(res.json).toHaveBeenCalledWith({ totalCustomers: 10 });
         });
     
+        // Test error handling during retrieval of total daily customers
         it('should return a 500 status if an error occurs', async () => {
             ParkingSpace.countDocuments.mockRejectedValue(new Error('Test Error'));
       
@@ -178,13 +201,16 @@ describe('Parking Statistics Controller', () => {
         });
     });
   
-      describe('getAverageParkingTime', () => {
+    // Test suite for getAverageParkingTime function
+    describe('parkingStatisticsController - getAverageParkingTime', () => {
+        // Test successful retrieval of average parking time
         it('should return average parking time with a 200 status', async () => {
             const mockAverageParkingTime = [{ averageTime: 60 }];
             ParkingSpace.aggregate.mockResolvedValue(mockAverageParkingTime);
       
             await require('../src/controllers/parkingStatisticsController').getAverageParkingTime(req, res, next);
       
+            // Verify that the aggregation pipeline is correct
             expect(ParkingSpace.aggregate).toHaveBeenCalledWith([
                 { $match: { hour_date_output: { $ne: null } } },
                 {
@@ -203,15 +229,16 @@ describe('Parking Statistics Controller', () => {
             ]);
             expect(res.status).toHaveBeenCalledWith(200);
             expect(res.json).toHaveBeenCalledWith({ averageParkingTime: 60 });
-          });
+        });
       
-          it('should return a 500 status if an error occurs', async () => {
-              ParkingSpace.aggregate.mockRejectedValue(new Error('Test Error'));
+        // Test error handling during retrieval of average parking time
+        it('should return a 500 status if an error occurs', async () => {
+            ParkingSpace.aggregate.mockRejectedValue(new Error('Test Error'));
         
-              await require('../src/controllers/parkingStatisticsController').getAverageParkingTime(req, res, next);
+            await require('../src/controllers/parkingStatisticsController').getAverageParkingTime(req, res, next);
         
-              expect(res.status).toHaveBeenCalledWith(500);
-              expect(res.json).toHaveBeenCalledWith({ message: 'Test Error' });
+            expect(res.status).toHaveBeenCalledWith(500);
+            expect(res.json).toHaveBeenCalledWith({ message: 'Test Error' });
         });
     });
 });
