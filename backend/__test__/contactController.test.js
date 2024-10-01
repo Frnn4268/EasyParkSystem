@@ -1,15 +1,16 @@
-const Contact = require('../src/models/contactModel'); 
-const createError = require('../src/utils/appError'); 
-const { getAllContacts, createContact, updateContact, deleteContact } = require('../src/controllers/contactController'); 
+const Contact = require('../src/models/contactModel');
+const createError = require('../src/utils/appError');
+const { getAllContacts, createContact, updateContact, deleteContact } = require('../src/controllers/contactController');
 
-jest.mock('../src/models/contactModel'); 
-jest.mock('../src/utils/appError'); 
+jest.mock('../src/models/contactModel');
+jest.mock('../src/utils/appError');
 
-describe('Contact Controller', () => {
+// Test suite for the Contact Controller
+describe('contactController Unit Testing - Contact Controller', () => {
     let req, res, next;
 
+    // Setup mock request, response, and next function for each test
     beforeEach(() => {
-        // Setup mock request, response, and next function for each test
         req = {};
         res = {
             status: jest.fn().mockReturnThis(), // Mock status method and enable chaining
@@ -18,8 +19,10 @@ describe('Contact Controller', () => {
         next = jest.fn(); // Mock next function for error handling
     });
 
-    describe('getAllContacts', () => {
-        it('should return all contacts', async () => {
+    // Test suite for getAllContacts function
+    describe('contactController - getAllContacts', () => {
+        // Test successful retrieval of all contacts
+        it('should retrieve and return all contacts', async () => {
             const contacts = [{ name: 'John Doe', email: 'john@example.com', message: 'Hello!' }];
             Contact.find.mockResolvedValueOnce(contacts); // Mock successful database retrieval
 
@@ -33,7 +36,8 @@ describe('Contact Controller', () => {
             }); // Verify that correct data was returned in response
         });
 
-        it('should handle errors', async () => {
+        // Test error handling during retrieval of contacts
+        it('should handle errors during retrieval of contacts', async () => {
             const error = new Error('Database error');
             Contact.find.mockRejectedValueOnce(error); // Mock a database error
 
@@ -43,7 +47,9 @@ describe('Contact Controller', () => {
         });
     });
 
-    describe('createContact', () => {
+    // Test suite for createContact function
+    describe('contactController - createContact', () => {
+        // Test successful creation of a new contact
         it('should create a new contact and return it', async () => {
             const newContact = { name: 'Jane Doe', email: 'jane@example.com', message: 'Hi!' };
             Contact.create.mockResolvedValueOnce(newContact); // Mock successful contact creation
@@ -61,7 +67,8 @@ describe('Contact Controller', () => {
             }); // Verify that correct data was returned in response
         });
 
-        it('should handle errors', async () => {
+        // Test error handling during creation of a new contact
+        it('should handle errors during creation of a new contact', async () => {
             const error = new Error('Database error');
             Contact.create.mockRejectedValueOnce(error); // Mock a database error during contact creation
 
@@ -73,7 +80,9 @@ describe('Contact Controller', () => {
         });
     });
 
-    describe('updateContact', () => {
+    // Test suite for updateContact function
+    describe('contactController - updateContact', () => {
+        // Test successful update of an existing contact
         it('should update an existing contact and return it', async () => {
             const updatedContact = { name: 'Jane Doe', email: 'jane@example.com', message: 'Hi!' };
             const id = '123';
@@ -92,7 +101,8 @@ describe('Contact Controller', () => {
             }); // Verify that correct data was returned in response
         });
 
-        it('should handle contact not found', async () => {
+        // Test handling of contact not found during update
+        it('should handle contact not found during update', async () => {
             const id = '123';
             req.params = { id };
             req.body = { name: 'Jane Doe', email: 'jane@example.com', message: 'Hi!' };
@@ -103,7 +113,8 @@ describe('Contact Controller', () => {
             expect(next).toHaveBeenCalledWith(createError(404, 'Contacto no encontrado')); // Verify that a 404 error was passed to next()
         });
 
-        it('should handle errors', async () => {
+        // Test error handling during update of a contact
+        it('should handle errors during update of a contact', async () => {
             const error = new Error('Database error');
             const id = '123';
             req.params = { id };
@@ -116,7 +127,9 @@ describe('Contact Controller', () => {
         });
     });
 
-    describe('deleteContact', () => {
+    // Test suite for deleteContact function
+    describe('contactController - deleteContact', () => {
+        // Test successful deletion of a contact
         it('should delete a contact and return success', async () => {
             const id = '123';
             req.params = { id };
@@ -134,7 +147,8 @@ describe('Contact Controller', () => {
             }); // Verify that correct response was returned
         });
 
-        it('should handle contact not found', async () => {
+        // Test handling of contact not found during deletion
+        it('should handle contact not found during deletion', async () => {
             const id = '123';
             req.params = { id };
             Contact.findByIdAndDelete.mockResolvedValueOnce(null); // Mock a case where contact is not found
@@ -144,7 +158,8 @@ describe('Contact Controller', () => {
             expect(next).toHaveBeenCalledWith(createError(404, 'Contacto no encontrado')); // Verify that a 404 error was passed to next()
         });
 
-        it('should handle errors', async () => {
+        // Test error handling during deletion of a contact
+        it('should handle errors during deletion of a contact', async () => {
             const error = new Error('Database error');
             const id = '123';
             req.params = { id };
