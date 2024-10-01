@@ -1,5 +1,5 @@
-const Customer = require('../src/models/customerModel'); 
-const ParkingSpace = require('../src/models/parkingSpaceModel.js'); 
+const Customer = require('../src/models/customerModel');
+const ParkingSpace = require('../src/models/parkingSpaceModel.js');
 const createError = require('../src/utils/appError');
 const customerController = require('../src/controllers/customerController');
 
@@ -8,11 +8,12 @@ jest.mock('../src/models/customerModel');
 jest.mock('../src/models/parkingSpaceModel.js');
 jest.mock('../src/utils/appError');
 
-describe('Customer Controller', () => {
+// Test suite for the Customer Controller
+describe('customerController Unit Testing - Customer Controller', () => {
     let req, res, next;
 
+    // Setup mock request, response, and next function for each test
     beforeEach(() => {
-        // Setup mock request, response, and next function for each test
         req = {};
         res = {
             status: jest.fn().mockReturnThis(), // Mock status method and enable chaining
@@ -21,12 +22,14 @@ describe('Customer Controller', () => {
         next = jest.fn(); // Mock next function for error handling
     });
 
-    describe('getAllCustomers', () => {
-        it('should return all customers', async () => {
+    // Test suite for getAllCustomers function
+    describe('customerController - getAllCustomers', () => {
+        // Test successful retrieval of all customers
+        it('should retrieve and return all customers', async () => {
             const customers = [{ firstname_owner: 'John', lastname_owner: 'Doe', phone_number: '123456789' }];
             Customer.find.mockResolvedValueOnce(customers); // Mock successful database retrieval
 
-            await customerController.getAllCustomers(req, res, next); // Llama al controlador correctamente
+            await customerController.getAllCustomers(req, res, next); // Call the controller method
 
             expect(Customer.find).toHaveBeenCalled(); // Verify that Customer.find was called
             expect(res.status).toHaveBeenCalledWith(200); // Verify that status 200 was sent
@@ -36,7 +39,8 @@ describe('Customer Controller', () => {
             }); // Verify that correct data was returned in response
         });
 
-        it('should handle errors', async () => {
+        // Test error handling during retrieval of customers
+        it('should handle errors during retrieval of customers', async () => {
             const error = new Error('Database error');
             Customer.find.mockRejectedValueOnce(error); // Mock a database error
 
@@ -46,7 +50,9 @@ describe('Customer Controller', () => {
         });
     });
 
-    describe('updateCustomer', () => {
+    // Test suite for updateCustomer function
+    describe('customerController - updateCustomer', () => {
+        // Test successful update of an existing customer
         it('should update an existing customer and return it', async () => {
             const updatedCustomer = { firstname_owner: 'Jane', lastname_owner: 'Doe', phone_number: '987654321' };
             const id = '123';
@@ -65,7 +71,8 @@ describe('Customer Controller', () => {
             }); // Verify that correct data was returned in response
         });
 
-        it('should handle customer not found', async () => {
+        // Test handling of customer not found during update
+        it('should handle customer not found during update', async () => {
             const id = '123';
             req.params = { id };
             req.body = { firstname_owner: 'Jane', lastname_owner: 'Doe', phone_number: '987654321' };
@@ -76,7 +83,8 @@ describe('Customer Controller', () => {
             expect(next).toHaveBeenCalledWith(createError(404, 'Cliente no encontrado')); // Verify that a 404 error was passed to next()
         });
 
-        it('should handle errors', async () => {
+        // Test error handling during update of a customer
+        it('should handle errors during update of a customer', async () => {
             const error = new Error('Database error');
             const id = '123';
             req.params = { id };
@@ -89,7 +97,9 @@ describe('Customer Controller', () => {
         });
     });
 
-    describe('deleteCustomer', () => {
+    // Test suite for deleteCustomer function
+    describe('customerController - deleteCustomer', () => {
+        // Test successful deletion of a customer
         it('should delete a customer and return success', async () => {
             const id = '123';
             req.params = { id };
@@ -109,17 +119,19 @@ describe('Customer Controller', () => {
             }); // Verify that correct response was returned
         });
 
+        // Test handling of customer associated with parking space
         it('should handle customer associated with parking space', async () => {
             const id = '123';
             req.params = { id };
             ParkingSpace.findOne.mockResolvedValueOnce({ customer: id }); // Mock a case where customer is associated with a parking space
-    
+
             await customerController.deleteCustomer(req, res, next);
-    
+
             expect(next).toHaveBeenCalledWith(expect.any(createError)); // Verify that a createError was passed to next()
         });
 
-        it('should handle customer not found', async () => {
+        // Test handling of customer not found during deletion
+        it('should handle customer not found during deletion', async () => {
             const id = '123';
             req.params = { id };
             ParkingSpace.findOne.mockResolvedValueOnce(null); // Mock no parking space associated with the customer
@@ -130,7 +142,8 @@ describe('Customer Controller', () => {
             expect(next).toHaveBeenCalledWith(createError(404, 'Cliente no encontrado')); // Verify that a 404 error was passed to next()
         });
 
-        it('should handle errors', async () => {
+        // Test error handling during deletion of a customer
+        it('should handle errors during deletion of a customer', async () => {
             const error = new Error('Database error');
             const id = '123';
             req.params = { id };
