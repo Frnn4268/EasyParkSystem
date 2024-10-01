@@ -3,18 +3,21 @@ const ParkingSpace = require('../src/models/parkingSpaceModel');
 
 jest.mock('../src/models/parkingSpaceModel');
 
-describe('getLatestParkingSpaceById', () => {
+// Test suite for the getLatestParkingSpaceById function
+describe('getLatestParkingSpaceById Unit Testing - Get Latest Parking Space By Id', () => {
     let req, res, next;
 
+    // Initialize the req, res, and next objects before each test
     beforeEach(() => {
         req = { params: { id: 'someParkingSpaceId' } };
         res = {
-            status: jest.fn().mockReturnThis(),
-            json: jest.fn()
+            status: jest.fn().mockReturnThis(), // Mock the status method to allow chaining
+            json: jest.fn() // Mock the json method to verify responses
         };
-        next = jest.fn();
+        next = jest.fn(); // Mock the next function to verify error handling
     });
 
+    // Test successful retrieval of the latest parking space with a null hour_date_output
     it('should return the latest parking space with a null hour_date_output', async () => {
         const mockParkingSpace = { parking_space_id: 'someParkingSpaceId', hour_date_entry: new Date(), hour_date_output: null };
         ParkingSpace.findOne.mockReturnValue({
@@ -24,11 +27,13 @@ describe('getLatestParkingSpaceById', () => {
 
         await getLatestParkingSpaceById(req, res, next);
 
+        // Verify that the findOne method is called with the correct query
         expect(ParkingSpace.findOne).toHaveBeenCalledWith({ parking_space_id: 'someParkingSpaceId', hour_date_output: null });
         expect(res.status).toHaveBeenCalledWith(200);
         expect(res.json).toHaveBeenCalledWith(mockParkingSpace);
     });
 
+    // Test handling of no parking space found
     it('should return 404 if no parking space is found', async () => {
         ParkingSpace.findOne.mockReturnValue({
             sort: jest.fn().mockReturnThis(),
@@ -37,11 +42,13 @@ describe('getLatestParkingSpaceById', () => {
 
         await getLatestParkingSpaceById(req, res, next);
 
+        // Verify that the findOne method is called with the correct query
         expect(ParkingSpace.findOne).toHaveBeenCalledWith({ parking_space_id: 'someParkingSpaceId', hour_date_output: null });
         expect(res.status).toHaveBeenCalledWith(404);
         expect(res.json).toHaveBeenCalledWith({ message: 'No se encontró ningún espacio de parqueo para el ID de colección proporcionado con una fecha de salida nula.' });
     });
 
+    // Test error handling during retrieval of the latest parking space
     it('should call next with an error if there is an exception', async () => {
         const error = new Error('Something went wrong');
         ParkingSpace.findOne.mockReturnValue({
@@ -51,6 +58,7 @@ describe('getLatestParkingSpaceById', () => {
 
         await getLatestParkingSpaceById(req, res, next);
 
+        // Verify that the next function is called with the error
         expect(next).toHaveBeenCalledWith(error);
     });
 });
