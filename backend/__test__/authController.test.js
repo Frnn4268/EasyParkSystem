@@ -11,7 +11,7 @@ jest.mock('../src/models/userModel');
 jest.mock('../src/utils/appError');
 
 // Test suite for the Auth Controller
-describe('authController Unit Testing', () => {
+describe('authController Unit Testing - Auth Controller', () => {
     let req, res, next;
 
     // Setup mock request, response, and next function before each test
