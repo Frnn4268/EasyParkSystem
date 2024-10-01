@@ -7,35 +7,36 @@ const createError = require('../src/utils/appError');
 jest.mock('../src/models/incomeModel');
 jest.mock('../src/utils/appError');
 
-describe('getIncomesGroupedByPeriod', () => {
+// Test suite for the getIncomesGroupedByPeriod function
+describe('incomeStatisticsController Unit Testing - Get Incomes Grouped By Period', () => {
     let req, res, next;
 
+    // Setup mock request, response, and next function for each test
     beforeEach(() => {
-      // Setting up mock request, response, and next function
-      req = { params: { period: 'month' } };
-      res = {
-          status: jest.fn().mockReturnThis(), // Mocking res.status to return the response object itself
-          json: jest.fn() // Mocking res.json to capture the JSON response
-      };
-      next = jest.fn(); // Mocking next function for error handling
+        req = { params: { period: 'month' } };
+        res = {
+            status: jest.fn().mockReturnThis(), // Mock status method and enable chaining
+            json: jest.fn(), // Mock json method to return response data
+        };
+        next = jest.fn(); // Mock next function for error handling
     });
 
+    // Clear mocks after each test to avoid interference between tests
     afterEach(() => {
-        jest.clearAllMocks(); // Clearing mocks after each test to avoid interference between tests
+        jest.clearAllMocks();
     });
 
-    it('should group incomes by month', async () => {
-        // Mocking the result of the aggregation query
+    // Test successful grouping of incomes by month
+    it('should group incomes by month and return the result', async () => {
         const mockIncomes = [
-          { _id: 1, totalIncome: 1000 },
-          { _id: 2, totalIncome: 1500 }
+            { _id: 1, totalIncome: 1000 },
+            { _id: 2, totalIncome: 1500 }
         ];
-        Income.aggregate.mockResolvedValue(mockIncomes);
+        Income.aggregate.mockResolvedValue(mockIncomes); // Mock successful aggregation query
 
-        // Calling the controller method with mocked request, response, and next
-        await getIncomesGroupedByPeriod(req, res, next);
+        await getIncomesGroupedByPeriod(req, res, next); // Call the controller method
 
-        // Verifying that the Income.aggregate method was called with the correct aggregation pipeline
+        // Verify that Income.aggregate was called with the correct aggregation pipeline
         expect(Income.aggregate).toHaveBeenCalledWith([
             {
                 $group: {
@@ -46,7 +47,7 @@ describe('getIncomesGroupedByPeriod', () => {
             { $sort: { '_id': 1 } } // Sorting the result by month
         ]);
 
-        // Verifying that the response status is 200 and the response JSON contains the expected data
+        // Verify that the response status is 200 and the response JSON contains the expected data
         expect(res.status).toHaveBeenCalledWith(200);
         expect(res.json).toHaveBeenCalledWith({
             status: 'success',
@@ -67,33 +68,30 @@ describe('getIncomesGroupedByPeriod', () => {
         });
     });
 
-    it('should handle an invalid period', async () => {
-        // Mock the createError function to return an Error object
+    // Test handling of an invalid period
+    it('should handle an invalid period and return an error', async () => {
         const error = new Error('Período de agrupación no válido');
-        createError.mockReturnValue(error);
+        createError.mockReturnValue(error); // Mock createError to return an Error object
 
-        // Setting an invalid period in the request parameters
-        req.params.period = 'invalidPeriod';
+        req.params.period = 'invalidPeriod'; // Set an invalid period in the request parameters
 
-        // Calling the controller method with the invalid period
-        await getIncomesGroupedByPeriod(req, res, next);
+        await getIncomesGroupedByPeriod(req, res, next); // Call the controller method with the invalid period
 
-        // Verifying that createError was called with a 400 status and the error message
+        // Verify that createError was called with a 400 status and the error message
         expect(createError).toHaveBeenCalledWith(400, 'Período de agrupación no válido');
         
-        // Verifying that the next function was called with the mocked Error object
+        // Verify that the next function was called with the mocked Error object
         expect(next).toHaveBeenCalledWith(error);
     });
 
-    it('should call next with an error if an exception occurs', async () => {
-        // Mocking the aggregate method to throw an error
+    // Test handling of exceptions during the aggregation query
+    it('should call next with an error if an exception occurs during aggregation', async () => {
         const error = new Error('Test Error');
-        Income.aggregate.mockRejectedValue(error);
+        Income.aggregate.mockRejectedValue(error); // Mock the aggregate method to throw an error
 
-        // Calling the controller method, expecting it to handle the error
-        await getIncomesGroupedByPeriod(req, res, next);
+        await getIncomesGroupedByPeriod(req, res, next); // Call the controller method, expecting it to handle the error
 
-        // Verifying that the next function was called with the error
+        // Verify that the next function was called with the error
         expect(next).toHaveBeenCalledWith(error);
     });
 });
