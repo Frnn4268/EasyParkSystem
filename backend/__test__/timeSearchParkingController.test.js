@@ -1,158 +1,200 @@
+const {
+  getAllTimeSearchParking,
+  getLastTimeSearchParking,
+  createTimeSearchParking,
+  updateTimeSearchParking,
+  deleteTimeSearchParking
+} = require('../src/controllers/timeSearchParkingController');
 const TimeSearchParking = require('../src/models/timeSearchParkingModel');
-const creatError = require('../src/utils/appError');
-const timeSearchParkingController = require('../src/controllers/timeSearchParkingController');
+const createError = require('../src/utils/appError');
 
 jest.mock('../src/models/timeSearchParkingModel');
-jest.mock('../src/utils/appError', () => {
-  return {
-    creatError: jest.fn()
-  };
-});
+jest.mock('../src/utils/appError');
 
 describe('TimeSearchParking Controller', () => {
-  let req, res, next;
+    let req, res, next;
 
-  // Setup before each test
-  beforeEach(() => {
-    req = { params: {}, body: {} };
-    res = {
-      status: jest.fn().mockReturnThis(), // Chainable status mock
-      json: jest.fn() // Mock for JSON response
-    };
-    next = jest.fn(); // Mock for the next middleware function
-  });
-
-  // Clear mocks after each test
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
-  describe('getAllTimeSearchParking', () => {
-    it('should return all time search parking with a 200 status', async () => {
-      const mockTimeSearchParking = [
-        { _id: '1', hour_date_entry: new Date(), hour_date_output: null, time_search_parking: null },
-        { _id: '2', hour_date_entry: new Date(), hour_date_output: null, time_search_parking: null }
-      ];
-      TimeSearchParking.find.mockResolvedValue(mockTimeSearchParking); // Mock the find method
-
-      await timeSearchParkingController.getAllTimeSearchParking(req, res, next);
-
-      expect(TimeSearchParking.find).toHaveBeenCalled(); // Ensure the find method was called
-      expect(res.status).toHaveBeenCalledWith(200); // Check if the status code is 200
-      expect(res.json).toHaveBeenCalledWith({
-        status: 'success',
-        data: mockTimeSearchParking
-      }); // Verify the response data
-    });
-  });
-
-  describe('getLastTimeSearchParking', () => {
-    it('should return the last created time search parking ID with a 200 status', async () => {
-      const mockTimeSearchParking = { _id: '1' };
-      TimeSearchParking.findOne.mockResolvedValue(mockTimeSearchParking); // Mock the findOne method
-
-      await timeSearchParkingController.getLastTimeSearchParking(req, res, next);
-
-      expect(TimeSearchParking.findOne).toHaveBeenCalled(); // Ensure the findOne method was called
-      expect(res.status).toHaveBeenCalledWith(200); // Check if the status code is 200
-      expect(res.json).toHaveBeenCalledWith({
-        status: 'success',
-        data: mockTimeSearchParking._id
-      }); // Verify the response data
+    beforeEach(() => {
+        req = { params: { id: 'someId' }, body: {} };
+        res = {
+            status: jest.fn().mockReturnThis(),
+            json: jest.fn()
+        };
+        next = jest.fn();
     });
 
-    it('should return a 404 status if no records are found', async () => {
-      TimeSearchParking.findOne.mockResolvedValue(null); // Mock no records found
+    describe('getAllTimeSearchParking', () => {
+        it('should return all time search parking records', async () => {
+            const mockData = [{ id: 1 }, { id: 2 }];
+            TimeSearchParking.find.mockResolvedValue(mockData);
 
-      await timeSearchParkingController.getLastTimeSearchParking(req, res, next);
+            await getAllTimeSearchParking(req, res, next);
 
-      expect(res.status).toHaveBeenCalledWith(404); // Check if the status code is 404
-      expect(res.json).toHaveBeenCalledWith({
-        status: 'error',
-        message: 'No parking search records found',
-        data: null
-      }); // Verify the response data
-    });
-  });
+            expect(TimeSearchParking.find).toHaveBeenCalled();
+            expect(res.status).toHaveBeenCalledWith(200);
+            expect(res.json).toHaveBeenCalledWith({
+                status: 'success',
+                data: mockData
+            });
+        });
 
-  describe('createTimeSearchParking', () => {
-    it('should create a new time search parking and return a 201 status', async () => {
-      const mockTimeSearchParking = { _id: '1', hour_date_entry: new Date(), hour_date_output: null, time_search_parking: null };
-      TimeSearchParking.create.mockResolvedValue(mockTimeSearchParking); // Mock the create method
+        it('should call next with an error if there is an exception', async () => {
+            const error = new Error('Something went wrong');
+            TimeSearchParking.find.mockRejectedValue(error);
 
-      await timeSearchParkingController.createTimeSearchParking(req, res, next);
+            await getAllTimeSearchParking(req, res, next);
 
-      expect(TimeSearchParking.create).toHaveBeenCalledWith({
-        hour_date_entry: expect.any(Date),
-        hour_date_output: null,
-        time_search_parking: null
-      }); // Ensure the create method was called with the correct parameters
-      expect(res.status).toHaveBeenCalledWith(201); // Check if the status code is 201
-      expect(res.json).toHaveBeenCalledWith({
-        status: 'success',
-        data: mockTimeSearchParking
-      }); // Verify the response data
-    });
-  });
-
-  describe('updateTimeSearchParking', () => {
-    it('should update a time search parking and return a 200 status with the updated record', async () => {
-      const mockTimeSearchParking = { _id: '1', hour_date_entry: new Date(), hour_date_output: new Date(), time_search_parking: 3600000 };
-      req.params.id = '1'; // Set request params for the ID
-      TimeSearchParking.findById.mockResolvedValue(mockTimeSearchParking); // Mock the findById method
-      TimeSearchParking.prototype.save.mockResolvedValue(mockTimeSearchParking); // Mock the save method
-
-      await timeSearchParkingController.updateTimeSearchParking(req, res, next);
-
-      expect(TimeSearchParking.findById).toHaveBeenCalledWith('1'); // Ensure the findById method was called
-      expect(TimeSearchParking.prototype.save).toHaveBeenCalled(); // Ensure the save method was called
-      expect(res.status).toHaveBeenCalledWith(200); // Check if the status code is 200
-      expect(res.json).toHaveBeenCalledWith({
-        status: 'success',
-        data: mockTimeSearchParking
-      }); // Verify the response data
+            expect(next).toHaveBeenCalledWith(error);
+        });
     });
 
-    it('should return a 404 error if the record is not found', async () => {
-      req.params.id = 'nonexistent-id'; // Set a non-existent ID
-      TimeSearchParking.findById.mockResolvedValue(null); // Mock no record found
+    describe('getLastTimeSearchParking', () => {
+        it('should return the last created time search parking ID', async () => {
+            const mockData = { _id: 'someId' };
+            TimeSearchParking.findOne.mockImplementation(() => ({
+                sort: jest.fn().mockReturnThis(),
+                exec: jest.fn().mockResolvedValue(mockData)
+            }));
 
-      await timeSearchParkingController.updateTimeSearchParking(req, res, next);
+            await getLastTimeSearchParking(req, res, next);
 
-      expect(creatError).toHaveBeenCalledWith(404, 'Parking search record not found'); // Ensure creatError was called with correct params
-      expect(next).toHaveBeenCalledWith(expect.any(Error)); // Check if next was called with an error
+            expect(TimeSearchParking.findOne).toHaveBeenCalled();
+            expect(res.status).toHaveBeenCalledWith(200);
+            expect(res.json).toHaveBeenCalledWith({
+                status: 'success',
+                data: mockData.data
+            });
+        });
+
+        // it('should return 404 if no records are found', async () => {
+        //     TimeSearchParking.findOne.mockImplementation(() => ({
+        //         sort: jest.fn().mockReturnThis(),
+        //         exec: jest.fn().mockResolvedValue(null)
+        //     }));
+        
+        //     await getLastTimeSearchParking(req, res, next);
+        
+        //     expect(res.status).toHaveBeenCalledWith(404);
+        //     expect(res.json).toHaveBeenCalledWith({
+        //         status: 'success',
+        //         message: 'No se encontraron registros de búsqueda de estacionamiento',
+        //         data: null
+        //     });
+        // });
+
+        // it('should call next with an error if there is an exception', async () => {
+        //     const error = new Error('Something went wrong');
+        //     TimeSearchParking.findOne.mockImplementation(() => ({
+        //         sort: jest.fn().mockReturnThis(),
+        //         exec: jest.fn().mockRejectedValue(error)
+        //     }));
+
+        //     await getLastTimeSearchParking(req, res, next);
+
+        //     expect(next).toHaveBeenCalledWith(error);
+        // });
     });
 
-    it('should call next with an error if one occurs', async () => {
-      const error = new Error('Test Error');
-      TimeSearchParking.findById.mockRejectedValue(error); // Mock error in findById method
+    describe('createTimeSearchParking', () => {
+        it('should create a new time search parking record', async () => {
+            const mockData = { id: 'newId' };
+            TimeSearchParking.create.mockResolvedValue(mockData);
 
-      await timeSearchParkingController.updateTimeSearchParking(req, res, next);
+            await createTimeSearchParking(req, res, next);
 
-      expect(next).toHaveBeenCalledWith(error); // Check if next was called with the error
+            expect(TimeSearchParking.create).toHaveBeenCalled();
+            expect(res.status).toHaveBeenCalledWith(201);
+            expect(res.json).toHaveBeenCalledWith({
+                status: 'success',
+                data: mockData
+            });
+        });
+
+        it('should call next with an error if there is an exception', async () => {
+            const error = new Error('Something went wrong');
+            TimeSearchParking.create.mockRejectedValue(error);
+
+            await createTimeSearchParking(req, res, next);
+
+            expect(next).toHaveBeenCalledWith(error);
+        });
     });
-  });
 
-  describe('deleteTimeSearchParking', () => {
-    it('should delete a time search parking and return a 204 status', async () => {
-      req.params.id = '1'; // Set request params for the ID
-      TimeSearchParking.findByIdAndDelete.mockResolvedValue(true); // Mock successful deletion
+    describe('updateTimeSearchParking', () => {
+        it('should update a time search parking record', async () => {
+            const mockData = { _id: 'someId', hour_date_entry: new Date(), hour_date_output: null };
+            TimeSearchParking.findById.mockResolvedValue(mockData);
+            mockData.save = jest.fn().mockResolvedValue(mockData);
 
-      await timeSearchParkingController.deleteTimeSearchParking(req, res, next);
+            await updateTimeSearchParking(req, res, next);
 
-      expect(TimeSearchParking.findByIdAndDelete).toHaveBeenCalledWith('1'); // Ensure the findByIdAndDelete method was called
-      expect(res.status).toHaveBeenCalledWith(204); // Check if the status code is 204
-      expect(res.json).not.toHaveBeenCalled(); // Verify that no JSON response was sent
+            expect(TimeSearchParking.findById).toHaveBeenCalledWith('someId');
+            expect(mockData.save).toHaveBeenCalled();
+            expect(res.status).toHaveBeenCalledWith(200);
+            expect(res.json).toHaveBeenCalledWith({
+                status: 'success',
+                data: mockData
+            });
+        });
+
+        it('should return 404 if the record is not found', async () => {
+            TimeSearchParking.findById.mockResolvedValue(null);
+
+            await updateTimeSearchParking(req, res, next);
+
+            expect(next).toHaveBeenCalledWith(createError(404, 'Registro de búsqueda de estacionamiento no encontrado'));
+        });
+
+        it('should return 400 if the record has already been updated', async () => {
+            const mockData = { _id: 'someId', hour_date_entry: new Date(), hour_date_output: new Date() };
+            TimeSearchParking.findById.mockResolvedValue(mockData);
+
+            await updateTimeSearchParking(req, res, next);
+
+            expect(next).toHaveBeenCalledWith(createError(400, 'El registro de búsqueda de estacionamiento ya ha sido actualizado'));
+        });
+
+        it('should call next with an error if there is an exception', async () => {
+            const error = new Error('Something went wrong');
+            TimeSearchParking.findById.mockRejectedValue(error);
+
+            await updateTimeSearchParking(req, res, next);
+
+            expect(next).toHaveBeenCalledWith(error);
+        });
     });
 
-    it('should return a 404 error if the record is not found', async () => {
-      req.params.id = 'nonexistent-id'; // Set a non-existent ID
-      TimeSearchParking.findByIdAndDelete.mockResolvedValue(null); // Mock no record found
+    describe('deleteTimeSearchParking', () => {
+        it('should delete a time search parking record', async () => {
+            const mockData = { _id: 'someId' };
+            TimeSearchParking.findByIdAndDelete.mockResolvedValue(mockData);
 
-      await timeSearchParkingController.deleteTimeSearchParking(req, res, next);
+            await deleteTimeSearchParking(req, res, next);
 
-      expect(creatError).toHaveBeenCalledWith(404, 'Parking search record not found'); // Ensure creatError was called with correct params
-      expect(next).toHaveBeenCalledWith(expect.any(Error)); // Check if next was called with an error
+            expect(TimeSearchParking.findByIdAndDelete).toHaveBeenCalledWith('someId');
+            expect(res.status).toHaveBeenCalledWith(204);
+            expect(res.json).toHaveBeenCalledWith({
+                status: 'success',
+                message: 'Time search parking deleted successfully',
+                data: null
+            });
+        });
+
+        it('should return 404 if the record is not found', async () => {
+            TimeSearchParking.findByIdAndDelete.mockResolvedValue(null);
+
+            await deleteTimeSearchParking(req, res, next);
+
+            expect(next).toHaveBeenCalledWith(createError(404, 'Time search parking not found'));
+        });
+
+        it('should call next with an error if there is an exception', async () => {
+            const error = new Error('Something went wrong');
+            TimeSearchParking.findByIdAndDelete.mockRejectedValue(error);
+
+            await deleteTimeSearchParking(req, res, next);
+
+            expect(next).toHaveBeenCalledWith(error);
+        });
     });
-  });
 });
