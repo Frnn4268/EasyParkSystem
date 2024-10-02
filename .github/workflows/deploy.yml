@@ -4,14 +4,11 @@ on:
   push:
     branches:
       - master
-    paths:
-      - 'frontend/**'
-      - 'backend/**'
 
 jobs:
   deploy-netlify:
-    if: contains(github.event.head_commit.message, 'frontend')
     runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.message, 'frontend')
 
     steps:
     - name: Checkout code
@@ -27,8 +24,8 @@ jobs:
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
 
   deploy-render:
-    if: contains(github.event.head_commit.message, 'backend')
     runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.message, 'backend')
 
     steps:
     - name: Checkout code
