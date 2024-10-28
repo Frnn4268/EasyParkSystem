@@ -1,4 +1,4 @@
-name: Deploy
+name: Deploy to Netlify and Render
 
 on:
   push:
