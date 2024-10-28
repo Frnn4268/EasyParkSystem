@@ -1,0 +1,34 @@
+name: frontend-build-push
+on:
+  push:
+    paths:
+    - 'frontend/**'
+
+    branches:
+      - master 
+  workflow_dispatch: 
+
+permissions:
+  id-token: write
+  contents: read  
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:                       
+      - uses: actions/checkout@v2                  
+      - name: Login to Dockerhub
+        id: docker-hub
+        env:
+          username: ${{secrets.DOCKERHUB_USERNAME}}
+          password: ${{secrets.DOCKERHUB_PASSWORD}}
+        run: |
+            docker login -u $username -p $password 
+
+      - name: Docker Build and Publish
+        uses: docker/build-push-action@v2
+        with:
+          context: ./frontend
+          file: ./frontend/Dockerfile
+          push: true
+          tags: frnn4268/easyparksystem-frontend:${{github.run_number}}
