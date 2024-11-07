@@ -1,20 +1,7 @@
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
-const redis = require('redis')
-const User = require('../models/userModel')
-const createError = require('../utils/appError')
-
-require('dotenv').config();
-
-const redisClient = redis.createClient({
-    url: process.env.REDIS_URL
-});
-
-redisClient.on('error', (err) => console.error('Redis Client Error', err));
-
-(async () => {
-    await redisClient.connect();
-})();
+const bcrypt = require('bcrypt');
+const User = require('../models/userModel');
+const createError = require('../utils/appError');
+const { storeToken, getToken, generateToken } = require('../middlewares/redisMiddleware');
 
 // Register user
 exports.signup = async (req, res, next) => {
@@ -40,14 +27,10 @@ exports.signup = async (req, res, next) => {
         });
 
         // Assing JWT (json web token) to user
-        const token = jwt.sign({ _id: newUser._id }, process.env.SECRET_KEY, {
-            expiresIn: '90d',
-        });
+        const token = generateToken(newUser._id);
 
         // Store token in Redis
-        await redisClient.set(newUser._id.toString(), token, {
-            EX: 90 * 24 * 60 * 60 // 90 days in seconds
-        });
+        await storeToken(newUser._id, token);
 
         res.status(201).json({
             status: 'success',
@@ -84,21 +67,17 @@ exports.login = async (req, res, next) => {
         }
 
         // Check if token exists in Redis
-        const cachedToken = await redisClient.get(user._id.toString());
+        const cachedToken = await getToken(user._id);
 
         let token;
         if (cachedToken) {
             token = cachedToken;
         } else {
             // Assing JWT (json web token) to user
-            token = jwt.sign({ _id: user._id }, process.env.SECRET_KEY, {
-                expiresIn: '90d',
-            });
+            token = generateToken(user._id);
 
             // Store token in Redis
-            await redisClient.set(user._id.toString(), token, {
-                EX: 90 * 24 * 60 * 60 // 90 days in seconds
-            });
+            await storeToken(user._id, token);
         }
 
         res.status(200).json({
