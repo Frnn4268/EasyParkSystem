@@ -67,34 +67,42 @@ exports.signup = async (req, res, next) => {
 };
 
 // Login user
-exports.login = async(req, res, next) => {
+exports.login = async (req, res, next) => {
     try {
-        const {email, password} = req.body
+        const { email, password } = req.body;
 
-        const user = await User.findOne({ email })
+        const user = await User.findOne({ email });
 
-        if(!user) return next(new createError('Usuario no encontrado', 404))
+        if (!user) return next(new createError('Usuario no encontrado', 404));
 
-        if(user.active === false) return next(new createError('Usuario sin autorización', 403))
+        if (user.active === false) return next(new createError('Usuario sin autorización', 403));
 
-        const isPasswordValid = await bcrypt.compare(password, user.password)
+        const isPasswordValid = await bcrypt.compare(password, user.password);
 
         if (!isPasswordValid) {
-            return next(new createError('Contraseña o email incorrecto', 401))
+            return next(new createError('Contraseña o email incorrecto', 401));
         }
 
-        // Assing JWT (json web token) to user
-        const token = jwt.sign({_id: user._id}, process.env.SECRET_KEY, {
-            expiresIn: '90d',
-        })
+        // Check if token exists in Redis
+        const cachedToken = await redisClient.get(user._id.toString());
 
-        // Store token in Redis
-        await redisClient.set(user._id.toString(), token, {
-            EX: 90 * 24 * 60 * 60 // 90 days in seconds
-        });
+        let token;
+        if (cachedToken) {
+            token = cachedToken;
+        } else {
+            // Assing JWT (json web token) to user
+            token = jwt.sign({ _id: user._id }, process.env.SECRET_KEY, {
+                expiresIn: '90d',
+            });
+
+            // Store token in Redis
+            await redisClient.set(user._id.toString(), token, {
+                EX: 90 * 24 * 60 * 60 // 90 days in seconds
+            });
+        }
 
         res.status(200).json({
-            status: 'succes',
+            status: 'success',
             token,
             message: 'Inicio de sesión exitoso',
             user: {
@@ -104,9 +112,9 @@ exports.login = async(req, res, next) => {
                 role: user.role,
                 active: user.active
             }
-        })
+        });
 
     } catch (error) {
-        next(error)
+        next(error);
     }
-}
+};
