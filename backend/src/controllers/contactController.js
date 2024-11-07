@@ -1,5 +1,6 @@
 const Contact = require('../models/contactModel')
 const createError = require('../utils/appError')
+const sendEmail = require('../utils/nodemailer')
 
 require('dotenv').config()
 
@@ -26,6 +27,13 @@ exports.createContact = async (req, res, next) => {
             name,
             email,
             message
+        });
+
+        // Send confirmation email
+        await sendEmail({
+            email: newContact.email,
+            subject: 'Confirmación de Contacto',
+            message: `Hola ${newContact.name},\n\nGracias por contactarnos. Pronto un administrador se pondrá en contacto contigo.\n\nSaludos,\nEquipo de Soporte`
         });
 
         res.status(201).json({
