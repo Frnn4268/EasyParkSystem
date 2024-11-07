@@ -1,9 +1,20 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const redis = require('redis')
 const User = require('../models/userModel')
 const createError = require('../utils/appError')
 
-require('dotenv').config()
+require('dotenv').config();
+
+const redisClient = redis.createClient({
+    url: process.env.REDIS_URL
+});
+
+redisClient.on('error', (err) => console.error('Redis Client Error', err));
+
+(async () => {
+    await redisClient.connect();
+})();
 
 // Register user
 exports.signup = async (req, res, next) => {
@@ -31,6 +42,11 @@ exports.signup = async (req, res, next) => {
         // Assing JWT (json web token) to user
         const token = jwt.sign({ _id: newUser._id }, process.env.SECRET_KEY, {
             expiresIn: '90d',
+        });
+
+        // Store token in Redis
+        await redisClient.set(newUser._id.toString(), token, {
+            EX: 90 * 24 * 60 * 60 // 90 days in seconds
         });
 
         res.status(201).json({
@@ -71,6 +87,11 @@ exports.login = async(req, res, next) => {
         const token = jwt.sign({_id: user._id}, process.env.SECRET_KEY, {
             expiresIn: '90d',
         })
+
+        // Store token in Redis
+        await redisClient.set(user._id.toString(), token, {
+            EX: 90 * 24 * 60 * 60 // 90 days in seconds
+        });
 
         res.status(200).json({
             status: 'succes',
