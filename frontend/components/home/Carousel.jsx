@@ -1,5 +1,5 @@
 import { Carousel } from 'antd';
-import '../../css/Home.css';
+import '../../src/css/Home.css';
 
 const contentStyle = {
   height: '110px',

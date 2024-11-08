@@ -13,7 +13,6 @@ dist-ssr
 *.local
 
 /src/assets/
-/components/
 
 # Editor directories and files
 .vscode/*
