@@ -2,7 +2,7 @@ import React, {useLayoutEffect, useRef} from 'react'
 import { Descriptions, Layout, Card, Typography } from 'antd';
 import { Map, Marker, NavigationControl } from 'mapbox-gl';
 
-import MainMenu from './MainMenu'; 
+import MainMenu from '../../../components/home/MainMenu.jsx'; 
 
 import '../../css/Home.css';
 

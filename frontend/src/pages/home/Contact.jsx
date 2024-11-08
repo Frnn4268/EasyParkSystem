@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Row, Col, Button, Form, Input, AutoComplete, Layout, Card, Typography, message } from 'antd';
 const { TextArea } = Input;
 
-import MainMenu from './MainMenu'; 
+import MainMenu from '../../../components/home/MainMenu.jsx'; 
 
 import '../../css/Home.css';
 
