@@ -7,6 +7,12 @@ services:
       context: ./backend
     ports:
       - "3001:3001"
+    environment:
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - redis
+    networks:
+      - easypark-network
 
   # Client service
   client:
@@ -14,7 +20,17 @@ services:
       context: ./frontend
     ports:
       - "80:80"
+    networks:
+      - easypark-network
+
+  # Redis service
+  redis:
+    image: "redis:latest"
+    ports:
+      - "6379:6379"
+    networks:
+      - easypark-network
 
 networks:
-  default:
+  easypark-network:
     name: easypark-network
