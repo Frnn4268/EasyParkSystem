@@ -9,7 +9,7 @@ import {
     QuestionCircleOutlined
 } from '@ant-design/icons';
 
-import TopMenuCustomer from '../parking time/TopMenuCustomer';
+import TopMenuCustomer from './TopMenuCustomer';
 
 import '../../css/ParkingTimeCustomer.css';
 

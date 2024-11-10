@@ -23,11 +23,11 @@ import ContactComponent from "./pages/dashboard/ContactComponent.jsx";
 import InformationComponent from "./pages/dashboard/InformationComponent.jsx";
 
 // Parking
-import ParkingSpace from "./pages/parking space/ParkingSpace.jsx";
-import ParkingHistory from "./pages/parking space/ParkingHistory.jsx";
-import ParkingStatistics from "./pages/parking space/ParkingStatistics.jsx";
-import ParkingTime from "./pages/parking time/ParkingTime.jsx";
-import TimeParkingSearch from "./pages/parking space/TimeParkingSearch.jsx";
+import ParkingSpace from "./pages/parkingSpace/ParkingSpace.jsx";
+import ParkingHistory from "./pages/parkingSpace/ParkingHistory.jsx";
+import ParkingStatistics from "./pages/parkingSpace/ParkingStatistics.jsx";
+import ParkingTime from "./pages/parkingTime/ParkingTime.jsx";
+import TimeParkingSearch from "./pages/parkingSpace/TimeParkingSearch.jsx";
 
 // Users
 import Users from "./pages/users/Users.jsx";
