@@ -8,7 +8,7 @@ const IncomeForm = ({ form, handleSubmit, handleDateChange, income, setIncome, p
         label='Fecha de ingreso:' 
         name='date' 
         rules={[{ required: true, message: 'Por favor selecciona la fecha' }]}
-        style={{ marginTop: 15 }}
+        style={{ marginTop: 15, textAlign: 'center' }}
       >
         <DatePicker 
           format="YYYY-MM-DD" 
@@ -21,6 +21,7 @@ const IncomeForm = ({ form, handleSubmit, handleDateChange, income, setIncome, p
         label='Monto:'
         name='income'
         rules={[{ required: true, message: 'Por favor ingresa el monto.' }]}
+        style={{ textAlign: 'center' }}
       >
         <InputNumber
           size='large'
@@ -33,7 +34,7 @@ const IncomeForm = ({ form, handleSubmit, handleDateChange, income, setIncome, p
           style={{ width: '100%' }}
         />
       </Form.Item>
-      <Form.Item>
+      <Form.Item style={{ textAlign: 'center' }}>
         <Button type='primary' size='large' className='btn' htmlType="submit" style={{ width: '100%' }}>
           Guardar
         </Button>
