@@ -1,4 +1,3 @@
-// IncomeStatistics.jsx
 import React, { useState, useEffect } from "react";
 import { Layout, Row, Col } from 'antd';
 

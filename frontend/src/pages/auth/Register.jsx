@@ -1,9 +1,11 @@
 import React from 'react';
 import { Card, Flex, Typography, Layout } from 'antd';
+
 import FloatingButtons from '../../../components/auth/FloatingButtons.jsx';
 import RegisterForm from '../../../components/auth/RegisterForm.jsx';
 import useSignup from '../../hooks/useSingup';
 import { useAuth } from '../../contexts/AuthContext.jsx';
+
 import '../../css/Auth.css';
 
 const backgroundStyle = {
