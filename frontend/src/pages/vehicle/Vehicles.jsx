@@ -1,6 +1,5 @@
-import React from 'react';
-import { Layout, Typography, message } from 'antd';
-
+import React, { useEffect, useState } from 'react';
+import { Layout, Typography, message, Modal, Form } from 'antd';
 import VehiclesTable from '../../../components/vehicle/VehiclesTable';
 import VehiclesDrawer from '../../../components/vehicle/VehiclesDrawer';
 import VehiclesHeader from '../../../components/vehicle/VehiclesHeader';
@@ -12,12 +11,12 @@ import '../../css/Vehicle.css';
 const { confirm } = Modal;
 
 const Vehicles = () => {
-  const [vehicles, setVehicles] = React.useState([]);
-  const [drawerVisible, setDrawerVisible] = React.useState(false);
-  const [selectedVehicle, setSelectedVehicle] = React.useState(null);
+  const [vehicles, setVehicles] = useState([]);
+  const [drawerVisible, setDrawerVisible] = useState(false);
+  const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [form] = Form.useForm();
 
-  React.useEffect(() => {
+  useEffect(() => {
     fetchVehicles();
   }, []);
 
