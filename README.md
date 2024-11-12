@@ -30,17 +30,6 @@ EasyPark is a parking management system that allows you to see the status of par
 
 - **QR Code for Customers**: The generation of the QR code allows customers to see in real-time the monetary amount (approximate) to pay for the parking service depending on the time of use of the service.
 
-## Installation
-
-**1.** Clone the repository:
-> `https://github.com/Frnn4268/EasyParkSystem.git`
-
-**2.** Dependency Installation (Backend and Frontend):
-> `npm install`
-
-**3.** Initialization of the Project (Backend and Frontend):
-> `npm run dev`
-
 ## Use
 **1.** **Create a User:** Sign up and create an account.
 
