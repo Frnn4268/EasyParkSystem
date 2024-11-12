@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import { Layout, Typography } from 'antd';
 
 import VehiclesHeader from '../../../components/vehicleHistory/VehiclesHeader.jsx';
