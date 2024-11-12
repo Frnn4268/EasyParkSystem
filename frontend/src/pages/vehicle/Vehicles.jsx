@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Layout, Typography, message, Modal, Form } from 'antd';
+
 import VehiclesTable from '../../../components/vehicle/VehiclesTable';
 import VehiclesDrawer from '../../../components/vehicle/VehiclesDrawer';
 import VehiclesHeader from '../../../components/vehicle/VehiclesHeader';
