@@ -1,4 +1,3 @@
-// ParkingPriceComponent.jsx
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Layout, Card, Typography, message, Form } from 'antd';
 import moment from 'moment'; 
