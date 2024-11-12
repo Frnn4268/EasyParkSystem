@@ -1,7 +1,8 @@
 import React from 'react';
-import { Table, Tag } from 'antd';
+import { Table, Tag, Button, Space } from 'antd';
+import { DeleteOutlined, SyncOutlined } from '@ant-design/icons';
 
-const VehiclesTable = ({ vehiclesHistory, typeColorMap, colorColorMap, getRandomColor }) => {
+const VehiclesTable = ({ vehicles, handleUpdate, handleDelete, getRandomColor, typeColorMap, colorColorMap }) => {
   const columns = [
     {
       title: 'ID',
@@ -9,7 +10,7 @@ const VehiclesTable = ({ vehiclesHistory, typeColorMap, colorColorMap, getRandom
       key: 'id',
     },
     {
-      title: 'Placa del vehículo',
+      title: 'Placa',
       dataIndex: 'license_plate',
       key: 'license_plate',
     },
@@ -22,12 +23,15 @@ const VehiclesTable = ({ vehiclesHistory, typeColorMap, colorColorMap, getRandom
       ),
     },
     {
-      title: 'Marca del vehículo',
+      title: 'Marca',
       dataIndex: 'brand',
       key: 'brand',
+      render: (brand) => (
+        <Tag color={getRandomColor()}>{brand}</Tag>
+      ),
     },
     {
-      title: 'Color del vehículo',
+      title: 'Color',
       dataIndex: 'color',
       key: 'color',
       render: (color) => (
@@ -35,33 +39,24 @@ const VehiclesTable = ({ vehiclesHistory, typeColorMap, colorColorMap, getRandom
       ),
     },
     {
-      title: 'Nombre del cliente',
-      dataIndex: 'firstname_owner',
-      key: 'firstname_owner',
-    },
-    {
-      title: 'Apellido del cliente',
-      dataIndex: 'lastname_owner',
-      key: 'lastname_owner',
-    },
-    {
-      title: 'Número de teléfono del cliente',
-      dataIndex: 'phone_number',
-      key: 'phone_number',
-      render: (phone_number, record) => (
-        <Tag color={record.phone_number_color}>{phone_number}</Tag>
+      title: 'Acción',
+      key: 'action',
+      render: (_, record) => (
+        <Space size="middle">
+          <Button type="primary" icon={<SyncOutlined />} onClick={() => handleUpdate(record)}>Editar</Button>
+          <Button danger icon={<DeleteOutlined />} onClick={() => handleDelete(record.id)}>Eliminar</Button>
+        </Space>
       ),
     },
   ];
 
   return (
     <Table 
-      style={{ width: '94.75%', marginLeft: '75px' }}
-      dataSource={vehiclesHistory} 
+      dataSource={vehicles} 
       columns={columns} 
       rowKey="id" 
       pagination={{
-        pageSize: 11, 
+        pageSize: 10, 
         showSizeChanger: false, 
         pageSizeOptions: ['5', '10', '20'], 
         showTotal: (total, range) => `${range[0]}-${range[1]} de ${total} filas`,
