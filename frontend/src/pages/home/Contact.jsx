@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { message } from 'antd';
+
 import ContactLayout from '../../../components/contact/ContactLayout.jsx';
 
 const Contact = () => {
